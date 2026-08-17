@@ -1,0 +1,7 @@
+# index.html 은 CI 가 재생성하지만, 레포에도 함께 커밋한다
+
+# download-folder 자동 압축 결과
+assets/**/*.zip
+
+.DS_Store
+__pycache__/

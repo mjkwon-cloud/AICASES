@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nature Republic Real Nature Mask Sheet — Product Detail</title>
+<!--
+  상세페이지 본문. 텍스트 콘텐츠 원본은 content.json (gemini-3.5-flash 생성),
+  검증 필요 항목은 content-review.md, 사진 왜곡 이슈는 photos-review.md 참조.
+  타일 13장 × 1200×1200 = 최종 1200×15600.
+-->
+<style>
+  :root{
+    --bg:#F5F7F6; --bg2:#ECEFEE; --ink:#1E2624; --ink2:#5E6B67; --ink3:#6B7876;
+    --green:#2F5C46; --green-dk:#254A38; --green-lt:#E4EEE8;
+    --line:#DCE3E1; --card-line:#E1E6E4; --tbc:#B07A1E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#fff}
+  body{width:1200px;font-family:'Plus Jakarta Sans','Segoe UI Variable Display','Segoe UI',system-ui,sans-serif;
+    color:var(--ink);-webkit-font-smoothing:antialiased}
+  /* 모든 타일 정확히 1200×1200 */
+  .tile{position:relative;width:1200px;height:1200px;overflow:hidden;background:var(--bg);
+    padding:72px;display:flex;flex-direction:column}
+  .tile.alt{background:var(--bg2)}
+  .tile.bleed{padding:0}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:var(--green-lt);
+    border-radius:999px;font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--green);text-transform:uppercase}
+  h1{font-size:58px;line-height:1.05;letter-spacing:-.03em;font-weight:800}
+  h2{font-size:42px;line-height:1.14;letter-spacing:-.03em;font-weight:800}
+  h3{font-size:21px;line-height:1.35;letter-spacing:-.02em;font-weight:700}
+  .lead{font-size:19px;line-height:1.58;color:var(--ink2)}
+  .pill{display:inline-flex;align-items:center;justify-content:center;padding:18px 36px;border-radius:999px;
+    background:var(--green);color:#fff;font-size:18px;font-weight:800}
+  .card{background:#fff;border:1px solid var(--card-line);border-radius:20px;padding:30px}
+  .wordmark{font-size:20px;font-weight:800;letter-spacing:-.02em}
+  .sec-no{font-size:13px;font-weight:800;letter-spacing:.14em;color:var(--ink3)}
+  .slot{position:relative;overflow:hidden;border-radius:20px;
+    background:linear-gradient(135deg,#DCE7E1 0%,#C7D8CE 48%,#B3CBBE 100%);
+    display:flex;align-items:center;justify-content:center}
+  .slot img{width:100%;height:100%;object-fit:cover;display:block}
+  .slot .ph{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+    padding:22px;text-align:center;color:#2F5C46;font-size:12.5px;line-height:1.55}
+  .slot.missing .ph{display:flex} .slot.missing img{display:none}
+  .slot .ph b{display:block;font-size:13.5px;letter-spacing:.04em;margin-bottom:8px;text-transform:uppercase}
+  table{width:100%;border-collapse:collapse;font-size:17px}
+  th,td{padding:15px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{width:34%;font-weight:800;color:var(--ink)}
+  td{color:var(--ink2)}
+  /* 미검증 값 표시 — 공급사 확인 전까지 각주 */
+  .tbc{color:var(--tbc);font-weight:800;font-size:12px;vertical-align:super;margin-left:3px}
+  .foot{font-size:13px;color:var(--ink3);margin-top:18px}
+  @media print{ @page{ size:1200px 15600px; margin:0 } body{width:1200px} }
+</style>
+</head>
+<body>
+
+<!-- ══════════ 01 · HERO — 모델 사진 풀블리드 ══════════ -->
+<section class="tile bleed" data-tile="01" data-name="hero">
+  <div class="slot" style="position:absolute;inset:0;border-radius:0">
+    <img src="photos/model-1-sq.png" alt="">
+    <div class="ph"><b>01 · hero</b><span>모델 착용 컷 1200×1200</span></div>
+  </div>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,20,17,.55) 0%,rgba(12,20,17,.1) 34%,rgba(12,20,17,.72) 100%)"></div>
+  <div style="position:absolute;inset:0;padding:56px 72px;display:flex;flex-direction:column;justify-content:space-between;color:#fff">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="wordmark">NATURE REPUBLIC</div>
+      <div style="display:flex;align-items:center;gap:26px;font-size:15px;font-weight:600;color:rgba(255,255,255,.9)">
+        <span>Ingredients</span><span>How to Use</span><span>Reviews</span>
+        <span style="padding:10px 20px;background:#fff;color:var(--green);border-radius:999px;font-size:14px;font-weight:800">Buy Now</span>
+      </div>
+    </div>
+    <div>
+      <div class="badge" style="background:rgba(255,255,255,.18);color:#fff;margin-bottom:22px">K-Beauty · Distributed by Silicon2</div>
+      <h1 style="margin-bottom:20px;max-width:20ch">Real Nature<br>Mask Sheet</h1>
+      <p class="lead" style="color:rgba(255,255,255,.9);max-width:44ch;margin-bottom:30px">
+        One cotton sheet soaked in plant essence. 92% natural ingredients,
+        20 minutes, no sticky finish — for every skin type.
+      </p>
+      <div style="display:flex;align-items:center;gap:22px">
+        <span class="pill" style="background:#fff;color:var(--green)">Buy Now</span>
+        <span style="font-size:16px;font-weight:700;border-bottom:2px solid rgba(255,255,255,.7);padding-bottom:3px">See the 4 variants</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 02 · WHY IT WORKS ══════════ -->
+<section class="tile" data-tile="02" data-name="why">
+  <div class="sec-no" style="margin-bottom:16px">01 — WHY IT WORKS</div>
+  <h2 style="margin-bottom:14px;max-width:20ch">One Mask,<br>Every Use</h2>
+  <p class="lead" style="max-width:52ch;margin-bottom:38px">
+    Formulated for daily hydration without the heavy, greasy residue of typical soothing masks.
+  </p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:20px;flex:1 1 auto;min-height:0">
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center">
+      <div style="width:50px;height:50px;border-radius:14px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#2F5C46" stroke-width="1.7"><path d="M12 2C8 8 5 11 5 15a7 7 0 0014 0c0-4-3-7-7-13z"/></svg></div>
+      <h3 style="margin-bottom:9px">Deep Hydration for Thirsty Skin</h3>
+      <p style="font-size:16px;line-height:1.55;color:var(--ink2)">Rehydrates and rejuvenates dry, tight-feeling skin from the first sheet.</p>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center">
+      <div style="width:50px;height:50px;border-radius:14px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#2F5C46" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path d="M12 6v6l4 2"/></svg></div>
+      <h3 style="margin-bottom:9px">20 Minutes, Then Done</h3>
+      <p style="font-size:16px;line-height:1.55;color:var(--ink2)">Wear 10–20 minutes, pat in the remaining essence. No rinsing needed.</p>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center">
+      <div style="width:50px;height:50px;border-radius:14px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#2F5C46" stroke-width="1.7"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h3 style="margin-bottom:9px">Balances and Nourishes</h3>
+      <p style="font-size:16px;line-height:1.55;color:var(--ink2)">One gentle formula family for all skin types, from oily to sensitive.</p>
+    </div>
+    <div class="card" style="background:var(--green);border-color:var(--green);color:#fff;display:flex;flex-direction:column;justify-content:center">
+      <div style="width:50px;height:50px;border-radius:14px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M12 3v18M6 8l6-5 6 5M6 16l6 5 6-5"/></svg></div>
+      <h3 style="margin-bottom:9px;color:#fff">Cooling, No Sticky Finish</h3>
+      <p style="font-size:16px;line-height:1.55;color:rgba(255,255,255,.84)">Lightweight essence absorbs cleanly, even in hot weather.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 03 · WIDE MODEL BAND (16:9) ══════════ -->
+<section class="tile alt" data-tile="03" data-name="wear">
+  <div class="sec-no" style="margin-bottom:16px">02 — THE 20 MINUTES</div>
+  <h2 style="margin-bottom:32px;max-width:24ch">Put It On. Do Nothing.</h2>
+  <div class="slot" style="width:1056px;height:594px;flex:0 0 auto;margin-bottom:32px">
+    <img src="photos/model-3-wide.png" alt="">
+    <div class="ph"><b>03 · wear (16:9)</b><span>모델 착용 와이드 컷 1200×675</span></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;flex:1 1 auto">
+    <div style="background:#fff;border:1px solid var(--card-line);border-radius:18px;padding:22px 24px">
+      <div style="font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--green)">92%</div>
+      <div style="font-size:14.5px;color:var(--ink2);margin-top:6px">Natural ingredients in the essence</div></div>
+    <div style="background:#fff;border:1px solid var(--card-line);border-radius:18px;padding:22px 24px">
+      <div style="font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--green)">10–20<span style="font-size:17px">min</span></div>
+      <div style="font-size:14.5px;color:var(--ink2);margin-top:6px">Recommended wear time</div></div>
+    <div style="background:#fff;border:1px solid var(--card-line);border-radius:18px;padding:22px 24px">
+      <div style="font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--green)">100%</div>
+      <div style="font-size:14.5px;color:var(--ink2);margin-top:6px">Cotton sheet<span class="tbc">*</span></div></div>
+  </div>
+</section>
+
+<!-- ══════════ 04 · INGREDIENTS ══════════ -->
+<section class="tile" data-tile="04" data-name="ingredients">
+  <div class="sec-no" style="margin-bottom:16px">03 — WHAT'S INSIDE</div>
+  <h2 style="margin-bottom:32px">Four Plants, Four Jobs</h2>
+  <div style="display:grid;grid-template-columns:.82fr 1.18fr;gap:28px;flex:1 1 auto;min-height:0">
+    <div class="slot" style="height:100%">
+      <img src="photos/model-2-sq.png" alt="">
+      <div class="ph"><b>04 · ingredients</b><span>모델 + 원물 컷 1200×1200</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;justify-content:center">
+      <div class="card" style="padding:22px 26px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px">
+          <h3>Aloe Vera Extract</h3>
+          <span style="font-size:13px;font-weight:800;color:var(--green)">Soothes &amp; Hydrates</span></div>
+        <p style="font-size:15.5px;line-height:1.5;color:var(--ink2)">Provides immediate cooling relief and moisture to dry or sun-exposed skin.</p></div>
+      <div class="card" style="padding:22px 26px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px">
+          <h3>Avocado Extract</h3>
+          <span style="font-size:13px;font-weight:800;color:var(--green)">Deeply Nourishes</span></div>
+        <p style="font-size:15.5px;line-height:1.5;color:var(--ink2)">Rich in essential nutrients to help lock in moisture for flaky skin.</p></div>
+      <div class="card" style="padding:22px 26px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px">
+          <h3>Green Tea Extract</h3>
+          <span style="font-size:13px;font-weight:800;color:var(--green)">Balances &amp; Purifies</span></div>
+        <p style="font-size:15.5px;line-height:1.5;color:var(--ink2)">Helps control excess sebum while delivering clean, lightweight hydration.</p></div>
+      <div class="card" style="padding:22px 26px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px">
+          <h3>Kiwi Extract</h3>
+          <span style="font-size:13px;font-weight:800;color:var(--green)">Revitalizes</span></div>
+        <p style="font-size:15.5px;line-height:1.5;color:var(--ink2)">Packed with vitamins to wake up dull, tired-looking complexions.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 05 · VARIANTS ══════════ -->
+<section class="tile alt" data-tile="05" data-name="variants">
+  <div class="sec-no" style="margin-bottom:16px">04 — PICK YOUR SHEET</div>
+  <h2 style="margin-bottom:28px">Four Variants, One Routine</h2>
+  <div class="slot" style="width:1056px;height:580px;flex:0 0 auto;margin-bottom:28px">
+    <img src="photos/model-4-wide.png" alt="">
+    <div class="ph"><b>05 · variants (16:9)</b><span>시트 4종 팬 배치 + 모델 1200×675</span></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;flex:1 1 auto;min-height:0">
+    <div class="card" style="padding:22px;display:flex;flex-direction:column;justify-content:center">
+      <h3 style="margin-bottom:8px">Aloe<span class="tbc">*</span></h3>
+      <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:10px">Aloe Barbadensis</div>
+      <p style="font-size:14.5px;line-height:1.5;color:var(--ink2)">Sensitive, dry or sun-irritated skin</p></div>
+    <div class="card" style="padding:22px;display:flex;flex-direction:column;justify-content:center">
+      <h3 style="margin-bottom:8px">Avocado<span class="tbc">*</span></h3>
+      <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:10px">Persea Gratissima</div>
+      <p style="font-size:14.5px;line-height:1.5;color:var(--ink2)">Very dry or flaky skin needing richer nourishment</p></div>
+    <div class="card" style="padding:22px;display:flex;flex-direction:column;justify-content:center">
+      <h3 style="margin-bottom:8px">Green Tea<span class="tbc">*</span></h3>
+      <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:10px">Camellia Sinensis</div>
+      <p style="font-size:14.5px;line-height:1.5;color:var(--ink2)">Oily, combination or breakout-prone skin</p></div>
+    <div class="card" style="padding:22px;display:flex;flex-direction:column;justify-content:center">
+      <h3 style="margin-bottom:8px">Kiwi<span class="tbc">*</span></h3>
+      <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:10px">Actinidia Chinensis</div>
+      <p style="font-size:14.5px;line-height:1.5;color:var(--ink2)">Dull, fatigued skin wanting a vitalizing boost</p></div>
+  </div>
+</section>
+
+<!-- ══════════ 06 · HOW TO USE ══════════ -->
+<section class="tile" data-tile="06" data-name="how-to-use">
+  <div class="sec-no" style="margin-bottom:16px">05 — HOW TO USE</div>
+  <h2 style="margin-bottom:36px">Three Steps, Under a Minute</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;flex:1 1 auto;min-height:0">
+    <div style="display:flex;flex-direction:column">
+      <div class="slot" style="flex:1 1 auto;min-height:0;margin-bottom:20px">
+        <img src="photos/model-4-sq.png" alt="">
+        <div class="ph"><b>06 · step 1</b><span>시트 4종 선택 컷 · 1200×1200</span></div>
+      </div>
+      <div style="text-align:center;height:140px;flex:0 0 auto">
+        <div style="font-size:14px;font-weight:800;color:var(--green);letter-spacing:.06em;margin-bottom:9px">01</div>
+        <h3 style="margin-bottom:9px">Choose</h3>
+        <p style="font-size:15.5px;line-height:1.5;color:var(--ink2)">On clean skin, pick the variant your skin needs today.</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <div class="slot" style="flex:1 1 auto;min-height:0;margin-bottom:20px">
+        <img src="photos/model-1-sq.png" alt="">
+        <div class="ph"><b>06 · step 2</b><span>시트 밀착 · 1200×1200</span></div>
+      </div>
+      <div style="text-align:center;height:140px;flex:0 0 auto">
+        <div style="font-size:14px;font-weight:800;color:var(--green);letter-spacing:.06em;margin-bottom:9px">02</div>
+        <h3 style="margin-bottom:9px">Apply</h3>
+        <p style="font-size:15.5px;line-height:1.5;color:var(--ink2)">Unfold the sheet and smooth it onto your face.</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <div class="slot" style="flex:1 1 auto;min-height:0;margin-bottom:20px">
+        <img src="photos/model-3-sq.png" alt="">
+        <div class="ph"><b>06 · step 3</b><span>10~20분 착용 후 잔여 에센스 흡수 · 1200×1200</span></div>
+      </div>
+      <div style="text-align:center;height:140px;flex:0 0 auto">
+        <div style="font-size:14px;font-weight:800;color:var(--green);letter-spacing:.06em;margin-bottom:9px">03</div>
+        <h3 style="margin-bottom:9px">Remove &amp; Pat</h3>
+        <p style="font-size:15.5px;line-height:1.5;color:var(--ink2)">After 10–20 minutes, pat in the leftover essence.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 07 · AM / PM ROUTINE ══════════ -->
+<section class="tile alt" data-tile="07" data-name="routine">
+  <div class="sec-no" style="margin-bottom:16px">06 — WHERE IT FITS</div>
+  <h2 style="margin-bottom:36px">Morning Prep or Night Reset</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;flex:1 1 auto;min-height:0">
+    <div class="card" style="display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2F5C46" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        <h3 style="font-size:24px">AM · Pre-Makeup Prep</h3></div>
+      <ol style="list-style:none;display:flex;flex-direction:column;gap:20px">
+        <li style="display:flex;gap:14px"><span style="flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--green-lt);color:var(--green);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">1</span>
+          <span style="font-size:16.5px;line-height:1.5;color:var(--ink2)">Cleanse face thoroughly and apply toner to balance skin texture.</span></li>
+        <li style="display:flex;gap:14px"><span style="flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--green-lt);color:var(--green);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">2</span>
+          <span style="font-size:16.5px;line-height:1.5;color:var(--ink2)">Wear the sheet mask 10–15 minutes, then pat the remaining essence in.</span></li>
+        <li style="display:flex;gap:14px"><span style="flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--green-lt);color:var(--green);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">3</span>
+          <span style="font-size:16.5px;line-height:1.5;color:var(--ink2)">Follow with a lightweight moisturizer and broad-spectrum sunscreen.</span></li>
+      </ol>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2F5C46" stroke-width="1.8"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></svg>
+        <h3 style="font-size:24px">PM · Deep Recovery</h3></div>
+      <ol style="list-style:none;display:flex;flex-direction:column;gap:20px">
+        <li style="display:flex;gap:14px"><span style="flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--green-lt);color:var(--green);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">1</span>
+          <span style="font-size:16.5px;line-height:1.5;color:var(--ink2)">Double cleanse to remove makeup, then apply a hydrating toner.</span></li>
+        <li style="display:flex;gap:14px"><span style="flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--green-lt);color:var(--green);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">2</span>
+          <span style="font-size:16.5px;line-height:1.5;color:var(--ink2)">Wear the mask 20 minutes while relaxing for maximum absorption.</span></li>
+        <li style="display:flex;gap:14px"><span style="flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--green-lt);color:var(--green);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">3</span>
+          <span style="font-size:16.5px;line-height:1.5;color:var(--ink2)">Seal the essence in with a facial oil or sleeping cream.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 08 · USE CASES ══════════ -->
+<section class="tile" data-tile="08" data-name="use-cases">
+  <div class="sec-no" style="margin-bottom:16px">07 — WHEN TO REACH FOR ONE</div>
+  <h2 style="margin-bottom:36px">Four Moments, One Sheet</h2>
+  <div style="display:grid;grid-template-rows:repeat(4,1fr);gap:18px;flex:1 1 auto;min-height:0">
+    <div class="card" style="display:flex;align-items:center;gap:28px;padding:26px 32px">
+      <div style="flex:0 0 auto;width:60px;height:60px;border-radius:16px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;font-size:26px">☀️</div>
+      <div><div style="display:flex;align-items:baseline;gap:12px;margin-bottom:6px">
+        <h3>Post-Sun Recovery</h3><span style="font-size:13.5px;font-weight:700;color:var(--green)">After outdoor activities</span></div>
+        <p style="font-size:16px;line-height:1.5;color:var(--ink2)">Cool down and rehydrate skin that has spent too much time under the sun.</p></div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:28px;padding:26px 32px">
+      <div style="flex:0 0 auto;width:60px;height:60px;border-radius:16px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;font-size:26px">💄</div>
+      <div><div style="display:flex;align-items:baseline;gap:12px;margin-bottom:6px">
+        <h3>Pre-Makeup Prep</h3><span style="font-size:13.5px;font-weight:700;color:var(--green)">Morning routine</span></div>
+        <p style="font-size:16px;line-height:1.5;color:var(--ink2)">Create a smooth, plump canvas so foundation sits without flaking.</p></div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:28px;padding:26px 32px">
+      <div style="flex:0 0 auto;width:60px;height:60px;border-radius:16px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;font-size:26px">✈️</div>
+      <div><div style="display:flex;align-items:baseline;gap:12px;margin-bottom:6px">
+        <h3>In-Flight Hydration</h3><span style="font-size:13.5px;font-weight:700;color:var(--green)">During or after travel</span></div>
+        <p style="font-size:16px;line-height:1.5;color:var(--ink2)">Counter dry cabin air and land with a fresh, dewy complexion.</p></div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:28px;padding:26px 32px">
+      <div style="flex:0 0 auto;width:60px;height:60px;border-radius:16px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;font-size:26px">🌙</div>
+      <div><div style="display:flex;align-items:baseline;gap:12px;margin-bottom:6px">
+        <h3>Nightly Reset</h3><span style="font-size:13.5px;font-weight:700;color:var(--green)">Before bed</span></div>
+        <p style="font-size:16px;line-height:1.5;color:var(--ink2)">Unwind after a long day and let skin drink up the essence overnight.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 09 · SPEC TABLE ══════════ -->
+<section class="tile alt" data-tile="09" data-name="spec">
+  <div class="sec-no" style="margin-bottom:16px">08 — PRODUCT INFORMATION</div>
+  <h2 style="margin-bottom:30px">Specifications</h2>
+  <div class="card" style="flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;padding:20px 36px">
+    <table>
+      <tr><th>Net Content</th><td>23ml / 0.77 fl. oz. per sheet<span class="tbc">*</span></td></tr>
+      <tr><th>Sheet Material</th><td>100% natural cotton sheet<span class="tbc">*</span></td></tr>
+      <tr><th>Wear Time</th><td>10 to 20 minutes</td></tr>
+      <tr><th>Essence Texture</th><td>Lightweight liquid essence with no stickiness</td></tr>
+      <tr><th>Skin Type</th><td>All skin types, oily to sensitive</td></tr>
+      <tr><th>Country of Origin</th><td>Made in South Korea</td></tr>
+      <tr><th>Brand Heritage</th><td>Nature Republic, since 1993</td></tr>
+      <tr><th>Storage</th><td>Store in a cool, dry place away from direct sunlight</td></tr>
+      <tr style="border-bottom:none"><th>Shelf Life</th><td>36 months unopened; use immediately after opening<span class="tbc">*</span></td></tr>
+    </table>
+    <p class="foot"><span class="tbc" style="vertical-align:baseline">*</span>
+      공급사 자료로 확인 후 확정해야 하는 값입니다 — content-review.md 참조.</p>
+  </div>
+</section>
+
+<!-- ══════════ 10 · REVIEWS ══════════ -->
+<section class="tile" data-tile="10" data-name="reviews">
+  <div class="sec-no" style="margin-bottom:16px">09 — REVIEWS</div>
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:34px">
+    <h2>What Customers Are Saying</h2>
+    <div style="font-size:17px;color:var(--ink2)">
+      <span style="color:var(--green);letter-spacing:2px;font-size:18px">★★★★★</span>&nbsp;4.8 / 5<span class="tbc">*</span></div>
+  </div>
+  <div style="display:grid;grid-template-rows:repeat(3,1fr);gap:20px;flex:1 1 auto;min-height:0">
+    <div class="card" style="display:flex;align-items:center;gap:28px">
+      <div style="flex:0 0 auto;width:76px;height:76px;border-radius:50%;background:var(--green-lt);color:var(--green);
+                  display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800">PN</div>
+      <div><div style="color:var(--green);letter-spacing:2px;font-size:15px;margin-bottom:9px">★★★★★</div>
+        <p style="font-size:17.5px;line-height:1.55;margin-bottom:10px">"This is the only sheet mask my sensitive skin doesn't react to. I use one after every shower."</p>
+        <div style="font-size:14px;font-weight:700;color:var(--ink2)">Priya Nair · Verified Buyer</div></div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:28px">
+      <div style="flex:0 0 auto;width:76px;height:76px;border-radius:50%;background:var(--green-lt);color:var(--green);
+                  display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800">ES</div>
+      <div><div style="color:var(--green);letter-spacing:2px;font-size:15px;margin-bottom:9px">★★★★★</div>
+        <p style="font-size:17.5px;line-height:1.55;margin-bottom:10px">"A box lasts months and it never feels sticky, even in summer. The avocado one is my favourite."</p>
+        <div style="font-size:14px;font-weight:700;color:var(--ink2)">Emiko Sato · Verified Buyer</div></div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:28px">
+      <div style="flex:0 0 auto;width:76px;height:76px;border-radius:50%;background:var(--green-lt);color:var(--green);
+                  display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800">CM</div>
+      <div><div style="color:var(--green);letter-spacing:2px;font-size:15px;margin-bottom:9px">★★★★★</div>
+        <p style="font-size:17.5px;line-height:1.55;margin-bottom:10px">"My go-to after a beach day. Cools down redness almost instantly and I sleep with the leftover essence on."</p>
+        <div style="font-size:14px;font-weight:700;color:var(--ink2)">Carla Mendes · Verified Buyer</div></div>
+    </div>
+  </div>
+  <p class="foot"><span class="tbc" style="vertical-align:baseline">*</span>
+    후기 본문과 평점은 실제 판매 채널 데이터로 교체해야 합니다. 리뷰어 사진은 인물 특정을 피하기 위해 이니셜로 대체했습니다.</p>
+</section>
+
+<!-- ══════════ 11 · FAQ ══════════ -->
+<section class="tile alt" data-tile="11" data-name="faq">
+  <div class="sec-no" style="margin-bottom:16px">10 — FAQ</div>
+  <h2 style="margin-bottom:30px">Before You Buy</h2>
+  <div style="display:flex;flex-direction:column;gap:16px;flex:1 1 auto;min-height:0;justify-content:center">
+    <div style="border-bottom:1px solid var(--line);padding-bottom:16px">
+      <div style="font-size:18px;font-weight:700;margin-bottom:7px">Does it leave a sticky residue?</div>
+      <p style="font-size:16px;line-height:1.55;color:var(--ink2)">No. The lightweight essence absorbs cleanly into the skin without a sticky finish.</p></div>
+    <div style="border-bottom:1px solid var(--line);padding-bottom:16px">
+      <div style="font-size:18px;font-weight:700;margin-bottom:7px">Can I use one every day?</div>
+      <p style="font-size:16px;line-height:1.55;color:var(--ink2)">Yes — the sheets are gentle enough for a daily "one mask, every use" hydration routine.</p></div>
+    <div style="border-bottom:1px solid var(--line);padding-bottom:16px">
+      <div style="font-size:18px;font-weight:700;margin-bottom:7px">How long should I leave it on?</div>
+      <p style="font-size:16px;line-height:1.55;color:var(--ink2)">15 to 20 minutes. Don't let the sheet dry out completely on your face.</p></div>
+    <div style="border-bottom:1px solid var(--line);padding-bottom:16px">
+      <div style="font-size:18px;font-weight:700;margin-bottom:7px">Is it safe for very sensitive skin?</div>
+      <p style="font-size:16px;line-height:1.55;color:var(--ink2)">It suits all skin types from oily to sensitive, but we always recommend a patch test first.</p></div>
+    <div style="border-bottom:1px solid var(--line);padding-bottom:16px">
+      <div style="font-size:18px;font-weight:700;margin-bottom:7px">Can I reuse a sheet if essence is left in the pouch?</div>
+      <p style="font-size:16px;line-height:1.55;color:var(--ink2)">No — the cotton sheet is single use. Apply the leftover essence to your neck, chest and arms.</p></div>
+    <div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:7px">What is the shelf life unopened?</div>
+      <p style="font-size:16px;line-height:1.55;color:var(--ink2)">Generally up to 36 months from manufacture<span class="tbc">*</span> — always check the date printed on the pouch.</p></div>
+  </div>
+</section>
+
+<!-- ══════════ 12 · PRECAUTIONS & WHAT SHIPS ══════════ -->
+<section class="tile" data-tile="12" data-name="precautions">
+  <div class="sec-no" style="margin-bottom:16px">11 — GOOD TO KNOW</div>
+  <h2 style="margin-bottom:32px">Precautions &amp; What Ships</h2>
+  <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:22px;flex:1 1 auto;min-height:0">
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center">
+      <h3 style="font-size:23px;margin-bottom:22px">Precautions</h3>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:16px">
+        <li style="display:flex;gap:12px;font-size:16.5px;line-height:1.5;color:var(--ink2)"><span style="color:var(--green);font-weight:800">·</span>For external use only; do not ingest.</li>
+        <li style="display:flex;gap:12px;font-size:16.5px;line-height:1.5;color:var(--ink2)"><span style="color:var(--green);font-weight:800">·</span>Avoid direct contact with the eyes; rinse immediately with water if contact occurs.</li>
+        <li style="display:flex;gap:12px;font-size:16.5px;line-height:1.5;color:var(--ink2)"><span style="color:var(--green);font-weight:800">·</span>Discontinue use and consult a dermatologist if redness, swelling or irritation develops.</li>
+        <li style="display:flex;gap:12px;font-size:16.5px;line-height:1.5;color:var(--ink2)"><span style="color:var(--green);font-weight:800">·</span>Keep out of reach of children and store away from extreme temperatures.</li>
+        <li style="display:flex;gap:12px;font-size:16.5px;line-height:1.5;color:var(--ink2)"><span style="color:var(--green);font-weight:800">·</span>Use immediately after opening so the sheet does not dry out.</li>
+      </ul>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center">
+      <h3 style="font-size:23px;margin-bottom:22px">In Your Order</h3>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div><div style="font-size:15px;font-weight:800;margin-bottom:5px">Sheet Mask</div>
+          <div style="font-size:15.5px;line-height:1.5;color:var(--ink2)">1× Real Nature Mask Sheet, 23ml<span class="tbc">*</span></div></div>
+        <div><div style="font-size:15px;font-weight:800;margin-bottom:5px">Packaging</div>
+          <div style="font-size:15.5px;line-height:1.5;color:var(--ink2)">Hermetically sealed individual foil pouch</div></div>
+        <div><div style="font-size:15px;font-weight:800;margin-bottom:5px">User Guide</div>
+          <div style="font-size:15.5px;line-height:1.5;color:var(--ink2)">Usage instructions printed on the back of the pouch</div></div>
+        <div style="padding-top:18px;border-top:1px solid var(--line)">
+          <div style="font-size:15px;font-weight:800;margin-bottom:5px">Authenticity</div>
+          <div style="font-size:15.5px;line-height:1.5;color:var(--ink2)">100% genuine, distributed by authorized partner Silicon2</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 13 · FINAL CTA + FOOTER ══════════ -->
+<section class="tile bleed" data-tile="13" data-name="final-cta">
+  <div class="slot" style="position:absolute;inset:0;border-radius:0">
+    <img src="photos/model-1-wide.png" alt="">
+    <div class="ph"><b>13 · cta</b><span>모델 와이드 컷 1200×675</span></div>
+  </div>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,44,33,.35) 0%,rgba(20,44,33,.88) 46%,rgba(20,44,33,.96) 100%)"></div>
+  <div style="position:absolute;inset:0;padding:72px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff">
+    <div style="text-align:center;margin-bottom:auto;margin-top:auto">
+      <div style="display:inline-flex;padding:8px 16px;background:rgba(255,255,255,.16);border-radius:999px;
+                  font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px">Limited-time deal</div>
+      <h2 style="color:#fff;font-size:50px;margin-bottom:18px">Ready to Try It?</h2>
+      <p class="lead" style="color:rgba(255,255,255,.86);max-width:46ch;margin:0 auto 32px">
+        Limited-time deal pricing is live right now. Start with one sheet, or take all four variants.
+      </p>
+      <span class="pill" style="background:#fff;color:var(--green);font-size:20px;padding:20px 46px">Buy Now</span>
+      <div style="margin-top:16px;font-size:14.5px;color:rgba(255,255,255,.74)">🔒 Deal price unlocks at checkout</div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:26px;border-top:1px solid rgba(255,255,255,.22)">
+      <div class="wordmark">NATURE REPUBLIC</div>
+      <div style="font-size:14.5px;color:rgba(255,255,255,.7)">Made in Korea. Since 1993. · Distributed by Silicon2</div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.querySelectorAll('.slot img').forEach(function(img){
+  function mark(){ if(!img.naturalWidth) img.closest('.slot').classList.add('missing'); }
+  if (img.complete) mark(); else { img.onerror = mark; img.onload = mark; }
+});
+(function(){
+  var only = new URLSearchParams(location.search).get('only');
+  if (!only) return;
+  document.querySelectorAll('.tile').forEach(function(t){ if (t.dataset.tile !== only) t.remove(); });
+})();
+</script>
+</body>
+</html>

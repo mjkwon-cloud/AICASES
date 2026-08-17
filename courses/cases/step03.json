@@ -1,0 +1,15 @@
+{
+  "step": 3,
+  "title": "랜딩페이지 제작",
+  "slides": [
+    {
+      "image": "01_prompt.png",
+      "action": {
+        "label": "산출물",
+        "items": [
+          { "desc": "결과", "link": { "href": "assets/cases/step03/files/nature_republic_landing.html", "text": "Nature Republic 랜딩페이지 열기" } }
+        ]
+      }
+    }
+  ]
+}

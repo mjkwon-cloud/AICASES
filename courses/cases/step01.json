@@ -1,0 +1,19 @@
+{
+  "step": 1,
+  "title": "MSRP 검수",
+  "slides": [
+    {
+      "image": "02_claude_in_chrome_2.png",
+      "action": null
+    },
+    {
+      "image": "01_claude_in_chrome.png",
+      "action": {
+        "label": "산출물",
+        "type": "download",
+        "path": "assets/cases/step01/files/BOJ_Relief_Sun_UK_price_check.xlsx",
+        "text": "BOJ Relief Sun UK 가격비교.xlsx"
+      }
+    }
+  ]
+}
