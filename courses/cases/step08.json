@@ -1,0 +1,18 @@
+{
+  "step": 8,
+  "title": "채널 시장조사",
+  "slides": [
+    {
+      "image": "01_channel_summary_sheet.png",
+      "action": null
+    },
+    {
+      "image": "02_slack_skill_guide.png",
+      "action": null
+    },
+    {
+      "image": "03_channel_research_report.png",
+      "action": null
+    }
+  ]
+}
