@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>글로벌팀 업무 자동화 사례</title>
+<title>글로벌팀 업무자동화 성과</title>
 <style>
 /* ============================================================
    1. Design Tokens
@@ -14,8 +14,9 @@
   --accent:#2563eb; --accent-muted:#eff6ff; --accent-border:#bfdbfe;
   --advanced:#7c3aed; --advanced-muted:#faf5ff;
   --automation:#0d9488; --automation-muted:#f0fdfa;
+  --result:#dc2626; --result-muted:#fef2f2; --result-border:#fecaca;
   --radius:.5rem; --radius-full:9999px;
-  --sidebar-width:260px;
+  --sidebar-width:300px;
   --sidebar-transition:.22s ease;
   --slide-transition:.28s cubic-bezier(.4,0,.2,1);
 }
@@ -33,10 +34,11 @@ body{
 /* ============================================================
    3. Course Tabs  (좌상단 기초/심화/자동화 pill)
    ============================================================ */
-.course-tabs{display:flex;gap:.2rem;background:var(--secondary);padding:.2rem;border-radius:var(--radius-full)}
+.course-tabs{display:flex;gap:.2rem;flex-shrink:0;background:var(--secondary);padding:.2rem;border-radius:var(--radius-full)}
 .course-tab{
-  padding:.35rem 1rem;border:none;border-radius:var(--radius-full);background:transparent;
-  font:600 .875rem/1.5 inherit;color:var(--muted-fg);cursor:pointer;white-space:nowrap;
+  padding:.4rem .8rem;border:none;border-radius:var(--radius-full);background:transparent;
+  font-family:inherit;font-weight:600;font-size:.8125rem;line-height:1.5;
+  color:var(--muted-fg);cursor:pointer;white-space:nowrap;
   transition:background .18s,color .18s;
 }
 .course-tab.active{background:var(--primary);color:var(--primary-fg)}
@@ -76,7 +78,9 @@ body{
   color:var(--muted-fg);cursor:pointer;opacity:0;pointer-events:none;
   transition:opacity .2s,background .14s,color .14s;
 }
-.sidebar-reopen.visible{opacity:1;pointer-events:auto}
+.sidebar-reopen.visible{opacity:1;pointer-events:auto;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+/* 접힌 상태: 재열기 버튼 자리를 확보 */
+.slide-area.sidebar-collapsed .slide{padding-left:3.5rem}
 .sidebar-reopen:hover{background:var(--secondary);color:var(--fg)}
 
 .sidebar-course-badge{
@@ -111,7 +115,7 @@ body{
 .nav-info{display:flex;flex-direction:column;gap:.1rem;min-width:0}
 .nav-title{font-size:.875rem;font-weight:600;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nav-item.active .nav-title{color:var(--primary-fg)}
-.nav-hours{font-size:.75rem;color:var(--muted-fg)}
+.nav-hours{font-size:.75rem;color:var(--muted-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nav-item.active .nav-hours{color:rgba(255,255,255,.4)}
 
 /* ============================================================
@@ -139,6 +143,33 @@ body{
 .session-header-left{flex:1;min-width:0}
 .session-meta{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
 .session-title{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;line-height:1.3}
+
+/* AS-IS / TO-BE 요약 (슬라이드 상단) */
+.slide-summary{
+  flex-shrink:0;display:flex;flex-direction:column;gap:.4rem;margin-bottom:.875rem;
+}
+/* 요약이 없는 슬라이드에서는 슬롯 자체를 숨긴다 */
+.slide-summary:empty{display:none;margin-bottom:0}
+.summary-row{display:flex;align-items:flex-start;gap:.5rem;font-size:.8125rem;line-height:1.55}
+.summary-label{
+  flex-shrink:0;width:56px;padding:.12rem 0;border-radius:var(--radius);
+  font-size:10px;font-weight:800;letter-spacing:.06em;text-align:center;
+  background:var(--secondary);color:var(--muted-fg);border:1px solid var(--border);
+}
+.summary-text{min-width:0;color:var(--muted-fg)}
+.summary-line{display:block}
+.summary-line::before{content:"· ";opacity:.6}
+.summary-line + .summary-line{margin-top:.15rem}
+.summary-row.is-goal .summary-label{
+  background:var(--accent-muted);color:var(--accent);border-color:var(--accent-border);
+}
+.summary-row.is-goal .summary-text{color:var(--fg);font-weight:600}
+
+.summary-row.is-result{font-size:.875rem}
+.summary-row.is-result .summary-label{
+  background:var(--result);color:#fff;border-color:var(--result);font-size:10.5px;
+}
+.summary-row.is-result .summary-text{color:var(--result);font-weight:800}
 
 .slide-action-box{
   flex-shrink:0;max-width:520px;display:flex;flex-direction:column;gap:.3rem;
@@ -178,6 +209,9 @@ body{
 .image-slide.is-prev{transform:translateX(-100%)}
 .image-slide.is-active{transform:translateX(0)}
 .image-slide img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+/* 한 슬라이드에 여러 장 나란히 (slide.images 배열) */
+.image-pair{display:flex;align-items:center;justify-content:center;gap:.75rem;width:100%;height:100%;padding:.5rem}
+.image-pair img{flex:0 1 auto;min-width:0;max-width:100%;max-height:100%;object-fit:contain;display:block}
 
 .image-placeholder{
   width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;
@@ -185,6 +219,61 @@ body{
 }
 .image-placeholder-label{font-size:.875rem;font-weight:600;color:var(--muted-fg)}
 .image-placeholder-sub{font-size:.75rem;color:var(--muted-fg);opacity:.7}
+
+/* html 슬라이드 (목차 등) */
+.html-slide{width:100%;height:100%;overflow:auto;padding:clamp(.75rem,2vh,1.5rem) clamp(1.25rem,2.6vw,2rem);display:flex}
+.toc{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;width:100%;align-content:start}
+.toc-col{display:flex;flex-direction:column;gap:clamp(.5rem,1.4vh,.875rem);padding:clamp(.875rem,2vh,1.25rem);border:1px solid var(--border);border-radius:var(--radius);background:var(--bg)}
+.toc-col-head{display:flex;flex-direction:column;gap:.5rem}
+.toc-tag{
+  align-self:flex-start;padding:.2rem .5rem;border-radius:var(--radius-full);
+  font-size:clamp(10px,1.5vh,13px);font-weight:800;letter-spacing:.06em;
+}
+.toc-tag.basic{background:var(--accent-muted);color:var(--accent)}
+.toc-tag.advanced{background:var(--advanced-muted);color:var(--advanced)}
+.toc-tag.automation{background:var(--automation-muted);color:var(--automation)}
+.toc-col-title{font-size:clamp(.875rem,min(2.3vh,1.5vw),1.25rem);font-weight:700;letter-spacing:-.01em}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:.125rem}
+.toc-list li{display:flex;gap:.625rem;align-items:baseline;padding:clamp(.3rem,.8vh,.5rem) .25rem;border-top:1px solid var(--border)}
+.toc-list li:first-child{border-top:0}
+.toc-num{font-size:clamp(.75rem,1.72vh,1rem);font-weight:700;letter-spacing:.04em;color:var(--muted-fg)}
+.toc-item{font-size:clamp(.75rem,min(2vh,1.3vw),1.125rem);font-weight:600;line-height:1.5}
+
+/* 보고형 카드 슬라이드 (배경) — 배지 → 제목 → 부제 → 구분선 → 섹션 → 2단 박스 → 배너 */
+.rep{display:flex;flex-direction:column;gap:clamp(.5rem,2.1vh,1.5rem);width:100%;max-width:1400px;margin:auto}
+.rep-pill{
+  align-self:flex-start;padding:.25rem .6rem;border-radius:var(--radius-full);
+  background:var(--accent);color:#fff;font-size:clamp(10px,1.45vh,13px);font-weight:800;letter-spacing:.06em;
+}
+.rep-title{font-size:clamp(1.25rem,min(3.55vh,2.3vw),2.125rem);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+.rep-sub{font-size:clamp(.75rem,min(2.13vh,1.38vw),1.1875rem);line-height:1.5;color:var(--muted-fg)}
+.rep-div{border:0;border-top:1px solid var(--border);margin:0}
+.rep-label{
+  display:flex;align-items:center;gap:.4rem;
+  font-size:clamp(.6875rem,min(1.6vh,1.05vw),.9375rem);font-weight:700;letter-spacing:.1em;color:var(--muted-fg);
+}
+.rep-label .arrow{font-weight:400;opacity:.7}
+
+/* PDF 원페이지 보고서 구조: AS-IS / To-Be / 비즈니스 임팩트 3카드 */
+.rep-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.75rem,2.2vh,1.5rem);align-items:stretch}
+.rep-card{
+  display:flex;flex-direction:column;gap:clamp(.55rem,1.6vh,1.125rem);
+  padding:clamp(.875rem,2.2vh,1.5rem) clamp(.875rem,1.5vw,1.375rem);
+  background:#f6f7f9;border:1px solid transparent;border-radius:14px;
+}
+.rep-card.is-impact{background:var(--accent-muted);border-color:var(--accent-border)}
+.rep-card-head{
+  font-size:clamp(.9375rem,min(2.1vh,1.35vw),1.1875rem);font-weight:800;letter-spacing:-.01em;
+  line-height:1.3;margin-bottom:clamp(.1rem,.5vh,.35rem);
+}
+.rep-card.is-impact .rep-card-head{color:var(--accent)}
+.rep-item{display:flex;flex-direction:column;gap:.15rem}
+.rep-item-main{font-size:clamp(.8125rem,min(1.8vh,1.16vw),1rem);font-weight:600;line-height:1.45}
+.rep-item-main b{font-weight:800}
+.rep-item-sub{font-size:clamp(.75rem,min(1.55vh,1vw),.9375rem);line-height:1.5;color:var(--muted-fg)}
+.rep-item-key{font-size:clamp(.8125rem,min(1.8vh,1.16vw),1rem);font-weight:700;color:var(--accent);line-height:1.45}
+.rep-item-line{font-size:clamp(.75rem,min(1.6vh,1.04vw),.9375rem);line-height:1.5}
+.rep-num{font-weight:800;color:var(--accent)}
 
 .image-expand-btn{
   position:absolute;bottom:.5rem;right:.5rem;z-index:10;width:28px;height:28px;
@@ -208,7 +297,8 @@ body{
 .slide-btn{
   display:flex;align-items:center;gap:.375rem;padding:.35rem .875rem;
   border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);
-  font:600 .875rem/1.5 inherit;color:var(--fg);cursor:pointer;white-space:nowrap;
+  font-family:inherit;font-weight:600;font-size:.875rem;line-height:1.5;
+  color:var(--fg);cursor:pointer;white-space:nowrap;
   transition:background .13s,border-color .13s,opacity .13s;
 }
 .slide-btn:hover:not(:disabled){background:var(--secondary);border-color:#d4d4d4}
@@ -241,6 +331,8 @@ body{
 .fs-overlay[hidden]{display:none}
 .fs-image-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .fs-image-wrap img{width:100%;height:100%;object-fit:contain;display:block}
+.fs-html{width:100%;height:100%;overflow:auto;background:var(--bg);color:var(--fg)}
+.fs-html[hidden]{display:none}
 .fs-nav{
   position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:44px;height:44px;
   display:flex;align-items:center;justify-content:center;
@@ -257,6 +349,16 @@ body{
   border:none;border-radius:6px;background:rgba(255,255,255,.12);color:#fff;cursor:pointer;transition:background .15s;
 }
 .fs-close:hover{background:rgba(255,255,255,.25)}
+
+/* 낮거나 좁은 창: 여백을 줄여 스크롤 없이 한 화면에 담는다 */
+@media (max-height:830px),(max-width:1380px){
+  .html-slide{padding:.625rem 1.25rem}
+  .rep{gap:.55rem}
+  .rep-cards{gap:.75rem}
+  .rep-card{padding:.75rem .875rem;gap:.5rem}
+  .toc-col{padding:.75rem;gap:.5rem}
+  .toc-list li{padding:.25rem .25rem}
+}
 
 /* ============================================================
    12. Mobile (<=768px) — 사이드바를 오버레이로, 슬라이드는 페이드로
@@ -279,11 +381,18 @@ body{
   .session-header{flex-direction:column;gap:.75rem}
   .slide-action-box{width:100%;max-width:100%}
   .session-title{font-size:1.25rem}
+  .summary-label{width:50px}
   .session-body{height:auto;overflow:visible}
   .body-image{overflow:visible}
   .image-slider{position:relative;height:0;padding-bottom:56.25%;overflow:hidden}
   .image-slide{position:absolute;inset:0;opacity:0;transform:none!important;transition:opacity .22s}
   .image-slide.is-active{opacity:1}
+  .image-slider:has(.html-slide){height:auto;padding-bottom:0}
+  .image-slider:has(.html-slide) .image-slide{position:relative}
+  .html-slide{padding:1rem}
+  .toc{grid-template-columns:1fr}
+  .rep-cards{grid-template-columns:1fr}
+  .rep-title{font-size:1.25rem}
   .slide-nav{padding:.5rem 1rem}
   .slide-dots{flex-wrap:wrap;max-width:60vw}
 }
@@ -299,7 +408,7 @@ body{
       <div class="sidebar-header">
         <div class="sidebar-top">
           <div class="course-tabs" id="course-tabs"></div>
-          <button class="sidebar-toggle" id="sidebar-toggle" title="사이드바 접기">
+          <button class="sidebar-toggle" id="sidebar-toggle" title="사이드바 접기 (B)">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M9 2L3 7l6 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -314,7 +423,7 @@ body{
 
   <!-- Slide Area -->
   <div class="slide-area">
-    <button class="sidebar-reopen" id="sidebar-reopen" title="사이드바 열기">
+    <button class="sidebar-reopen" id="sidebar-reopen" title="사이드바 열기 (B)">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
         <rect x=".5" y="2" width="13" height="1.5" rx=".75" fill="currentColor"/>
         <rect x=".5" y="6.25" width="13" height="1.5" rx=".75" fill="currentColor"/>
@@ -352,7 +461,7 @@ body{
       <path d="M11 4L6 9l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </button>
-  <div class="fs-image-wrap"><img id="fs-img" src="" alt=""></div>
+  <div class="fs-image-wrap"><img id="fs-img" src="" alt=""><div class="fs-html" id="fs-html" hidden></div></div>
   <button class="fs-nav next" id="fs-next">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
       <path d="M7 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -374,30 +483,183 @@ body{
    마커 줄은 정확히 8칸 들여쓰기 + "//__COURSES__" 여야 한다.
    ============================================================ */
         const COURSES = {
-          "cases": {
-            "tabLabel": "사례",
+          "overview": {
+            "tabLabel": "개요",
             "badgeClass": "basic",
-            "badgeText": "CASE",
-            "title": "글로벌팀 업무 자동화 사례",
+            "badgeText": "OVERVIEW",
+            "assetRoot": "cases",
+            "title": "글로벌팀 업무자동화 성과",
             "sessions": [
               {
-                "step": 0,
-                "title": "기대효과",
+                "step": 1,
+                "title": "목차",
                 "slides": [
                   {
-                    "image": "01_expected_impact.png",
+                    "html": "<div class=\"toc\"><div class=\"toc-col\"><div class=\"toc-col-head\"><span class=\"toc-tag basic\">OVERVIEW</span><span class=\"toc-col-title\">개요</span></div><ol class=\"toc-list\"><li><span class=\"toc-num\">01</span><span class=\"toc-item\">목차</span></li><li><span class=\"toc-num\">02</span><span class=\"toc-item\">배경</span></li></ol></div><div class=\"toc-col\"><div class=\"toc-col-head\"><span class=\"toc-tag advanced\">COST</span><span class=\"toc-col-title\">비용절감</span></div><ol class=\"toc-list\"><li><span class=\"toc-num\">01</span><span class=\"toc-item\">타임라인 관리</span></li><li><span class=\"toc-num\">02</span><span class=\"toc-item\">슬랙 히스토리 파악</span></li><li><span class=\"toc-num\">03</span><span class=\"toc-item\">브랜드 MSRP 검수</span></li><li><span class=\"toc-num\">04</span><span class=\"toc-item\">브랜드 성분 검수</span></li></ol></div><div class=\"toc-col\"><div class=\"toc-col-head\"><span class=\"toc-tag automation\">REVENUE</span><span class=\"toc-col-title\">매출확대</span></div><ol class=\"toc-list\"><li><span class=\"toc-num\">01</span><span class=\"toc-item\">거래처DB 관리</span></li><li><span class=\"toc-num\">02</span><span class=\"toc-item\">신규오더 관리</span></li><li><span class=\"toc-num\">03</span><span class=\"toc-item\">시장 조사</span></li><li><span class=\"toc-num\">04</span><span class=\"toc-item\">매출/채널 대시보드 제작</span></li><li><span class=\"toc-num\">05</span><span class=\"toc-item\">매출 집중 자료 제작</span></li><li><span class=\"toc-num\">06</span><span class=\"toc-item\">맞춤형 영업자료 제작</span></li><li><span class=\"toc-num\">07</span><span class=\"toc-item\">영업이익 확대를 위한 제안</span></li></ol></div></div>",
                     "action": null
                   }
                 ],
                 "hours": ""
               },
               {
+                "step": 2,
+                "title": "배경",
+                "slides": [
+                  {
+                    "html": "<div class=\"rep\"><span class=\"rep-pill\">BACKGROUND</span><h2 class=\"rep-title\">AI 도입 배경</h2><p class=\"rep-sub\">글로벌팀 주력 업무의 <span class=\"rep-num\">68%</span>를 차지하는 단순 반복 작업을 AI에 위임하여,<br>확보된 리소스를 수주율 및 재고회전율 향상 등 핵심 가치 창출에 집중하고자 합니다.</p><hr class=\"rep-div\"><div class=\"rep-label\">AS-IS <span class=\"arrow\">➜</span> TO-BE</div><div class=\"rep-cards\"><div class=\"rep-card\"><div class=\"rep-card-head\">AS-IS</div><div class=\"rep-item\"><p class=\"rep-item-main\">주력 업무 총 152단계 중 <b>104단계(68%)</b>가 단순 반복</p><p class=\"rep-item-sub\">조회·계산·서식·대조 등 판단 불필요</p></div><div class=\"rep-item\"><p class=\"rep-item-main\">비효율적인 시간 소모</p><p class=\"rep-item-sub\">채널 1개 조사에 1시간 소요</p><p class=\"rep-item-sub\">단순 반복 처리에 하루 일과 소모</p></div></div><div class=\"rep-card\"><div class=\"rep-card-head\">To-Be</div><div class=\"rep-item\"><p class=\"rep-item-main\">반복 업무 68%를 전면 위임</p><p class=\"rep-item-sub\">사람이 직접 하던 104단계를 자동화</p></div><div class=\"rep-item\"><p class=\"rep-item-main\">소요 시간 83% 극적 절감</p><p class=\"rep-item-sub\">기존 1시간 걸리던 업무를 10분으로 단축</p></div><div class=\"rep-item\"><p class=\"rep-item-main\">사람은 핵심 업무에만 집중</p><p class=\"rep-item-sub\">고부가가치를 창출하는 48단계 판단 업무</p></div></div><div class=\"rep-card is-impact\"><div class=\"rep-card-head\">비즈니스 임팩트</div><div class=\"rep-item\"><p class=\"rep-item-key\">수주율 향상</p><p class=\"rep-item-line\">견적·선적 서류·시정 요청 당일 회신</p><p class=\"rep-item-line\">→ 고객 대응력 및 수주 성공률 극대화</p></div><div class=\"rep-item\"><p class=\"rep-item-key\">재고회전율 극대화</p><p class=\"rep-item-line\">발주 주기 및 재고 등락 실시간 파악</p><p class=\"rep-item-line\">→ 선제적 대응으로 재고 건전성 확보</p></div></div></div></div>",
+                    "action": null
+                  }
+                ],
+                "hours": ""
+              }
+            ]
+          },
+          "cost": {
+            "tabLabel": "비용절감",
+            "badgeClass": "advanced",
+            "badgeText": "COST",
+            "assetRoot": "cases",
+            "title": "비용절감 자동화 사례",
+            "sessions": [
+              {
                 "step": 1,
-                "title": "MSRP 검수",
+                "title": "타임라인 관리",
+                "hours": "아티팩트 · Slack MCP",
+                "assetDir": "step09",
+                "slides": [
+                  {
+                    "images": [
+                      "01_todo_calendar.png",
+                      "02_todo_progress.png"
+                    ],
+                    "summary": [
+                      {
+                        "label": "역할",
+                        "text": "아티팩트를 이용한 업무 통합 관리 툴, 슬랙·MCP 연동으로 실무 활용 가능성 확대"
+                      },
+                      {
+                        "label": "AS-IS",
+                        "text": "각각의 바이어 일정 및 포워더, 재입고 일정 건별 수동 관리 한계 및 병목 파악 어려움"
+                      },
+                      {
+                        "label": "TO-BE",
+                        "text": [
+                          "일정 관리 정확도 향상 및 재입고 자동 알림 설정으로 빠른 재고 확보",
+                          "바이어 마케팅·프로모션 원스톱 관리 & 업무 병목 및 백로그 관리로 선제 대응 및 업무 효율화"
+                        ]
+                      },
+                      {
+                        "label": "결과",
+                        "text": "AX팀에서 전사 배포한 우수사례로 선정되어 전사원 업무 효율화 제고"
+                      }
+                    ],
+                    "action": null,
+                    "assetDir": "step09"
+                  },
+                  {
+                    "image": "03_slack_share.png",
+                    "action": {
+                      "label": "산출물",
+                      "items": [
+                        {
+                          "desc": "결과",
+                          "link": {
+                            "href": "assets/cases/step09/files/artifact_timeline.html",
+                            "text": "아티팩트 타임라인 관리 툴 열기"
+                          }
+                        }
+                      ]
+                    },
+                    "assetDir": "step09"
+                  }
+                ]
+              },
+              {
+                "step": 2,
+                "title": "슬랙 히스토리 파악",
+                "hours": "Claude 에이전트 · Slack MCP",
+                "assetDir": "step10",
+                "slides": [
+                  {
+                    "image": "01_slack_asis.png",
+                    "summary": [
+                      {
+                        "label": "역할",
+                        "text": "클로드 에이전트, MCP를 통한 슬랙 검색 효율"
+                      },
+                      {
+                        "label": "AS-IS",
+                        "text": "브랜드 관련 정보 산재, 필요 정보 서치에 불필요한 시간 소요 및 미스컴 발생"
+                      },
+                      {
+                        "label": "TO-BE",
+                        "text": [
+                          "공지 및 업데이트(리뉴얼·CPNP·신규입점 등) 일괄 서치·정리하여 전체 히스토리를 한눈에 파악, 타부서와의 미스컴 방지, 업무 피로도 경감",
+                          "→ 영업 추가 활용 가능 (e.g. [Monthly New Brands])"
+                        ]
+                      },
+                      {
+                        "label": "결과",
+                        "text": "1일 평균 1시간 소요 → 5분 (12배 효율 향상)"
+                      }
+                    ],
+                    "action": null,
+                    "assetDir": "step10"
+                  },
+                  {
+                    "image": "02_slack_search_2.png",
+                    "action": null,
+                    "assetDir": "step10"
+                  },
+                  {
+                    "image": "03_slack_mail_sent.png",
+                    "action": {
+                      "label": "산출물",
+                      "items": [
+                        {
+                          "desc": "결과",
+                          "link": {
+                            "href": "assets/cases/step10/files/monthly_new_brands.html",
+                            "text": "[Monthly New Brands] 신규 입점 브랜드 열기"
+                          }
+                        }
+                      ]
+                    },
+                    "assetDir": "step10"
+                  }
+                ]
+              },
+              {
+                "step": 3,
+                "title": "브랜드 MSRP 검수",
+                "hours": "Claude in Chrome",
+                "assetDir": "step01",
                 "slides": [
                   {
                     "image": "02_claude_in_chrome_2.png",
-                    "action": null
+                    "summary": [
+                      {
+                        "label": "역할",
+                        "text": "자동으로 웹사이트에서 MSRP 위반 여부를 클로드가 확인"
+                      },
+                      {
+                        "label": "AS-IS",
+                        "text": [
+                          "채널별 판매가를 영업담당자가 수기 확인하여 전 채널 전수 점검 시 최소 30분 이상 소요",
+                          "MSRP 위반을 사후에 인지하는 경우도 많았음"
+                        ]
+                      },
+                      {
+                        "label": "TO-BE",
+                        "text": "클로드가 웹사이트에서 MSRP를 자동 수집하여 위반 여부를 5분 이내에 확인 가능하게 됨 → MSRP 위반 여부 조기 발견으로 시장 가격 질서 확립 및 브랜드사와의 장기적 신뢰도 제고"
+                      },
+                      {
+                        "label": "결과",
+                        "text": "건당 소요시간 30분 → 5분 (소요시간 약 83% 감소)"
+                      }
+                    ],
+                    "action": null,
+                    "assetDir": "step01"
                   },
                   {
                     "image": "01_claude_in_chrome.png",
@@ -406,74 +668,245 @@ body{
                       "type": "download",
                       "path": "assets/cases/step01/files/BOJ_Relief_Sun_UK_price_check.xlsx",
                       "text": "BOJ Relief Sun UK 가격비교.xlsx"
-                    }
+                    },
+                    "assetDir": "step01"
                   }
-                ],
-                "hours": ""
+                ]
+              },
+              {
+                "step": 4,
+                "title": "브랜드 성분 검수",
+                "hours": "INCI 규제 자동 필터",
+                "assetDir": "step07",
+                "slides": [
+                  {
+                    "image": "01_ingredient.png",
+                    "summary": [
+                      {
+                        "label": "역할",
+                        "text": "EU 규제 성분 검사툴로 전 브랜드/전 제품 규제 저촉 사항 확인"
+                      },
+                      {
+                        "label": "AS-IS",
+                        "text": "인적 자원의 한계로 전 브랜드/전 제품에 대한 규제 확인이 어려워 쉽백/리콜 등 이슈 발생 후에야 대응 가능"
+                      },
+                      {
+                        "label": "TO-BE",
+                        "text": [
+                          "EU 규제 성분 툴로 전 브랜드/전 제품 전수 스크리닝 가능 → 이슈 발생 가능 제품들에 대한 사전 조치 가능",
+                          "실투 뿐만 아니라 거래처와 브랜드사의 위험까지 사전 방지"
+                        ]
+                      },
+                      {
+                        "label": "결과",
+                        "text": "인적 자원 한계로 전 제품 스크리닝은 불가능 → 3주 동안 INCI 보유 전제품을 스크리닝하여 EU 규제 저촉 제품 확인 가능"
+                      }
+                    ],
+                    "action": null,
+                    "assetDir": "step07"
+                  },
+                  {
+                    "image": "02_ingredient.png",
+                    "action": null,
+                    "assetDir": "step07"
+                  },
+                  {
+                    "image": "03_ingredient.png",
+                    "action": null,
+                    "assetDir": "step07"
+                  },
+                  {
+                    "image": "04_ingredient.png",
+                    "action": null,
+                    "assetDir": "step07"
+                  }
+                ]
+              }
+            ]
+          },
+          "revenue": {
+            "tabLabel": "매출확대",
+            "badgeClass": "automation",
+            "badgeText": "REVENUE",
+            "assetRoot": "cases",
+            "title": "매출확대 자동화 사례",
+            "sessions": [
+              {
+                "step": 1,
+                "title": "거래처DB 관리",
+                "hours": "구글 시트 × 노션 동기화",
+                "assetDir": "step05",
+                "slides": [
+                  {
+                    "image": "01_cms_list.png",
+                    "summary": [
+                      {
+                        "label": "역할",
+                        "text": "구글 거래처 DB를 글로벌팀 노션(영업 관련 자료 아카이브)에 동기화"
+                      },
+                      {
+                        "label": "AS-IS",
+                        "text": "거래처 정보 DB는 구글 시트 및 노션, 글로벌팀 영업 자료는 노션으로 나뉘어 데이터가 분산되어 있었음"
+                      },
+                      {
+                        "label": "TO-BE",
+                        "text": "구글 시트에 입력한 거래처 DB를 매일 노션에 자동 반영 → 데이터 아카이브 통합"
+                      },
+                      {
+                        "label": "결과",
+                        "text": "영업 데이터 통합으로 거래처 및 영업 정보를 빠르게 취합 가능. 이 덕분에 브랜드사 요청에도 효율적으로 대응 가능"
+                      }
+                    ],
+                    "action": null,
+                    "assetDir": "step05"
+                  },
+                  {
+                    "image": "01_partner_db.png",
+                    "action": null,
+                    "assetDir": "step05"
+                  },
+                  {
+                    "image": "02_partner_db.png",
+                    "action": null,
+                    "assetDir": "step05"
+                  },
+                  {
+                    "image": "04_moev_channel_summary.png",
+                    "action": null,
+                    "assetDir": "step05"
+                  }
+                ]
               },
               {
                 "step": 2,
-                "title": "상세페이지 제작",
+                "title": "신규오더 관리",
+                "hours": "시트–CMS 대조 · Slack 알림",
+                "assetDir": "step06",
                 "slides": [
                   {
-                    "image": "01_prompt.png",
-                    "action": null
+                    "image": "01_cr_inquiry_stats.png",
+                    "summary": [
+                      {
+                        "label": "역할",
+                        "text": "오더 누락 원천 차단 알람"
+                      },
+                      {
+                        "label": "AS-IS",
+                        "text": "CR 확인 지연으로 오더 프로세스 정체 및 재고 확보 실패"
+                      },
+                      {
+                        "label": "TO-BE",
+                        "text": "글로벌팀 거래처 DB – CMS CR 자동 대조 및 글로벌팀 슬랙 알람 → 오더 누락 가능성 원천 차단"
+                      },
+                      {
+                        "label": "결과",
+                        "text": "오더 누락 가능성 원천 차단으로 거래처와의 신뢰관계 제고 및 매출 증대 기여"
+                      }
+                    ],
+                    "action": null,
+                    "assetDir": "step06"
                   },
                   {
-                    "image": "02_prompt.png",
-                    "action": null
+                    "image": "01_new_order.png",
+                    "action": null,
+                    "assetDir": "step06"
                   },
                   {
-                    "image": "03_prompt.png",
-                    "action": {
-                      "label": "산출물",
-                      "items": [
-                        {
-                          "desc": "결과",
-                          "link": {
-                            "href": "assets/cases/step02/files/nature_republic_output.html",
-                            "text": "Nature Republic 산출물 열기"
-                          }
-                        }
-                      ]
-                    }
+                    "image": "02_new_order.png",
+                    "action": null,
+                    "assetDir": "step06"
                   }
-                ],
-                "hours": ""
+                ]
               },
               {
                 "step": 3,
-                "title": "랜딩페이지 제작",
+                "title": "시장 조사",
+                "hours": "채널 조사 자동화",
+                "assetDir": "step08",
                 "slides": [
                   {
-                    "image": "01_prompt.png",
-                    "action": {
-                      "label": "산출물",
-                      "items": [
-                        {
-                          "desc": "결과",
-                          "link": {
-                            "href": "assets/cases/step03/files/nature_republic_landing.html",
-                            "text": "Nature Republic 랜딩페이지 열기"
-                          }
-                        }
-                      ]
-                    }
+                    "image": "01_market_research.png",
+                    "summary": [
+                      {
+                        "label": "역할",
+                        "text": "단기간에 대량의 채널 조사를 가능케 하는 자동화 툴"
+                      },
+                      {
+                        "label": "AS-IS",
+                        "text": "1개 채널 조사에 최소 1시간 이상 소요되어 아웃바운드 영업을 위한 포괄적인 영업지도 구축 난항"
+                      },
+                      {
+                        "label": "TO-BE",
+                        "text": "자동 조사 툴 배포로 채널당 10분 이하로 단축 → 3주간 인당 평균 60개 채널 확보 (동일 퀄리티 유지)"
+                      },
+                      {
+                        "label": "결과",
+                        "text": "건당 1시간 이상 소요되던 채널 조사 업무를 10분으로 단축 (소요시간 약 83% 단축), 글로벌팀 사원 6명이 3주간 인당 평균 60개 채널 조사하여 아웃바운드 활용 가능한 DB 구축"
+                      }
+                    ],
+                    "action": null,
+                    "assetDir": "step08"
+                  },
+                  {
+                    "image": "02_market_research.png",
+                    "action": null,
+                    "assetDir": "step08"
+                  },
+                  {
+                    "image": "03_market_research.png",
+                    "action": null,
+                    "assetDir": "step08"
                   }
-                ],
-                "hours": ""
+                ]
               },
               {
                 "step": 4,
                 "title": "매출/채널 대시보드 제작",
+                "hours": "데이터 기반 영업 나침반",
+                "assetDir": "step04",
                 "slides": [
                   {
+                    "image": "01_brand_revenue_trend.png",
+                    "summary": [
+                      {
+                        "label": "역할",
+                        "text": "팀 전체가 실시간으로 실적을 모니터링하고 인사이트를 도출할 수 있는 '데이터 기반 영업 전략 나침반'"
+                      },
+                      {
+                        "label": "AS-IS",
+                        "text": "매번 엑셀 데이터를 다운로드하여 수기로 취합·가공하여 물리적 시간적 리소스 낭비가 큼"
+                      },
+                      {
+                        "label": "TO-BE",
+                        "text": "실시간 대시보드 연동으로 가공 비용 대폭 절감 → 팀 전원이 현시점 실적 추이(매출/이익)를 상시 파악하며 데이터 기반의 피드백 및 영업 의사결정 속도 제고"
+                      },
+                      {
+                        "label": "결과",
+                        "text": "데이터 취합·가공 리드타임 95% 이상 단축 (건당 최대 4시간 → 5분 이내)"
+                      }
+                    ],
+                    "action": {
+                      "label": "산출물",
+                      "type": "download",
+                      "path": "assets/cases/step04/files/brand_revenue_trend_2026_1_5.xlsx",
+                      "text": "2026년 1-5월 법인 브랜드 매출 추이.xlsx"
+                    },
+                    "assetDir": "step04"
+                  },
+                  {
                     "image": "01_revenue_1.png",
-                    "action": null
+                    "action": {
+                      "label": "산출물",
+                      "type": "download",
+                      "path": "assets/cases/step04/files/globalteam_tracking_2026.xlsx",
+                      "text": "글로벌팀_트래킹(2026).xlsx"
+                    },
+                    "assetDir": "step04"
                   },
                   {
                     "image": "02_channel_1.png",
-                    "action": null
+                    "action": null,
+                    "assetDir": "step04"
                   },
                   {
                     "image": "03_revenue_2.png",
@@ -488,7 +921,8 @@ body{
                           }
                         }
                       ]
-                    }
+                    },
+                    "assetDir": "step04"
                   },
                   {
                     "image": "04_channel_2.png",
@@ -503,78 +937,163 @@ body{
                           }
                         }
                       ]
-                    }
+                    },
+                    "assetDir": "step04"
                   }
-                ],
-                "hours": ""
+                ]
               },
               {
                 "step": 5,
-                "title": "구글x노션 동기화",
+                "title": "매출 집중 자료 제작",
+                "hours": "MCP · 거래처 밀착 관리",
+                "assetDir": "step11",
                 "slides": [
                   {
-                    "image": "01_google_notion_sync.png",
-                    "action": null
+                    "image": "01_pivot_asis.png",
+                    "summary": [
+                      {
+                        "label": "역할",
+                        "text": "MCP를 활용한 주요 거래처 밀착 관리"
+                      },
+                      {
+                        "label": "AS-IS",
+                        "text": "엑셀, 피벗 테이블로 매출 추이 수기 관리"
+                      },
+                      {
+                        "label": "TO-BE",
+                        "text": [
+                          "매출 추이 및 브랜드별 발주 주기, 등락 실시간 분석 가능",
+                          "바이어 맞춤형 영업 및 제안 가능, 양질의 정보로 미팅 구성"
+                        ]
+                      },
+                      {
+                        "label": "결과",
+                        "text": "건당 1~2시간 소요 → 20분으로 단축, 바이어 비대면 미팅 증가 (4~6배 증가)"
+                      }
+                    ],
+                    "action": null,
+                    "assetDir": "step11"
+                  },
+                  {
+                    "image": "02_moars_summary.png",
+                    "action": {
+                      "label": "산출물",
+                      "items": [
+                        {
+                          "desc": "바이어 미팅 자료",
+                          "link": {
+                            "href": "assets/cases/step11/files/buyer_meeting_kbeauty_market.html",
+                            "text": "한국 코스메틱 시장 성장 (20~25) 열기"
+                          }
+                        }
+                      ],
+                      "type": "download",
+                      "path": "assets/cases/step11/files/moars_2025_2026_h1.xlsx",
+                      "text": "MOARS 2025~2026년 상반기 비교.xlsx"
+                    },
+                    "assetDir": "step11"
                   }
-                ],
-                "hours": ""
+                ]
               },
               {
                 "step": 6,
-                "title": "신규오더 소팅",
+                "title": "맞춤형 영업자료 제작",
+                "hours": "Claude · 영업자료 다각화",
+                "assetDir": "step12",
                 "slides": [
                   {
-                    "image": "01_scheduled_task.png",
-                    "action": null
+                    "image": "01_hair_promotion.png",
+                    "summary": [
+                      {
+                        "label": "역할",
+                        "text": "Claude를 활용한 영업 자료 다각화"
+                      },
+                      {
+                        "label": "AS-IS",
+                        "text": "개개인의 메일 소통으로 추가 영업 및 오더 메이드"
+                      },
+                      {
+                        "label": "TO-BE",
+                        "text": [
+                          "다각화한 영업 자료로 보수적 바이어 탭핑, 추가 브랜드 및 매출 창출, buyer-account manager 간 소통 활성화",
+                          "바이어향 자료(Selling Guide)로 정성적 케어 증대"
+                        ]
+                      },
+                      {
+                        "label": "결과",
+                        "text": "더마 매출 (+160.5%), 헤어 매출 (+129.4%), 네이처리퍼블릭 매출 (+320%), 출고 수량 (+770%)"
+                      }
+                    ],
+                    "action": {
+                      "label": "산출물",
+                      "type": "download",
+                      "path": "assets/cases/step12/files/hair_promotion_guide.pptx",
+                      "text": "Hair Promotion Guide (헤어프로모션).pptx"
+                    },
+                    "assetDir": "step12"
                   },
                   {
-                    "image": "02_slack_result.png",
-                    "action": null
+                    "image": "02_derma_promotion.png",
+                    "action": {
+                      "label": "산출물",
+                      "items": [
+                        {
+                          "desc": "벌크메일",
+                          "link": {
+                            "href": "assets/cases/step12/files/derma_promotion_bulk_mail.html",
+                            "text": "더마프로모션 벌크메일 열기"
+                          }
+                        }
+                      ],
+                      "type": "download",
+                      "path": "assets/cases/step12/files/k_derma_selling_guide.pptx",
+                      "text": "K-Derma Brands Selling Guide (더마프로모션).pptx"
+                    },
+                    "assetDir": "step12"
+                  },
+                  {
+                    "images": [
+                      {
+                        "image": "03_prompt.png",
+                        "assetDir": "step02"
+                      },
+                      {
+                        "image": "01_prompt.png",
+                        "assetDir": "step03"
+                      }
+                    ],
+                    "action": {
+                      "label": "산출물",
+                      "items": [
+                        {
+                          "desc": "산출물",
+                          "link": {
+                            "href": "assets/cases/step02/files/nature_republic_output.html",
+                            "text": "Nature Republic 산출물 열기"
+                          }
+                        },
+                        {
+                          "desc": "랜딩",
+                          "link": {
+                            "href": "assets/cases/step03/files/nature_republic_landing.html",
+                            "text": "Nature Republic 랜딩페이지 열기"
+                          }
+                        }
+                      ]
+                    }
                   }
-                ],
-                "hours": ""
+                ]
               },
               {
                 "step": 7,
-                "title": "전성분 규제 필터",
+                "title": "영업이익 확대를 위한 제안",
+                "hours": "Next Step",
                 "slides": [
                   {
-                    "image": "01_ingredient_filter_sheet.png",
-                    "action": null
-                  },
-                  {
-                    "image": "02_slack_plugin_guide.png",
-                    "action": null
-                  },
-                  {
-                    "image": "03_screening_result.png",
-                    "action": null
-                  },
-                  {
-                    "image": "04_email_report.png",
+                    "html": "<div class=\"rep\"><span class=\"rep-pill\" style=\"background:var(--primary);color:#fff;\">CONCLUSION</span><h2 class=\"rep-title\">영업이익 확대를 위한 제안</h2><p class=\"rep-sub\">글로벌팀은 현재의 성과에 안주하지 않고, 비용 절감과 매출 확대를 더욱 가속화하겠습니다.<br>이를 위해 AI 활용 인프라에 대한 전폭적인 지원을 요청 드립니다.</p><hr class=\"rep-div\"><div class=\"rep-label\">목표 달성을 위한 필수 요청 사항</div><div class=\"rep-cards\"><div class=\"rep-card\"><div class=\"rep-card-head\">비용 개선 (Cost)</div><div class=\"rep-item\"><p class=\"rep-item-main\">운영비용 절감</p><p class=\"rep-item-sub\">단순 반복 업무의 100% 자동화 달성</p><p class=\"rep-item-sub\">데이터 수작업 등 불필요한 부대비용 및 리소스 낭비 ZERO 화</p></div></div><div class=\"rep-card\"><div class=\"rep-card-head\">매출 확대 (Revenue)</div><div class=\"rep-item\"><p class=\"rep-item-main\">신규 및 기존 영업망 강화</p><p class=\"rep-item-sub\">시장 조사 자동화를 통한 선제적 아웃바운드 신규 매출 확보</p><p class=\"rep-item-sub\">기존 거래처 밀착 대응 및 제안 퀄리티 향상으로 수주율(Win-rate) 개선</p></div></div><div class=\"rep-card is-impact\"><div class=\"rep-card-head\">지원 요청 사항</div><div class=\"rep-item\"><p class=\"rep-item-key\">1. 클로드(Claude) 토큰 증설</p><p class=\"rep-item-line\">대량의 데이터 분석 및 글로벌 채널 모니터링 확대를 위한 필수 인프라 지원</p></div><div class=\"rep-item\"><p class=\"rep-item-key\">2. 연동(MCP/API) 권한 확보</p><p class=\"rep-item-line\">사내 데이터 및 주요 워크스페이스와의 즉각적인 연동을 위한 보안 권한 승인</p></div></div></div></div>",
                     "action": null
                   }
-                ],
-                "hours": ""
-              },
-              {
-                "step": 8,
-                "title": "채널 시장조사",
-                "slides": [
-                  {
-                    "image": "01_channel_summary_sheet.png",
-                    "action": null
-                  },
-                  {
-                    "image": "02_slack_skill_guide.png",
-                    "action": null
-                  },
-                  {
-                    "image": "03_channel_research_report.png",
-                    "action": null
-                  }
-                ],
-                "hours": ""
+                ]
               }
             ]
           }
@@ -666,8 +1185,12 @@ function updateSidebarActive(){
 /* ============================================================
    Render — Slides
    ============================================================ */
-function imagePath(course, step, filename){
-  return `assets/${course}/step${pad(step)}/${filename}`;
+function imagePath(course, session, slide){
+  // 에셋 폴더는 slide.assetDir → session.assetDir → step{NN} 순으로 결정.
+  // 회차 번호를 바꿔도 이미지 폴더는 그대로 둘 수 있다.
+  const dir = slide.assetDir || session.assetDir || `step${pad(session.step)}`;
+  const root = COURSES[course].assetRoot || course;
+  return `assets/${root}/${dir}/${slide.image}`;
 }
 
 function placeholderHtml(label, sub){
@@ -682,16 +1205,47 @@ function placeholderHtml(label, sub){
   </div>`;
 }
 
+function summaryRowsHtml(rows){
+  if (!Array.isArray(rows) || !rows.length) return '';
+  return rows.map(it => {
+    const goal = String(it.label || '').toUpperCase().replace(/[^A-Z]/g, '') === 'TOBE';
+    const result = String(it.label || '').trim() === '결과';
+    return `<div class="summary-row${goal ? ' is-goal' : ''}${result ? ' is-result' : ''}">`
+      + (it.label ? `<span class="summary-label">${esc(it.label)}</span>` : '')
+      + `<span class="summary-text">${Array.isArray(it.text)
+          ? it.text.map(line => `<span class="summary-line">${esc(line)}</span>`).join('')
+          : esc(it.text || '')}</span></div>`;
+  }).join('');
+}
+
 function renderSlides(){
   const data = COURSES[currentCourse];
   document.getElementById('slides-container').innerHTML = data.sessions.map((s,i) => {
     const imagesHtml = (s.slides?.length ? s.slides : [null]).map((sl,j) => {
+      if (sl && sl.html){
+        return `<div class="image-slide${j===0?' is-active':''}" data-img-index="${j}">
+          <div class="html-slide">${sl.html}</div>
+        </div>`;
+      }
+      if (sl && Array.isArray(sl.images) && sl.images.length){
+        const eager = (i===currentSession && j===0);
+        // 항목은 "파일명" 또는 {image, assetDir} — 에셋 폴더가 다른 이미지도 한 슬라이드에 묶을 수 있다
+        const imgs = sl.images.map((it,k) => {
+          const e = (typeof it === 'string') ? {image:it} : it;
+          const src = imagePath(currentCourse, s, {...sl, ...e});
+          return `<img ${eager ? `src="${esc(src)}"` : `data-src="${esc(src)}"`}
+            alt="${esc(s.title)} - ${j+1}-${k+1}" onerror="this.style.display='none'">`;
+        }).join('');
+        return `<div class="image-slide${j===0?' is-active':''}" data-img-index="${j}">
+          <div class="image-pair">${imgs}</div>
+        </div>`;
+      }
       if (!sl || !sl.image){
         return `<div class="image-slide${j===0?' is-active':''}" data-img-index="${j}">
           ${placeholderHtml('이미지 준비 중', `${s.title} · 슬라이드 ${j+1}`)}
         </div>`;
       }
-      const src = imagePath(currentCourse, s.step, sl.image);
+      const src = imagePath(currentCourse, s, sl);
       // 현재 회차의 첫 장만 즉시 로드, 나머지는 data-src 로 lazy
       const attr = (i===currentSession && j===0) ? `src="${esc(src)}"` : `data-src="${esc(src)}"`;
       return `<div class="image-slide${j===0?' is-active':''}" data-img-index="${j}">
@@ -714,6 +1268,7 @@ function renderSlides(){
           </div>
           <div class="slide-action-box"></div>
         </div>
+        <div class="slide-summary"></div>
         <div class="session-body">
           <div class="body-image">
             <div class="image-slider">${imagesHtml}</div>
@@ -749,8 +1304,9 @@ function applyImageSlidePositions(){
         else if (j === currentSlide) el.classList.add('is-active');
         // 현재 + 다음 장 lazy load
         if (j === currentSlide || j === currentSlide+1){
-          const img = el.querySelector('img[data-src]');
-          if (img){ img.src = img.dataset.src; delete img.dataset.src; }
+          el.querySelectorAll('img[data-src]').forEach(img => {
+            img.src = img.dataset.src; delete img.dataset.src;
+          });
         }
       } else if (j === 0){
         el.classList.add('is-active');
@@ -762,6 +1318,13 @@ function applyImageSlidePositions(){
 /* ============================================================
    Action Box — 슬라이드별 파일/링크/복사 렌더
    ============================================================ */
+function updateSummaryBox(){
+  const box = document.querySelector('.slide.is-active .slide-summary');
+  if (!box) return;
+  // 슬라이드 단위 summary 우선, 없으면 회차 단위 summary
+  box.innerHTML = summaryRowsHtml(curSlideObj().summary || curSession().summary);
+}
+
 function updateActionBox(){
   const box = document.querySelector('.slide.is-active .slide-action-box');
   if (!box) return;
@@ -831,7 +1394,7 @@ function renderDots(){
   dots.querySelectorAll('.slide-dot').forEach(dot => {
     dot.addEventListener('click', () => {
       currentSlide = parseInt(dot.dataset.index);
-      applyImageSlidePositions(); updateIndicator(); updateActionBox(); pushHash();
+      applyImageSlidePositions(); updateIndicator(); updateActionBox(); updateSummaryBox(); pushHash();
     });
   });
 }
@@ -861,7 +1424,7 @@ function goToSlide(delta){
     if (currentSession < total-1) goToSession(currentSession+1, 0);
   } else {
     currentSlide = next;
-    applyImageSlidePositions(); updateIndicator(); updateActionBox(); pushHash();
+    applyImageSlidePositions(); updateIndicator(); updateActionBox(); updateSummaryBox(); pushHash();
   }
 }
 
@@ -871,7 +1434,7 @@ function goToSession(index, slideIndex = 0){
   currentSession = index;
   currentSlide   = slideIndex;
   applySlidePositions(); applyImageSlidePositions();
-  renderDots(); updateIndicator(); updateSidebarActive(); updateActionBox(); pushHash();
+  renderDots(); updateIndicator(); updateSidebarActive(); updateActionBox(); updateSummaryBox(); pushHash();
 }
 
 function switchCourse(key){
@@ -879,7 +1442,7 @@ function switchCourse(key){
   currentCourse = key; currentSession = 0; currentSlide = 0;
   document.querySelectorAll('.course-tab').forEach(t => t.classList.toggle('active', t.dataset.course===key));
   renderSlides(); applySlidePositions(); applyImageSlidePositions();
-  renderSidebar(); renderDots(); updateIndicator(); updateActionBox(); pushHash();
+  renderSidebar(); renderDots(); updateIndicator(); updateActionBox(); updateSummaryBox(); pushHash();
 }
 
 /* ============================================================
@@ -887,7 +1450,21 @@ function switchCourse(key){
    ============================================================ */
 function fsUpdate(){
   const s = curSession(), sl = curSlideObj(), img = document.getElementById('fs-img');
-  img.src = sl.image ? imagePath(currentCourse, s.step, sl.image) : '';
+  const htmlBox = document.getElementById('fs-html');
+  if (sl.html || (Array.isArray(sl.images) && sl.images.length)){
+    img.hidden = true; img.src = '';
+    htmlBox.hidden = false;
+    htmlBox.innerHTML = sl.html
+      ? `<div class="html-slide">${sl.html}</div>`
+      : `<div class="image-pair">${sl.images.map(it => {
+          const e = (typeof it === 'string') ? {image:it} : it;
+          return `<img src="${esc(imagePath(currentCourse, s, {...sl, ...e}))}" alt="${esc(s.title)}">`;
+        }).join('')}</div>`;
+  } else {
+    htmlBox.hidden = true; htmlBox.innerHTML = '';
+    img.hidden = false;
+    img.src = sl.image ? imagePath(currentCourse, s, sl) : '';
+  }
   img.alt = s.title;
   const n = slideCount(s);
   document.getElementById('fs-counter').textContent = `${pad(currentSlide+1)} / ${pad(n)}`;
@@ -901,14 +1478,17 @@ const fsClose = () => document.getElementById('fs-overlay').setAttribute('hidden
 /* ============================================================
    Events + Init
    ============================================================ */
-document.getElementById('sidebar-toggle').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.add('collapsed');
-  document.getElementById('sidebar-reopen').classList.add('visible');
-});
-document.getElementById('sidebar-reopen').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.remove('collapsed');
-  document.getElementById('sidebar-reopen').classList.remove('visible');
-});
+/* 사이드바 열기/닫기 — 헤더 “‹” 버튼, 접힌 뒤 나타나는 버튼, 키보드 B 모두 같은 함수 */
+function setSidebar(open){
+  document.getElementById('sidebar').classList.toggle('collapsed', !open);
+  document.getElementById('sidebar-reopen').classList.toggle('visible', !open);
+  document.querySelector('.slide-area').classList.toggle('sidebar-collapsed', !open);
+}
+const toggleSidebar = () =>
+  setSidebar(document.getElementById('sidebar').classList.contains('collapsed'));
+
+document.getElementById('sidebar-toggle').addEventListener('click', () => setSidebar(false));
+document.getElementById('sidebar-reopen').addEventListener('click', () => setSidebar(true));
 document.getElementById('btn-prev').addEventListener('click', () => goToSlide(-1));
 document.getElementById('btn-next').addEventListener('click', () => goToSlide(1));
 
@@ -925,6 +1505,7 @@ document.getElementById('fs-next').addEventListener('click', () => { goToSlide(1
 document.addEventListener('keydown', e => {
   const fs = !document.getElementById('fs-overlay').hidden;
   if (e.key === 'Escape' && fs) fsClose();
+  if (!fs && (e.key === 'b' || e.key === 'B')) toggleSidebar();
   if (e.key === 'ArrowLeft')  { goToSlide(-1); if (fs) fsUpdate(); }
   if (e.key === 'ArrowRight') { goToSlide(1);  if (fs) fsUpdate(); }
 });
@@ -933,7 +1514,7 @@ document.addEventListener('DOMContentLoaded', () => {
   readHash();
   renderTabs(); renderSlides();
   applySlidePositions(); applyImageSlidePositions();
-  renderSidebar(); renderDots(); updateIndicator(); updateActionBox(); pushHash();
+  renderSidebar(); renderDots(); updateIndicator(); updateActionBox(); updateSummaryBox(); pushHash();
 });
 </script>
 </body>

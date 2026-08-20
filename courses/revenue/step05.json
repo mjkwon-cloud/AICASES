@@ -1,0 +1,53 @@
+{
+  "step": 5,
+  "title": "매출 집중 자료 제작",
+  "hours": "MCP · 거래처 밀착 관리",
+  "assetDir": "step11",
+  "slides": [
+    {
+      "image": "01_pivot_asis.png",
+      "summary": [
+        {
+          "label": "역할",
+          "text": "MCP를 활용한 주요 거래처 밀착 관리"
+        },
+        {
+          "label": "AS-IS",
+          "text": "엑셀, 피벗 테이블로 매출 추이 수기 관리"
+        },
+        {
+          "label": "TO-BE",
+          "text": [
+            "매출 추이 및 브랜드별 발주 주기, 등락 실시간 분석 가능",
+            "바이어 맞춤형 영업 및 제안 가능, 양질의 정보로 미팅 구성"
+          ]
+        },
+        {
+          "label": "결과",
+          "text": "건당 1~2시간 소요 → 20분으로 단축, 바이어 비대면 미팅 증가 (4~6배 증가)"
+        }
+      ],
+      "action": null,
+      "assetDir": "step11"
+    },
+    {
+      "image": "02_moars_summary.png",
+      "action": {
+        "label": "산출물",
+        "items": [
+          {
+            "desc": "바이어 미팅 자료",
+            "link": {
+              "href": "assets/cases/step11/files/buyer_meeting_kbeauty_market.html",
+              "text": "한국 코스메틱 시장 성장 (20~25) 열기"
+            }
+          }
+        ],
+        "type": "download",
+        "path": "assets/cases/step11/files/moars_2025_2026_h1.xlsx",
+        "text": "MOARS 2025~2026년 상반기 비교.xlsx"
+      },
+      "assetDir": "step11"
+    }
+  ]
+}

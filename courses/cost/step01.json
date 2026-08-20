@@ -1,0 +1,50 @@
+{
+  "step": 1,
+  "title": "타임라인 관리",
+  "hours": "아티팩트 · Slack MCP",
+  "assetDir": "step09",
+  "slides": [
+    {
+      "images": ["01_todo_calendar.png", "02_todo_progress.png"],
+      "summary": [
+        {
+          "label": "역할",
+          "text": "아티팩트를 이용한 업무 통합 관리 툴, 슬랙·MCP 연동으로 실무 활용 가능성 확대"
+        },
+        {
+          "label": "AS-IS",
+          "text": "각각의 바이어 일정 및 포워더, 재입고 일정 건별 수동 관리 한계 및 병목 파악 어려움"
+        },
+        {
+          "label": "TO-BE",
+          "text": [
+            "일정 관리 정확도 향상 및 재입고 자동 알림 설정으로 빠른 재고 확보",
+            "바이어 마케팅·프로모션 원스톱 관리 & 업무 병목 및 백로그 관리로 선제 대응 및 업무 효율화"
+          ]
+        },
+        {
+          "label": "결과",
+          "text": "AX팀에서 전사 배포한 우수사례로 선정되어 전사원 업무 효율화 제고"
+        }
+      ],
+      "action": null,
+      "assetDir": "step09"
+    },
+    {
+      "image": "03_slack_share.png",
+      "action": {
+        "label": "산출물",
+        "items": [
+          {
+            "desc": "결과",
+            "link": {
+              "href": "assets/cases/step09/files/artifact_timeline.html",
+              "text": "아티팩트 타임라인 관리 툴 열기"
+            }
+          }
+        ]
+      },
+      "assetDir": "step09"
+    }
+  ]
+}

@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>할 일 정리</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: #f7f6f3;
+    color: #2b2a28;
+    padding: 24px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 2px; }
+  .date { color: #8a8578; font-size: 13px; margin-bottom: 2px; }
+  .sync-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .sync-status { color: #b3ada0; font-size: 11px; }
+  .sync-status.err { color: #d3583f; }
+  .sync-btn {
+    font-size: 11px;
+    padding: 3px 8px;
+    background: transparent;
+    color: #8a8578;
+    border: 1px solid #e8e5de;
+  }
+  .sync-btn:hover { background: #f1efe9; }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e8e5de;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .backlog-card {
+    background: #f6f1fb;
+    border: 1px solid #e5d9f2;
+    transition: border-color .12s, box-shadow .12s;
+  }
+
+  /* backlog + 메모장을 넓은 화면에서는 좌우로, 좁은 화면(사이드패널 등)에서는 다시 위아래로 */
+  .twocol-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .twocol-row .twocol-item {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+  }
+  .twocol-row #activeCard { flex: 4; } /* 오늘 할 일 80% */
+  .twocol-row #memoCard { flex: 1; } /* 메모장 20% */
+  @media (max-width: 640px) {
+    .twocol-row { flex-direction: column; gap: 0; }
+    .twocol-row .twocol-item, .twocol-row #activeCard, .twocol-row #memoCard { flex: none; margin-bottom: 16px; }
+  }
+  .card.drop-target { border-color: #c96442; box-shadow: 0 0 0 2px rgba(201,100,66,.15) inset; }
+  .backlog-label {
+    color: #6d3fae;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .01em;
+  }
+  .backlog-count { color: #a98fce; font-weight: 400; font-size: 12px; margin-left: 4px; }
+  .memo-card {
+    background: #fdf8ec;
+    border: 1px solid #f0e4c0;
+  }
+  .memo-label {
+    color: #a9791f;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .01em;
+  }
+  .memo-input {
+    display: block;
+    width: 100%;
+    border: 1px solid #f0e4c0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #2b2a28;
+    background: #fffdf6;
+    margin-top: 10px;
+    resize: vertical;
+  }
+  .memo-input:focus { outline: none; border-color: #c9a03f; }
+  .memo-input::placeholder { color: #c9b98a; }
+  .origin-tag {
+    font-size: 10px;
+    color: #b3ada0;
+    background: #efe9f7;
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-right: 6px;
+    white-space: nowrap;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: vertical;
+    border: 1px solid #ddd8cc;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #2b2a28;
+    background: #fbfaf7;
+  }
+  textarea:focus { outline: none; border-color: #c96442; }
+
+  .hint { font-size: 12px; color: #9a9484; margin: 6px 2px 0; }
+  .draft-hint { font-size: 11px; color: #b3ada0; margin-top: 4px; min-height: 14px; }
+
+  .row-btn { display: flex; justify-content: flex-end; margin-top: 10px; gap: 8px; }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .primary { background: #c96442; color: #fff; }
+  .primary:hover { background: #b5573a; }
+  .primary:disabled { background: #d9b8ac; cursor: default; }
+  .ghost { background: transparent; color: #8a8578; }
+  .ghost:hover { background: #f1efe9; }
+
+  .section-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #9a9484;
+    letter-spacing: .02em;
+    margin: 4px 0 8px 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .quick-add-input {
+    display: block;
+    width: 100%;
+    border: 1px solid #ddd8cc;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #2b2a28;
+    background: #fbfaf7;
+    margin-bottom: 10px;
+  }
+  .quick-add-input:focus { outline: none; border-color: #c96442; }
+  .quick-add-input::placeholder { color: #b3ada0; }
+
+  ul.list { list-style: none; margin: 0; padding: 0; min-height: 6px; }
+
+  li.item {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #eee9df;
+    border-radius: 9px;
+    padding: 9px 10px;
+    margin-bottom: 6px;
+    transition: opacity .15s, transform .15s;
+  }
+  li.item.dragging { opacity: .35; }
+  li.item.drag-over { border-color: #c96442; }
+  .item-row { display: flex; align-items: flex-start; gap: 10px; }
+
+  .sub-add-btn {
+    background: transparent;
+    color: #c7c2b6;
+    font-size: 14px;
+    padding: 2px 4px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .sub-add-btn:hover { color: #c96442; background: transparent; }
+
+  .next-day-btn {
+    background: transparent;
+    color: #c7c2b6;
+    font-size: 14px;
+    padding: 2px 4px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .next-day-btn:hover { color: #c96442; background: transparent; }
+
+  .sub-list { list-style: none; margin: 6px 0 0 26px; padding: 0; }
+  .sub-item { display: flex; align-items: baseline; gap: 6px; font-size: 12px; color: #5a564c; padding: 2px 0; }
+  .sub-check { width: 13px; height: 13px; margin-top: 1px; accent-color: #c96442; flex-shrink: 0; cursor: pointer; }
+  .sub-num { color: #b3ada0; flex-shrink: 0; }
+  .sub-text { flex: 1; outline: none; word-break: break-word; min-width: 40px; }
+  .sub-item.done .sub-num, .sub-item.done .sub-text { color: #b3ada0; text-decoration: line-through; }
+  .sub-del { background: transparent; color: #c7c2b6; font-size: 12px; padding: 0 3px; line-height: 1; flex-shrink: 0; }
+  .sub-del:hover { color: #d3583f; background: transparent; }
+
+  .handle {
+    cursor: grab;
+    color: #c7c2b6;
+    font-size: 14px;
+    padding: 2px 2px;
+    user-select: none;
+    line-height: 1.4;
+  }
+  .handle:active { cursor: grabbing; }
+
+  .check {
+    width: 17px;
+    height: 17px;
+    margin-top: 2px;
+    accent-color: #c96442;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .dot-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .dot {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    display: block;
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    flex-shrink: 0;
+    cursor: pointer;
+    border: none;
+    line-height: 0;
+    font-size: 0;
+  }
+  .dot.p1 { background: #e03b2e; }
+  .dot.p2 { background: #f08a24; }
+  .dot.p3 { background: #e0b400; }
+  .dot.p4 { background: #2f7fd9; }
+  .dot.backlog { background: #8b5fc9; cursor: default; }
+
+  .p-emoji {
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .content { flex: 1; min-width: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px; }
+  .text {
+    font-size: 14px;
+    line-height: 1.45;
+    outline: none;
+    word-break: break-word;
+    flex: 1;
+    min-width: 60px;
+  }
+  li.item.done .text { color: #b3ada0; text-decoration: line-through; }
+
+  .del {
+    background: transparent;
+    color: #c7c2b6;
+    font-size: 15px;
+    padding: 2px 4px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .del:hover { color: #d3583f; background: transparent; }
+
+  .empty {
+    color: #b3ada0;
+    font-size: 13px;
+    padding: 10px 4px;
+    text-align: center;
+  }
+
+  details summary {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    color: #9a9484;
+    margin-bottom: 8px;
+  }
+
+  .day-group {
+    margin-bottom: 10px;
+    border: 1px solid #eee9df;
+    border-radius: 9px;
+    padding: 10px 12px;
+  }
+  .day-group summary {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .day-group summary .day-label { color: #2b2a28; font-size: 13px; }
+  .day-group summary .day-count { color: #b3ada0; font-weight: 400; }
+  .day-group ul.list { margin-top: 8px; }
+  .day-group.drop-target { border-color: #c96442; box-shadow: 0 0 0 2px rgba(201,100,66,.15) inset; }
+  .past-dropzone {
+    border: 1px dashed #d8d2c4;
+    border-radius: 9px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #b3ada0;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  #pastCard.drop-target .past-dropzone { border-color: #c96442; color: #c96442; background: rgba(201,100,66,.06); }
+  .past-empty { color: #b3ada0; font-size: 13px; padding: 4px 2px; }
+
+  .week-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    list-style: none;
+    margin-bottom: 0;
+  }
+  .week-summary::-webkit-details-marker { display: none; }
+  .week-days { display: flex; gap: 6px; flex: 1; }
+  .week-day-cell {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    padding: 7px 4px;
+    border-radius: 8px;
+    background: #f7f6f3;
+    color: #7d7869;
+    border: 1px solid #eee9df;
+    white-space: nowrap;
+  }
+  .week-day-cell.today { border-color: #c96442; color: #c96442; font-weight: 700; background: #fdf3ee; }
+  .week-day-cell.week-day-drop-target { border-color: #6d3fae; box-shadow: 0 0 0 2px rgba(109,63,174,.18) inset; }
+  .week-chevron { color: #9a9484; font-size: 12px; transition: transform .15s; flex-shrink: 0; }
+  #weekDetails[open] > .week-summary .week-chevron { transform: rotate(180deg); }
+
+  .week-expanded { margin-top: 14px; }
+  .week-body { display: flex; gap: 12px; }
+  .week-history, .calendar-history {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 92px;
+    flex-shrink: 0;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .week-history-item, .calendar-history-item {
+    background: transparent;
+    text-align: left;
+    font-size: 11px;
+    color: #8a8578;
+    padding: 5px 7px;
+    border-radius: 6px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .week-history-item:hover, .calendar-history-item:hover { background: #f1efe9; }
+  .week-history-item.active, .calendar-history-item.active { background: #fdf3ee; color: #c96442; border-color: #f0cdb8; }
+  .week-main, .calendar-main { flex: 1; min-width: 0; }
+  .week-goal-input {
+    display: block;
+    width: 100%;
+    border: 1px solid #ddd8cc;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #2b2a28;
+    background: #fbfaf7;
+    margin-bottom: 10px;
+    resize: vertical;
+  }
+  .week-goal-input:focus { outline: none; border-color: #c96442; }
+  .week-goal-input::placeholder { color: #b3ada0; }
+  .week-goal-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .week-goal-progress-label { font-size: 11px; color: #b3ada0; white-space: nowrap; }
+  .week-goal-slider {
+    flex: 1;
+    accent-color: #c96442;
+    cursor: pointer;
+  }
+  .week-goal-pct { font-size: 12px; font-weight: 700; color: #c96442; width: 34px; text-align: right; }
+  .week-rate { font-size: 13px; font-weight: 700; color: #2b2a28; margin-bottom: 10px; }
+  .week-day-detail {
+    margin-bottom: 8px;
+    border: 1px solid #eee9df;
+    border-radius: 9px;
+    padding: 8px 10px;
+  }
+  .week-day-detail summary {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: #5a564c;
+    margin-bottom: 0;
+    list-style: none;
+  }
+  .week-day-detail summary::-webkit-details-marker { display: none; }
+  .week-day-detail ul { margin-top: 8px; list-style: none; padding: 0; }
+  .week-item-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 13px;
+    padding: 3px 0;
+    color: #5a564c;
+  }
+  .week-item-row.done { color: #b3ada0; text-decoration: line-through; }
+  .week-item-mark { color: #c96442; flex-shrink: 0; }
+
+  .calendar-alert {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: #fdf3ee;
+    border: 1px solid #f0cdb8;
+    color: #a8502f;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  .calendar-alert button { font-size: 11px; padding: 3px 8px; background: transparent; color: #a8502f; border: 1px solid #f0cdb8; flex-shrink: 0; }
+  .calendar-alert button:hover { background: #f7ded2; }
+
+  .calendar-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    list-style: none;
+    margin-bottom: 0;
+  }
+  .calendar-summary::-webkit-details-marker { display: none; }
+  .calendar-summary-label { font-size: 13px; font-weight: 700; color: #2b2a28; }
+  #calendarDetails[open] > .calendar-summary .week-chevron { transform: rotate(180deg); }
+
+  .calendar-expanded { margin-top: 12px; }
+  .calendar-body { display: flex; gap: 12px; }
+  .calendar-nav { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 10px; }
+  .calendar-nav button { background: transparent; color: #8a8578; font-size: 14px; padding: 2px 10px; }
+  .calendar-nav button:hover { background: #f1efe9; }
+  .calendar-nav-label { font-size: 13px; font-weight: 700; color: #2b2a28; min-width: 84px; text-align: center; }
+
+  .calendar-weekrow { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px; }
+  .calendar-weekrow-label { text-align: center; font-size: 11px; color: #9a9484; padding: 2px 0; }
+  .calendar-weekrow-label.sun { color: #d3583f; }
+  .calendar-weekrow-label.sat { color: #2f7fd9; }
+
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-cell {
+    position: relative;
+    min-height: 44px;
+    border: 1px solid #eee9df;
+    border-radius: 8px;
+    padding: 4px 4px 3px;
+    background: #fbfaf7;
+    transition: border-color .12s, box-shadow .12s;
+    cursor: pointer;
+  }
+  .cal-cell:hover { background: #f4f2ec; }
+  .cal-cell.other-month { opacity: .4; }
+  .cal-cell.today { border-color: #c96442; box-shadow: 0 0 0 1px #c96442 inset; }
+  .cal-cell.selected { background: #fdf3ee; border-color: #c96442; }
+  .cal-cell.cal-drop-target { border-color: #6d3fae; box-shadow: 0 0 0 2px rgba(109,63,174,.18) inset; }
+  .cal-num { font-size: 12px; color: #5a564c; }
+  .cal-cell.sun .cal-num { color: #d3583f; }
+  .cal-cell.sat .cal-num { color: #2f7fd9; }
+  .cal-holiday { font-size: 9px; color: #d3583f; line-height: 1.2; }
+  .cal-badge {
+    position: absolute;
+    bottom: 3px;
+    right: 4px;
+    background: #1b6e3c;
+    color: #fff;
+    font-size: 10px;
+    border-radius: 8px;
+    min-width: 14px;
+    height: 14px;
+    padding: 0 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cal-panel { margin-top: 12px; border-top: 1px dashed #eee9df; padding-top: 10px; display: none; }
+  .cal-panel-title { font-size: 12px; font-weight: 700; color: #6d3fae; margin-bottom: 8px; }
+  .cal-panel-subtitle { font-size: 11px; font-weight: 600; color: #a39d8f; margin: 10px 0 4px; }
+
+  .dot.calendar { background: #1b6e3c; }
+  .dot.leave { background: #f4569b; }
+  .dot.calendar-done { background: #b3ada0; }
+
+  /* "반차/반반차/연차"가 들어간 달력 일정은 핑크 알약으로 표시 — 연속으로 여러 날 적으면 옆 칸끼리 붙어서 막대처럼 보임 */
+  .leave-bar {
+    margin-top: 3px;
+    height: 13px;
+    line-height: 13px;
+    background: #f4569b;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 0 4px;
+    border-radius: 7px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .leave-bar + .leave-bar { margin-top: 2px; }
+  /* 달력 알약 자체에는 체크해도 줄을 긋지 않음 — 완료 표시는 달력 아래 목록에서만 보여줌 */
+
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2b2a28;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity .25s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: .92; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>할 일 정리</h1>
+  <div class="date" id="todayLabel"></div>
+  <div class="sync-row">
+    <span class="sync-status" id="syncStatus">저장 중...</span>
+    <button class="sync-btn" id="syncNowBtn">지금 동기화</button>
+  </div>
+
+  <div class="calendar-alert" id="calendarAlert"></div>
+
+  <div class="card">
+    <details id="calendarDetails">
+      <summary class="calendar-summary">
+        <span class="calendar-summary-label">📅 <span id="calendarSummaryLabel"></span></span>
+        <span class="week-chevron">▾</span>
+      </summary>
+      <div class="calendar-expanded">
+        <div class="calendar-body">
+          <div class="calendar-history" id="calendarHistoryList"></div>
+          <div class="calendar-main">
+            <div class="calendar-nav">
+              <button type="button" id="calPrevBtn">‹</button>
+              <span class="calendar-nav-label" id="calendarMonthLabel"></span>
+              <button type="button" id="calNextBtn">›</button>
+            </div>
+            <div class="calendar-weekrow" id="calendarWeekRow"></div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+            <div class="cal-panel" id="calendarDayPanel"></div>
+            <div class="hint">할 일을 이 달력의 날짜로 끌어다 놓거나, 날짜를 클릭한 뒤 아래 입력칸에 바로 적으면 그 날 일정으로 등록돼요. 날짜가 되면 자동으로 "오늘 할 일"에 나타나고 알려드려요. "반차", "반반차", "연차", "일차"가 들어간 일정은 자동으로 핑크색으로, 그 외 일정은 진초록색으로 표시돼요. ("오늘 할 일"의 → 버튼으로 다음날로 넘긴 항목은 달력에는 기록되지 않아요.)</div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details id="weekDetails">
+      <summary class="week-summary">
+        <div class="week-days" id="weekDaysRow"></div>
+        <span class="week-chevron">▾</span>
+      </summary>
+      <div class="week-expanded">
+        <div class="week-body">
+          <div class="week-history" id="weekHistoryList"></div>
+          <div class="week-main">
+            <textarea id="weekGoalInput" class="week-goal-input" placeholder="이번 주 목표를 적어보세요" rows="2"></textarea>
+            <div class="week-goal-progress">
+              <span class="week-goal-progress-label">목표 달성률 (직접 표시)</span>
+              <input type="range" id="weekGoalSlider" class="week-goal-slider" min="0" max="100" step="5" value="0">
+              <span class="week-goal-pct" id="weekGoalPctLabel">0%</span>
+            </div>
+            <div class="week-rate" id="weekRate"></div>
+            <div id="weekDayDetails"></div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="twocol-row">
+    <div class="card twocol-item" id="activeCard">
+      <div class="section-title">
+        <span>오늘 할 일 · <span id="activeCount">0</span></span>
+        <button class="ghost" id="resortBtn" style="font-size:11px;padding:4px 8px;">우선순위 자동 재설정</button>
+      </div>
+      <input type="text" id="quickAddInput" class="quick-add-input" placeholder="여기서 바로 입력하고 Enter">
+      <ul class="list" id="activeList"></ul>
+      <div class="empty" id="activeEmpty" style="display:none;">아직 정리된 할 일이 없어요. 위에 적고 Enter를 눌러보세요.</div>
+    </div>
+
+    <div class="card memo-card twocol-item" id="memoCard">
+      <div class="section-title"><span class="memo-label">메모장</span></div>
+      <textarea id="memoInput" class="memo-input" placeholder="자유롭게 메모해두세요. backlog처럼 날짜가 바뀌어도 지워지지 않고 계속 남아있어요." rows="4"></textarea>
+    </div>
+  </div>
+
+  <div class="card backlog-card" id="backlogCard">
+    <div class="section-title">
+      <span><span class="backlog-label">backlog</span><span class="backlog-count">· <span id="backlogCount">0</span></span></span>
+    </div>
+    <ul class="list" id="backlogList"></ul>
+    <div class="empty" id="backlogEmpty" style="display:none;">오늘 안 해도 되는 일을 여기로 끌어다 놓으세요. 자정이 지나도 체크 안 된 일은 자동으로 여기로 옮겨져요.</div>
+  </div>
+
+  <div class="card">
+    <details id="doneDetails">
+      <summary>오늘 완료됨 · <span id="doneCount">0</span></summary>
+      <ul class="list" id="doneList"></ul>
+      <div class="row-btn">
+        <button class="ghost" id="clearDoneBtn">완료 항목 모두 지우기</button>
+      </div>
+    </details>
+  </div>
+
+  <div class="card" id="pastCard">
+    <div class="section-title"><span>지난 기록</span></div>
+    <div class="past-dropzone" id="pastDropzone">backlog 항목을 여기로 끌어다 놓으면 원하는 날짜의 완료 기록으로 넣을 수 있어요</div>
+    <div id="pastContainer"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  const STORAGE_KEY = 'todo_organizer_items_v2';
+  const LEGACY_STORAGE_KEY = 'todo_organizer_items_v1';
+  const DRIVE_TITLE = 'todo-organizer-state.json';
+  const DRIVE_FOLDER_NAME = 'Todo List'; // backups are kept inside a Drive folder with this name — created automatically per user, no editing needed
+  const DRIVE_FOLDER_CACHE_KEY = 'todo_organizer_drive_folder_id';
+  const DRIVE_CREATE = 'mcp__26f67993-f62d-4abd-a4f9-30a551980a3d__create_file';
+  const DRIVE_SEARCH = 'mcp__26f67993-f62d-4abd-a4f9-30a551980a3d__search_files';
+  const DRIVE_DOWNLOAD = 'mcp__26f67993-f62d-4abd-a4f9-30a551980a3d__download_file_content';
+
+  let items = [];
+  let localSavedAt = 0;
+  let driveFolderId = null;
+  let driveFolderResolving = null;
+  let driveBackupTimer = null;
+
+  // 4-tier priority: p1 (red, most urgent) -> p2 (orange) -> p3 (dark yellow) -> p4 (blue, least urgent)
+  const PRIORITY_META = {
+    p1: { rank: 0, emoji: '🦅', label: '긴급' },
+    p2: { rank: 1, emoji: '🦊', label: '높음' },
+    p3: { rank: 2, emoji: '🐤', label: '보통' },
+    p4: { rank: 3, emoji: '🐬', label: '낮음' }
+  };
+  const PRIORITY_ORDER = ['p1', 'p2', 'p3', 'p4'];
+  const LEGACY_MAP = { high: 'p1', medium: 'p3', low: 'p4' };
+  const WEEKDAYS_KR = ['일', '월', '화', '수', '목', '금', '토'];
+
+  // Full 2026 Korean public holiday list (관공서 공휴일에 관한 규정 기준), including lunar-calendar
+  // holidays (설날/추석/부처님오신날) and 대체공휴일 — sourced from official 2026 holiday calendars.
+  const KR_HOLIDAYS_BY_YEAR = {
+    2026: {
+      '2026-01-01': '신정',
+      '2026-02-16': '설날 연휴',
+      '2026-02-17': '설날',
+      '2026-02-18': '설날 연휴',
+      '2026-03-01': '삼일절',
+      '2026-03-02': '대체공휴일',
+      '2026-05-05': '어린이날',
+      '2026-05-24': '부처님오신날',
+      '2026-05-25': '대체공휴일',
+      '2026-06-03': '지방선거일',
+      '2026-06-06': '현충일',
+      '2026-07-17': '제헌절',
+      '2026-08-15': '광복절',
+      '2026-08-17': '대체공휴일',
+      '2026-09-24': '추석 연휴',
+      '2026-09-25': '추석',
+      '2026-09-26': '추석 연휴',
+      '2026-10-03': '개천절',
+      '2026-10-05': '대체공휴일',
+      '2026-10-09': '한글날',
+      '2026-12-25': '성탄절'
+    }
+  };
+  // Fallback for years we don't have a full table for — fixed-date holidays only
+  // (misses lunar-calendar holidays and substitute holidays for those years)
+  const FIXED_HOLIDAYS_KR = {
+    '01-01': '신정', '03-01': '삼일절', '05-05': '어린이날', '06-06': '현충일',
+    '08-15': '광복절', '10-03': '개천절', '10-09': '한글날', '12-25': '성탄절'
+  };
+  function getHolidayName(dateKey) {
+    const year = Number(dateKey.slice(0, 4));
+    const table = KR_HOLIDAYS_BY_YEAR[year];
+    if (table && table[dateKey]) return table[dateKey];
+    return FIXED_HOLIDAYS_KR[dateKey.slice(5)] || null;
+  }
+  let calendarViewDate = new Date(); // which month the calendar card is currently showing
+  let selectedCalendarDate = null; // date key whose schedule panel is open below the grid
+  let weekViewMonday = null; // Date (Monday) of the week currently shown in the week card — reset to "this week" on load and on day rollover
+  let weeklyGoals = {}; // { mondayKey: { text, pct } } — text is the goal note, pct is a manually-set achievement % (직접 표시), kept even when browsing past weeks
+  function normalizeGoal(entry) {
+    if (!entry) return { text: '', pct: 0 };
+    if (typeof entry === 'string') return { text: entry, pct: 0 }; // migrate old plain-string goals
+    return { text: entry.text || '', pct: typeof entry.pct === 'number' ? entry.pct : 0 };
+  }
+  let memoText = ''; // free-form notepad text — persists indefinitely, never cleared by day rollover (like backlog)
+  function isLeaveText(text) {
+    return /반반차|반차|연차|년차|일차/.test(text || ''); // 달력 일정 텍스트에 이 단어가 있으면 핑크로 표시
+  }
+
+  function pad2(n) { return String(n).padStart(2, '0'); }
+  function todayKey(d) {
+    d = d || new Date();
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+  function parseKey(key) {
+    const p = key.split('-').map(Number);
+    return new Date(p[0], p[1] - 1, p[2]);
+  }
+  function formatShortKR(dayKey) {
+    const d = parseKey(dayKey);
+    return pad2(d.getMonth() + 1) + '/' + pad2(d.getDate()) + '(' + WEEKDAYS_KR[d.getDay()] + ')';
+  }
+  function mondayOf(date) {
+    const dow = date.getDay(); // 0 Sun .. 6 Sat
+    const diffToMonday = dow === 0 ? -6 : 1 - dow;
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() + diffToMonday);
+  }
+
+  // Monday–Friday of the given week (defaults to the current calendar week)
+  function getWeekDayKeys(mondayDate) {
+    const monday = mondayDate || mondayOf(new Date());
+    const keys = [];
+    for (let i = 0; i < 5; i++) {
+      keys.push(todayKey(new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i)));
+    }
+    return keys;
+  }
+
+  // ---------- calendar/week history (browse past months & weeks that have data) ----------
+  function collectWeekHistory() {
+    const todayMondayKey = todayKey(mondayOf(new Date()));
+    const set = new Set([todayMondayKey]);
+    items.forEach(i => {
+      [i.day, i.completedDay].forEach(dk => {
+        if (!dk) return;
+        const mk = todayKey(mondayOf(parseKey(dk)));
+        if (mk <= todayMondayKey) set.add(mk);
+      });
+    });
+    return Array.from(set).sort((a, b) => b.localeCompare(a)); // most recent first
+  }
+  function weekRangeLabel(mondayKey) {
+    const monday = parseKey(mondayKey);
+    const friday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 4);
+    return pad2(monday.getMonth() + 1) + '/' + pad2(monday.getDate()) + '~' + pad2(friday.getMonth() + 1) + '/' + pad2(friday.getDate());
+  }
+  function collectMonthHistory(tk) {
+    const currentMonth = tk.slice(0, 7);
+    const set = new Set([currentMonth]);
+    items.forEach(i => {
+      [i.day, i.completedDay].forEach(dk => {
+        if (!dk) return;
+        const m = dk.slice(0, 7);
+        if (m <= currentMonth) set.add(m);
+      });
+    });
+    return Array.from(set).sort((a, b) => b.localeCompare(a));
+  }
+  function monthLabel(monthKey) {
+    const [y, m] = monthKey.split('-').map(Number);
+    return y + '년 ' + m + '월';
+  }
+
+  // Stats are based on the day the task was written for (item.day), not when it was actually finished —
+  // "이번 주에 적어둔 일 중 몇 개를 해냈는지"
+  function dayStats(dayKey) {
+    const dayItems = items.filter(i => i.day === dayKey);
+    const total = dayItems.length;
+    const done = dayItems.filter(i => i.done).length;
+    const pct = total ? Math.round((done / total) * 100) : null;
+    return { dayItems, total, done, pct };
+  }
+  function formatTime(ts) {
+    if (!ts) return '';
+    return new Date(ts).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function normalizePriority(p) {
+    if (PRIORITY_META[p]) return p;
+    if (LEGACY_MAP[p]) return LEGACY_MAP[p];
+    return 'p4';
+  }
+  function migrateItems(list) {
+    const tk = todayKey();
+    (list || []).forEach(i => {
+      i.priority = normalizePriority(i.priority);
+      if (!i.day) i.day = tk;
+      i.type = 'task'; // notes are no longer a separate concept — everything registers directly as a task
+      if (typeof i.backlog !== 'boolean') i.backlog = false;
+      if (typeof i.calendarDate === 'undefined') i.calendarDate = null; // date this item was dragged onto the calendar for (future date), or null
+      if (!Array.isArray(i.subItems)) i.subItems = []; // optional (1)(2)(3)... tail lines under this task
+      i.subItems = i.subItems.map(s => typeof s === 'string' ? { text: s, done: false } : { text: s.text || '', done: !!s.done }); // migrate old plain-string sub-items
+      if (typeof i.pinned !== 'boolean') i.pinned = false; // true while auto-surfaced from the calendar and not yet checked off
+      if (i.done && !i.completedDay) i.completedDay = i.day || tk;
+      if (!i.done) i.completedDay = i.completedDay || null;
+      if (i.done && !i.completedAt) i.completedAt = 0; // unknown historical order — sorts to the top, above anything completed after this update
+      if (!i.done) i.completedAt = i.completedAt || null;
+      // (예전에 여기서 "pinned+calendarDate가 오늘 날짜로 남아있으면 지운다"는 정리를 했었는데, 그게 매일
+      // surfaceDueCalendarItems로 정상 승격된 진짜 달력 항목까지 똑같은 모양이라 구분하지 못하고 지워버려서
+      // 달력 등록이 사라지는 버그가 됐음 — 삭제함. 달력에 등록한 항목은 calendarDate를 그대로 유지해야
+      // 오늘 할 일 맨 위에 계속 고정되고 달력에도 계속 보임.)
+    });
+    return list || [];
+  }
+
+  // a future calendar-scheduled item is "parked" — it only shows in the calendar card until its date arrives.
+  // a future-dated item WITHOUT a calendarDate (e.g. moved via the → button) is also parked the same way,
+  // it just never shows up in the calendar UI at all — it's purely a "오늘 할 일" for that future day.
+  function isFutureScheduled(item, tk) {
+    return (!!item.calendarDate && item.calendarDate > tk) || (!!item.day && item.day > tk);
+  }
+
+  function belongsToList(item, listType, tk) {
+    if (item.done) return false;
+    if (isFutureScheduled(item, tk)) return false;
+    // "반차/반반차/연차/년차/일차"가 들어간 달력 일정은 오늘 할 일/backlog에는 절대 나타나지 않고 달력에만 표시됨
+    if (item.calendarDate && isLeaveText(item.text)) return false;
+    if (listType === 'active') return item.day === tk && !item.backlog;
+    if (listType === 'backlog') return item.backlog === true || item.day !== tk;
+    return false;
+  }
+
+  // ---------- local persistence ----------
+  function loadLocal() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        items = migrateItems(parsed.items || []);
+        weeklyGoals = parsed.weeklyGoals || {};
+        memoText = parsed.memoText || '';
+        localSavedAt = parsed.savedAt || 0;
+        return;
+      }
+      const legacyRaw = localStorage.getItem(LEGACY_STORAGE_KEY);
+      if (legacyRaw) {
+        items = migrateItems(JSON.parse(legacyRaw));
+        weeklyGoals = {};
+        memoText = '';
+        localSavedAt = 0;
+        return;
+      }
+      items = [];
+      weeklyGoals = {};
+      memoText = '';
+      localSavedAt = 0;
+    } catch (e) { items = []; weeklyGoals = {}; memoText = ''; localSavedAt = 0; }
+  }
+  function saveLocal(ts) {
+    localSavedAt = ts || Date.now();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ savedAt: localSavedAt, items: items, weeklyGoals: weeklyGoals, memoText: memoText }));
+  }
+  function save() {
+    saveLocal();
+    setSyncStatus('저장됨 · ' + formatTime(localSavedAt));
+    scheduleDriveBackup();
+  }
+  function uid() {
+    return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  function priorityRank(p) { return PRIORITY_META[normalizePriority(p)].rank; }
+
+  // top-3 red, next 3 orange, next 3 dark yellow, rest blue — based purely on position.
+  // Pinned items (auto-surfaced from the calendar) are skipped — they keep their 📌 marker
+  // instead of a priority color, and don't consume a slot in the banding.
+  function reassignPositionalPriority(list) {
+    let idx = 0;
+    list.forEach(item => {
+      if (item.pinned) return;
+      const bucket = Math.min(Math.floor(idx / 3), 3);
+      item.priority = PRIORITY_ORDER[bucket];
+      idx++;
+    });
+  }
+  function recomputeActiveBanding() {
+    const tk = todayKey();
+    reassignPositionalPriority(items.filter(i => belongsToList(i, 'active', tk)));
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+  function setSyncStatus(msg, isErr) {
+    const el = document.getElementById('syncStatus');
+    el.textContent = msg;
+    el.classList.toggle('err', !!isErr);
+  }
+
+  // ---------- cloud backup (Drive) so state survives even if this device's local storage is cleared ----------
+  function driveAvailable() {
+    return !!(window.cowork && typeof window.cowork.callMcpTool === 'function');
+  }
+  function unwrap(res) {
+    if (!res) return null;
+    if (res.structuredContent) return res.structuredContent;
+    try { return JSON.parse(res.content[0].text); } catch (e) { return null; }
+  }
+  function b64ToText(b64) {
+    try {
+      const bin = atob(b64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return new TextDecoder('utf-8').decode(bytes);
+    } catch (e) { return null; }
+  }
+
+  // Resolves (or creates) a personal "Todo List" folder in *this* user's own Drive — never hardcoded,
+  // so the same HTML file works for anyone without editing any IDs. Cached in localStorage after first run.
+  async function resolveDriveFolderId() {
+    if (driveFolderId) return driveFolderId;
+    if (driveFolderResolving) return driveFolderResolving;
+    if (!driveAvailable()) return null;
+
+    driveFolderResolving = (async () => {
+      try {
+        const cached = localStorage.getItem(DRIVE_FOLDER_CACHE_KEY);
+        if (cached) { driveFolderId = cached; return cached; }
+
+        const res = await window.cowork.callMcpTool(DRIVE_SEARCH, {
+          query: "title = '" + DRIVE_FOLDER_NAME + "' and mimeType = 'application/vnd.google-apps.folder' and owner = 'me'",
+          excludeContentSnippets: true,
+          pageSize: 5
+        });
+        const data = unwrap(res);
+        const found = data && data.files && data.files[0];
+        if (found) {
+          driveFolderId = found.id;
+        } else {
+          const created = await window.cowork.callMcpTool(DRIVE_CREATE, {
+            title: DRIVE_FOLDER_NAME,
+            contentMimeType: 'application/vnd.google-apps.folder'
+          });
+          const createdFile = unwrap(created) || created; // create_file doesn't wrap the same way — handle both shapes
+          driveFolderId = createdFile && createdFile.id ? createdFile.id : null;
+        }
+        if (driveFolderId) localStorage.setItem(DRIVE_FOLDER_CACHE_KEY, driveFolderId);
+        return driveFolderId;
+      } catch (e) {
+        console.warn('drive folder resolve failed', e);
+        return null;
+      } finally {
+        driveFolderResolving = null;
+      }
+    })();
+    return driveFolderResolving;
+  }
+
+  async function fetchLatestDriveBackup() {
+    if (!driveAvailable()) return null;
+    try {
+      const folderId = await resolveDriveFolderId();
+      const query = folderId
+        ? "title = '" + DRIVE_TITLE + "' and parentId = '" + folderId + "'"
+        : "title = '" + DRIVE_TITLE + "'"; // fall back to an unscoped search if the folder couldn't be resolved
+      const res = await window.cowork.callMcpTool(DRIVE_SEARCH, {
+        query: query,
+        excludeContentSnippets: true, // we only need id/createdTime here — cuts the response size a lot
+        pageSize: 50
+      });
+      const data = unwrap(res);
+      const files = (data && data.files) || [];
+      if (!files.length) return null;
+      files.sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime));
+      const latest = files[0];
+      const dl = await window.cowork.callMcpTool(DRIVE_DOWNLOAD, { fileId: latest.id });
+      const dlData = unwrap(dl);
+      if (!dlData || !dlData.content) return null;
+      const text = b64ToText(dlData.content);
+      if (!text) return null;
+      return JSON.parse(text);
+    } catch (e) {
+      console.warn('drive fetch failed', e);
+      return null;
+    }
+  }
+
+  async function pushDriveBackup() {
+    if (!driveAvailable()) { setSyncStatus('저장됨 · ' + formatTime(localSavedAt) + ' (이 기기에만)'); return; }
+    try {
+      const folderId = await resolveDriveFolderId();
+      const payload = JSON.stringify({ savedAt: localSavedAt, items: items, weeklyGoals: weeklyGoals, memoText: memoText });
+      const args = {
+        title: DRIVE_TITLE,
+        textContent: payload,
+        contentMimeType: 'application/json',
+        disableConversionToGoogleType: true
+      };
+      if (folderId) args.parentId = folderId; // keep backups tidy inside the user's own "Todo List" Drive folder
+      await window.cowork.callMcpTool(DRIVE_CREATE, args);
+      setSyncStatus('클라우드 동기화됨 · ' + formatTime(localSavedAt));
+    } catch (e) {
+      console.warn('drive backup failed', e);
+      setSyncStatus('클라우드 동기화 실패 (이 기기에는 저장됨)', true);
+    }
+  }
+
+  // Every save() used to push a brand-new file to Drive within 1.5s — since this connector can only
+  // create files (no update/delete), that meant a new duplicate every time you checked a box or dragged
+  // an item. Debounce much longer, with a hard cap so a long editing burst still backs up periodically.
+  let lastDriveBackupAt = 0;
+  function scheduleDriveBackup() {
+    clearTimeout(driveBackupTimer);
+    const sinceLast = Date.now() - lastDriveBackupAt;
+    const wait = sinceLast > 90000 ? 3000 : 20000; // back up quickly if it's been a while, otherwise batch edits
+    driveBackupTimer = setTimeout(() => { lastDriveBackupAt = Date.now(); pushDriveBackup(); }, wait);
+  }
+
+  async function syncFromDrive(showMsg) {
+    setSyncStatus('동기화 확인 중...');
+    const remote = await fetchLatestDriveBackup();
+    if (remote && Array.isArray(remote.items)) {
+      const remoteAt = remote.savedAt || 0;
+      if (remoteAt > localSavedAt) {
+        items = migrateItems(remote.items);
+        weeklyGoals = remote.weeklyGoals || {};
+        memoText = remote.memoText || '';
+        saveLocal(remoteAt);
+        render();
+        showToast('다른 곳에서 저장된 최신 상태를 불러왔어요');
+        setSyncStatus('클라우드에서 불러옴 · ' + formatTime(remoteAt));
+        return;
+      }
+    }
+    setSyncStatus(driveAvailable() ? '클라우드 동기화됨 · ' + formatTime(localSavedAt) : '저장됨 · ' + formatTime(localSavedAt) + ' (이 기기에만)');
+    if (showMsg) showToast('최신 상태예요');
+  }
+
+  // ---------- parsing (everything registers directly as a task — no separate "note" type) ----------
+  function heuristicParse(raw) {
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+    const p1Words = ['긴급', '오늘', 'asap', '지금', '즉시', '마감', 'urgent', 'today'];
+    const p2Words = ['내일', '빨리', '중요', '필수', '급히'];
+    const p3Words = ['이번주', '이번 주', '곧', '다음'];
+    return lines.map(line => {
+      const text = line.replace(/^[-*•]\s*/, '');
+      const lower = text.toLowerCase();
+      let priority = 'p4';
+      if (p1Words.some(w => lower.includes(w))) priority = 'p1';
+      else if (p2Words.some(w => lower.includes(w))) priority = 'p2';
+      else if (p3Words.some(w => lower.includes(w))) priority = 'p3';
+      return { text, priority };
+    });
+  }
+
+  function extractJsonArray(str) {
+    const start = str.indexOf('[');
+    const end = str.lastIndexOf(']');
+    if (start === -1 || end === -1 || end < start) return null;
+    try { return JSON.parse(str.slice(start, end + 1)); } catch (e) { return null; }
+  }
+
+  async function parseWithAI(raw) {
+    if (!window.cowork || typeof window.cowork.askClaude !== 'function') return null;
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+    if (!lines.length) return null;
+    const prompt = [
+      '다음은 사용자가 자유 형식으로 적은 할 일 메모입니다. 각 줄을 분석해서 JSON 배열로만 응답하세요.',
+      '각 원소는 {"text": string, "priority": "p1"|"p2"|"p3"|"p4"} 형식입니다. 모든 줄은 실행할 일(task)로 등록됩니다.',
+      'priority는 4단계입니다: 오늘/긴급/마감/즉시 처리해야 하면 "p1"(가장 급함), 내일/중요/빨리 처리해야 하면 "p2", 이번주/곧 정도면 "p3", 특별한 기한이 없으면 "p4"(가장 여유로움).',
+      '설명 없이 JSON 배열만 출력하세요.'
+    ].join(' ');
+    try {
+      const res = await window.cowork.askClaude(prompt, lines);
+      const text = typeof res === 'string' ? res : (res && (res.text || res.content || JSON.stringify(res)));
+      const parsed = extractJsonArray(text);
+      if (Array.isArray(parsed) && parsed.length) {
+        return parsed.map(p => ({
+          text: String(p.text || '').trim(),
+          priority: normalizePriority(p.priority)
+        })).filter(p => p.text);
+      }
+      return null;
+    } catch (e) {
+      console.warn('askClaude parse failed, falling back to heuristic', e);
+      return null;
+    }
+  }
+
+  // ---------- render ----------
+  function render() {
+    const tk = todayKey();
+    surfaceDueCalendarItems(tk);
+    const active = items.filter(i => belongsToList(i, 'active', tk));
+    // 오늘 날짜로 달력에 등록된 항목은 pinned 값과 상관없이 항상 맨 위 📌로 고정
+    const isTopPinned = (i) => i.pinned === true || i.calendarDate === tk;
+    active.sort((a, b) => (isTopPinned(b) ? 1 : 0) - (isTopPinned(a) ? 1 : 0));
+    const backlog = items.filter(i => belongsToList(i, 'backlog', tk));
+    const doneToday = items.filter(i => i.done && i.completedDay === tk)
+      .sort((a, b) => (a.completedAt || 0) - (b.completedAt || 0)); // completed first = top, most recently completed = bottom
+    const pastDone = items.filter(i => i.done && i.completedDay && i.completedDay !== tk);
+
+    document.getElementById('activeCount').textContent = active.length;
+    document.getElementById('backlogCount').textContent = backlog.length;
+    document.getElementById('doneCount').textContent = doneToday.length;
+
+    const activeList = document.getElementById('activeList');
+    const backlogList = document.getElementById('backlogList');
+    const doneList = document.getElementById('doneList');
+    activeList.innerHTML = '';
+    backlogList.innerHTML = '';
+    doneList.innerHTML = '';
+
+    document.getElementById('activeEmpty').style.display = active.length ? 'none' : 'block';
+    document.getElementById('backlogEmpty').style.display = backlog.length ? 'none' : 'block';
+
+    active.forEach(item => activeList.appendChild(renderItem(item, 'active', tk)));
+    backlog.forEach(item => backlogList.appendChild(renderItem(item, 'backlog', tk)));
+    doneToday.forEach(item => doneList.appendChild(renderItem(item, 'done', tk)));
+
+    renderPast(pastDone, tk);
+    renderWeekOverview(tk);
+    renderCalendar(tk);
+
+    // 메모장 — backlog처럼 날짜가 바뀌어도 지워지지 않는 상시 메모, 타이핑 중에는 덮어쓰지 않음
+    const memoInput = document.getElementById('memoInput');
+    if (document.activeElement !== memoInput) memoInput.value = memoText;
+
+    document.getElementById('todayLabel').textContent = formatShortKR(tk) + ' 오늘의 할 일';
+  }
+
+  function renderWeekOverview(tk) {
+    if (!weekViewMonday) weekViewMonday = mondayOf(new Date());
+    const weekKeys = getWeekDayKeys(weekViewMonday);
+    const viewingCurrent = todayKey(weekViewMonday) === todayKey(mondayOf(new Date()));
+
+    const row = document.getElementById('weekDaysRow');
+    row.innerHTML = '';
+    let sumTotal = 0, sumDone = 0;
+    weekKeys.forEach(k => {
+      const { total, done } = dayStats(k);
+      sumTotal += total; sumDone += done;
+      const cell = document.createElement('div');
+      cell.className = 'week-day-cell' + (k === tk ? ' today' : '');
+      cell.textContent = formatShortKR(k);
+      attachWeekDayDrop(cell, k);
+      row.appendChild(cell);
+    });
+
+    const overallPct = sumTotal ? Math.round((sumDone / sumTotal) * 100) : 0;
+    document.getElementById('weekRate').textContent =
+      (viewingCurrent ? '이번 주 달성률 ' : weekRangeLabel(todayKey(weekViewMonday)) + ' 달성률 ') + overallPct + '% (' + sumDone + '/' + sumTotal + ')';
+
+    // don't stomp on the textarea/slider while the user is actively editing them
+    const goal = normalizeGoal(weeklyGoals[todayKey(weekViewMonday)]);
+    const goalInput = document.getElementById('weekGoalInput');
+    if (document.activeElement !== goalInput) {
+      goalInput.value = goal.text;
+    }
+    goalInput.placeholder = viewingCurrent ? '이번 주 목표를 적어보세요' : weekRangeLabel(todayKey(weekViewMonday)) + ' 주 목표';
+
+    const goalSlider = document.getElementById('weekGoalSlider');
+    const goalPctLabel = document.getElementById('weekGoalPctLabel');
+    if (document.activeElement !== goalSlider) {
+      goalSlider.value = goal.pct;
+    }
+    goalPctLabel.textContent = goal.pct + '%';
+
+    const histWrap = document.getElementById('weekHistoryList');
+    histWrap.innerHTML = '';
+    collectWeekHistory().forEach(mk => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'week-history-item' + (mk === todayKey(weekViewMonday) ? ' active' : '');
+      btn.textContent = weekRangeLabel(mk) + (mk === todayKey(mondayOf(new Date())) ? ' · 이번주' : '');
+      btn.addEventListener('click', () => { weekViewMonday = parseKey(mk); render(); });
+      histWrap.appendChild(btn);
+    });
+
+    const wrap = document.getElementById('weekDayDetails');
+    wrap.innerHTML = '';
+    weekKeys.forEach(k => {
+      const { dayItems, total, done, pct } = dayStats(k);
+      const det = document.createElement('details');
+      det.className = 'week-day-detail';
+
+      const summary = document.createElement('summary');
+      const label = document.createElement('span');
+      label.textContent = formatShortKR(k) + (k === tk ? ' · 오늘' : '');
+      const rate = document.createElement('span');
+      rate.textContent = total ? (done + '/' + total + ' · ' + pct + '%') : '적어둔 일 없음';
+      summary.appendChild(label);
+      summary.appendChild(rate);
+      det.appendChild(summary);
+
+      // 그 요일 항목도 오늘 할 일과 똑같이 체크/수정/삭제/하위항목 추가가 자유롭게 가능하도록 renderItem으로 렌더링
+      if (!dayItems.length) {
+        const empty = document.createElement('div');
+        empty.className = 'week-item-row';
+        empty.textContent = '적어둔 일이 없어요';
+        det.appendChild(empty);
+      } else {
+        const ul = document.createElement('ul');
+        ul.className = 'list';
+        dayItems.forEach(it => ul.appendChild(renderItem(it, 'past', tk)));
+        det.appendChild(ul);
+      }
+      wrap.appendChild(det);
+    });
+  }
+
+  // ---------- calendar: drag a task onto a future date to schedule it; it re-appears in "오늘 할 일" (with an alert) once that date arrives ----------
+  function surfaceDueCalendarItems(tk) {
+    // i.day !== tk is the "not yet surfaced today" guard — once surfaced we set day = tk, so this
+    // won't re-fire on every render and won't fight a manual unpin. calendarDate is intentionally
+    // KEPT (not cleared) so the item still shows up in the calendar card for today, not just in
+    // "오늘 할 일".
+    // 반차/반반차/연차/일차 등 휴가 항목은 오늘이 돼도 "오늘 할 일"로 넘어오지 않고 달력에만 남아있음
+    const due = items.filter(i => !i.done && i.calendarDate === tk && i.day !== tk && !isLeaveText(i.text));
+    if (!due.length) return;
+    const names = due.map(i => i.text);
+    due.forEach(i => { i.day = tk; i.backlog = false; i.pinned = true; });
+    saveLocal();
+    scheduleDriveBackup();
+    showCalendarAlert(names, tk);
+  }
+
+  function showCalendarAlert(names, tk) {
+    const dismissKey = 'todo_calendar_alert_dismissed_' + tk;
+    if (localStorage.getItem(dismissKey)) return;
+    const el = document.getElementById('calendarAlert');
+    el.innerHTML = '';
+    const text = document.createElement('span');
+    text.textContent = '📅 오늘 일정: ' + names.join(', ');
+    const close = document.createElement('button');
+    close.textContent = '닫기';
+    close.addEventListener('click', () => {
+      localStorage.setItem(dismissKey, '1');
+      el.style.display = 'none';
+    });
+    el.appendChild(text);
+    el.appendChild(close);
+    el.style.display = 'flex';
+  }
+
+  function getMonthMatrix(year, month) {
+    const first = new Date(year, month, 1);
+    const start = new Date(year, month, 1 - first.getDay());
+    const cells = [];
+    for (let i = 0; i < 42; i++) cells.push(new Date(start.getFullYear(), start.getMonth(), start.getDate() + i));
+    while (cells.length > 35 && cells[cells.length - 7].getMonth() !== month) cells.splice(cells.length - 7, 7);
+    return cells;
+  }
+
+  function renderCalendar(tk) {
+    const year = calendarViewDate.getFullYear(), month = calendarViewDate.getMonth();
+    document.getElementById('calendarMonthLabel').textContent = year + '년 ' + (month + 1) + '월';
+
+    const upcoming = items.filter(i => !i.done && isFutureScheduled(i, tk)).length;
+    document.getElementById('calendarSummaryLabel').textContent =
+      year + '년 ' + (month + 1) + '월' + (upcoming ? ' · 예정 ' + upcoming + '건' : '');
+
+    const viewedMonthKey = year + '-' + pad2(month + 1);
+    const histWrap = document.getElementById('calendarHistoryList');
+    histWrap.innerHTML = '';
+    collectMonthHistory(tk).forEach(mk => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'calendar-history-item' + (mk === viewedMonthKey ? ' active' : '');
+      btn.textContent = monthLabel(mk) + (mk === tk.slice(0, 7) ? ' · 이번달' : '');
+      btn.addEventListener('click', () => {
+        const [y, m] = mk.split('-').map(Number);
+        calendarViewDate = new Date(y, m - 1, 1);
+        renderCalendar(todayKey());
+      });
+      histWrap.appendChild(btn);
+    });
+
+    const weekRow = document.getElementById('calendarWeekRow');
+    if (!weekRow.children.length) {
+      WEEKDAYS_KR.forEach((w, idx) => {
+        const el = document.createElement('div');
+        el.className = 'calendar-weekrow-label' + (idx === 0 ? ' sun' : idx === 6 ? ' sat' : '');
+        el.textContent = w;
+        weekRow.appendChild(el);
+      });
+    }
+
+    const grid = document.getElementById('calendarGrid');
+    grid.innerHTML = '';
+    getMonthMatrix(year, month).forEach(d => {
+      const key = todayKey(d);
+      const holidayName = getHolidayName(key);
+
+      const cell = document.createElement('div');
+      cell.className = 'cal-cell';
+      if (d.getMonth() !== month) cell.classList.add('other-month');
+      if (key === tk) cell.classList.add('today');
+      if (key === selectedCalendarDate) cell.classList.add('selected');
+      if (d.getDay() === 0 || holidayName) cell.classList.add('sun');
+      else if (d.getDay() === 6) cell.classList.add('sat');
+
+      const num = document.createElement('div');
+      num.className = 'cal-num';
+      num.textContent = d.getDate();
+      cell.appendChild(num);
+
+      if (holidayName) {
+        const h = document.createElement('div');
+        h.className = 'cal-holiday';
+        h.textContent = holidayName;
+        cell.appendChild(h);
+      }
+
+      // "반차/반반차/연차/일차"가 들어간 일정은 핑크 알약으로, 그 외 일정은 진초록 배지(개수)로 표시.
+      // 연속된 날짜에 각각 적어두면 옆 칸 알약끼리 붙어 보여서 막대처럼 이어져 보임.
+      // 휴가성 일정은 체크해서 완료해도 알약이 사라지지 않고 계속 핑크색 그대로 유지됨 (줄긋기는 달력 아래 목록에서만 표시).
+      const dayScheduledAll = items.filter(i => i.calendarDate === key);
+      const leaveItems = dayScheduledAll.filter(i => isLeaveText(i.text));
+      const normalItems = dayScheduledAll.filter(i => !i.done && !isLeaveText(i.text));
+      if (normalItems.length) {
+        const badge = document.createElement('div');
+        badge.className = 'cal-badge';
+        badge.textContent = normalItems.length;
+        cell.appendChild(badge);
+      }
+      leaveItems.forEach(i => {
+        const bar = document.createElement('div');
+        bar.className = 'leave-bar';
+        bar.textContent = i.text;
+        bar.title = i.text;
+        cell.appendChild(bar);
+      });
+
+      cell.addEventListener('click', () => {
+        selectedCalendarDate = selectedCalendarDate === key ? null : key;
+        renderCalendar(todayKey());
+      });
+      attachCalendarDrop(cell, key);
+
+      grid.appendChild(cell);
+    });
+
+    renderCalendarDayPanel(tk);
+  }
+
+  function renderCalendarDayPanel(tk) {
+    const panel = document.getElementById('calendarDayPanel');
+    if (!selectedCalendarDate) { panel.style.display = 'none'; panel.innerHTML = ''; return; }
+    panel.style.display = 'block';
+    panel.innerHTML = '';
+
+    const title = document.createElement('div');
+    title.className = 'cal-panel-title';
+    title.textContent = formatShortKR(selectedCalendarDate) + ' 일정';
+    panel.appendChild(title);
+
+    // 이 날짜로 직접 입력해서 바로 추가 (끌어다 놓지 않아도 됨)
+    const dateKey = selectedCalendarDate;
+    const addInput = document.createElement('input');
+    addInput.type = 'text';
+    addInput.className = 'quick-add-input';
+    addInput.placeholder = '이 날짜에 바로 입력하고 Enter';
+    addInput.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      e.preventDefault();
+      const v = addInput.value.trim();
+      if (!v) return;
+      addToCalendarDate(v, dateKey);
+    });
+    panel.appendChild(addInput);
+
+    // 달력에는 그 날짜로 "예정 등록"된 것만 보여줌 (반차 등 휴가성 항목은 핑크, 나머지는 핀+진초록)
+    // 체크해서 완료해도 목록에서 사라지지 않고, 선 긋고 회색으로 표시된 채 그대로 남아있음
+    const leaveScheduled = items.filter(i => i.calendarDate === selectedCalendarDate && isLeaveText(i.text));
+    const dayItems = items.filter(i => i.calendarDate === selectedCalendarDate && !isLeaveText(i.text));
+
+    if (!leaveScheduled.length && !dayItems.length) {
+      const empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.textContent = '이 날짜에 등록된 할 일이 없어요. 위 입력칸에 적거나, 목록에서 항목을 끌어와보세요.';
+      panel.appendChild(empty);
+      return;
+    }
+
+    if (leaveScheduled.length) {
+      const ul1 = document.createElement('ul');
+      ul1.className = 'list';
+      leaveScheduled.forEach(item => ul1.appendChild(renderItem(item, 'calendar', tk || todayKey())));
+      panel.appendChild(ul1);
+    }
+
+    if (dayItems.length) {
+      const ul2 = document.createElement('ul');
+      ul2.className = 'list';
+      dayItems.forEach(item => ul2.appendChild(renderItem(item, 'calendar', tk || todayKey())));
+      panel.appendChild(ul2);
+    }
+  }
+
+  function addToCalendarDate(text, dateKey) {
+    const tk = todayKey();
+    const item = {
+      id: uid(), text: text, type: 'task', priority: 'p4', done: false,
+      day: tk, backlog: false, calendarDate: dateKey, pinned: false,
+      subItems: [], completedDay: null, completedAt: null
+    };
+    const isLeave = isLeaveText(text);
+    if (dateKey <= tk) {
+      if (isLeave) {
+        // 반차/반반차/연차/일차는 오늘 할 일로 넘어오지 않고 달력에만 핑크로 표시됨
+        showToast('달력에 표시했어요');
+      } else {
+        // 오늘이나 과거 날짜에 바로 입력한 경우 — 오늘 할 일에도 핀으로 올리고, 달력 배지도 그대로 유지
+        item.pinned = true;
+        showToast('오늘 할 일로 추가하고 달력에도 표시했어요');
+      }
+    } else {
+      // 미래 날짜 — day도 그 날짜로 맞춰서 주간 뷰에서 그 요일의 할 일로 바로 확인 가능
+      item.day = dateKey;
+      showToast(formatShortKR(dateKey) + ' 할 일로 등록했어요');
+    }
+    items.push(item);
+    recomputeActiveBanding();
+    save();
+    render();
+  }
+
+  function attachCalendarDrop(cell, dateKey) {
+    cell.addEventListener('dragover', (e) => { if (dragId) e.preventDefault(); });
+    cell.addEventListener('dragenter', () => { if (dragId) cell.classList.add('cal-drop-target'); });
+    cell.addEventListener('dragleave', () => cell.classList.remove('cal-drop-target'));
+    cell.addEventListener('drop', (e) => {
+      e.preventDefault();
+      cell.classList.remove('cal-drop-target');
+      if (!dragId) return;
+      scheduleToCalendar(dragId, dateKey);
+      dragId = null;
+      dragSourceType = null;
+    });
+  }
+
+  function scheduleToCalendar(id, dateKey) {
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    const tk = todayKey();
+    item.calendarDate = dateKey; // keep it visible in the calendar cell/badge for this date either way
+    if (dateKey <= tk) {
+      if (isLeaveText(item.text)) {
+        // 반차/반반차/연차/일차는 오늘 할 일로 넘어오지 않고 달력에만 핑크로 표시됨
+        item.pinned = false;
+        showToast('달력에 표시했어요');
+      } else {
+        // dropped on today or a past date — surface it into "오늘 할 일" too, pinned to the top,
+        // same as the automatic daily surfacing does. calendarDate stays set so the purple badge
+        // doesn't disappear from the calendar.
+        item.day = tk;
+        item.backlog = false;
+        item.pinned = true;
+        showToast('오늘 할 일로 옮기고 달력에도 표시했어요');
+      }
+    } else {
+      // 미래 날짜로 예약 — day도 그 날짜로 맞춰둬서 "주간" 뷰에서 그 요일의 할 일로 바로 확인 가능.
+      // calendarDate가 미래로 남아있는 동안은 isFutureScheduled가 오늘 목록에서는 계속 숨겨줌.
+      item.day = dateKey;
+      item.backlog = false;
+      item.pinned = false; // manual drag overrides the auto-pin
+      showToast(formatShortKR(dateKey) + ' 할 일로 등록했어요');
+    }
+    recomputeActiveBanding();
+    save();
+    render();
+  }
+
+  // 달력 일정으로 등록하지 않고, 그냥 그 날짜의 "오늘 할 일"로 조용히 옮김 — → 버튼과 주간 뷰 요일 칸 드래그에서 사용.
+  // calendarDate를 건드리지 않으므로 달력 카드에는 전혀 나타나지 않고, isFutureScheduled가 day 기준으로도
+  // 판단해주기 때문에 그 날이 되기 전까지는 오늘 목록/backlog 어디에도 안 보이다가, 그 날이 되면 평범한
+  // "오늘 할 일" 항목으로 자연스럽게 나타남 (핀 표시나 알림 없음).
+  function deferToDay(id, dateKey) {
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    item.day = dateKey;
+    item.backlog = false;
+    item.pinned = false;
+    item.calendarDate = null;
+    recomputeActiveBanding();
+    save();
+    render();
+    showToast(formatShortKR(dateKey) + ' 할 일로 옮겼어요');
+  }
+
+  // 주간 뷰의 요일 칸에 "오늘 할 일" 항목을 끌어다 놓으면 그 요일로 옮겨짐 (달력 일정으로는 남지 않음)
+  function attachWeekDayDrop(cell, dateKey) {
+    cell.addEventListener('dragover', (e) => { if (dragId) e.preventDefault(); });
+    cell.addEventListener('dragenter', () => { if (dragId) cell.classList.add('week-day-drop-target'); });
+    cell.addEventListener('dragleave', () => cell.classList.remove('week-day-drop-target'));
+    cell.addEventListener('drop', (e) => {
+      e.preventDefault();
+      cell.classList.remove('week-day-drop-target');
+      if (!dragId) return;
+      const id = dragId;
+      dragId = null;
+      dragSourceType = null;
+      deferToDay(id, dateKey);
+    });
+  }
+
+  function renderPast(pastDone, tk) {
+    const container = document.getElementById('pastContainer');
+    container.innerHTML = '';
+
+    if (!pastDone.length) {
+      const empty = document.createElement('div');
+      empty.className = 'past-empty';
+      empty.textContent = '아직 지난 완료 기록이 없어요';
+      container.appendChild(empty);
+      return;
+    }
+
+    const byDay = new Map();
+    pastDone.forEach(i => {
+      const key = i.completedDay;
+      if (!byDay.has(key)) byDay.set(key, []);
+      byDay.get(key).push(i);
+    });
+    byDay.forEach(list => list.sort((a, b) => (a.completedAt || 0) - (b.completedAt || 0)));
+    const days = Array.from(byDay.keys()).sort((a, b) => b.localeCompare(a));
+
+    days.forEach(day => {
+      const dayItems = byDay.get(day);
+      const det = document.createElement('details');
+      det.className = 'day-group';
+      const summary = document.createElement('summary');
+      const label = document.createElement('span');
+      label.className = 'day-label';
+      label.textContent = formatShortKR(day);
+      const count = document.createElement('span');
+      count.className = 'day-count';
+      count.textContent = dayItems.length + '개 완료';
+      summary.appendChild(label);
+      summary.appendChild(count);
+      det.appendChild(summary);
+
+      const ul = document.createElement('ul');
+      ul.className = 'list';
+      dayItems.forEach(item => ul.appendChild(renderItem(item, 'past', tk)));
+      det.appendChild(ul);
+      container.appendChild(det);
+      attachDayGroupDrop(det, day);
+    });
+  }
+
+  // dropping directly onto an existing day-group files the item under that exact day (no prompt needed)
+  function attachDayGroupDrop(det, dayKey) {
+    det.addEventListener('dragover', (e) => { if (dragId) e.preventDefault(); });
+    det.addEventListener('dragenter', () => { if (dragId) det.classList.add('drop-target'); });
+    det.addEventListener('dragleave', () => det.classList.remove('drop-target'));
+    det.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation(); // don't also trigger the generic pastCard dropzone prompt
+      det.classList.remove('drop-target');
+      if (!dragId) return;
+      const id = dragId;
+      dragId = null;
+      dragSourceType = null;
+      archiveToPast(id, dayKey);
+    });
+  }
+
+  // dropping anywhere else on the 지난 기록 card asks which date to file it under
+  function attachPastDrop(cardEl) {
+    let count = 0;
+    cardEl.addEventListener('dragenter', () => { if (dragId) { count++; cardEl.classList.add('drop-target'); } });
+    cardEl.addEventListener('dragleave', () => { if (!dragId) return; count = Math.max(0, count - 1); if (!count) cardEl.classList.remove('drop-target'); });
+    cardEl.addEventListener('dragover', (e) => { if (dragId) e.preventDefault(); });
+    cardEl.addEventListener('drop', (e) => {
+      e.preventDefault();
+      count = 0;
+      cardEl.classList.remove('drop-target');
+      if (!dragId) return;
+      const id = dragId;
+      dragId = null;
+      dragSourceType = null;
+      const input = window.prompt('며칠의 완료 기록으로 넣을까요? MM/DD 형식으로 입력해주세요 (예: 8/5)');
+      if (!input) return;
+      const parsed = parseMonthDay(input);
+      if (!parsed) { showToast('날짜 형식을 확인해주세요 (예: 8/5)'); return; }
+      archiveToPast(id, parsed);
+    });
+  }
+
+  function parseMonthDay(str) {
+    const m = String(str).match(/(\d{1,2})\s*[\/.\-]\s*(\d{1,2})/);
+    if (!m) return null;
+    const month = Number(m[1]), day = Number(m[2]);
+    if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+    const tk = todayKey();
+    let year = new Date().getFullYear();
+    let d = new Date(year, month - 1, day);
+    if (todayKey(d) > tk) { year -= 1; d = new Date(year, month - 1, day); } // future date typed → assume last year's record
+    return todayKey(d);
+  }
+
+  function archiveToPast(id, dayKey) {
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    const tk = todayKey();
+    if (dayKey > tk) { showToast('완료 기록은 오늘 이전 날짜로만 넣을 수 있어요'); return; }
+    const d = parseKey(dayKey);
+    item.done = true;
+    item.completedDay = dayKey;
+    item.completedAt = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0).getTime();
+    item.backlog = false;
+    item.pinned = false;
+    item.calendarDate = null;
+    recomputeActiveBanding();
+    save();
+    render();
+    showToast(formatShortKR(dayKey) + ' 완료 기록으로 옮겼어요');
+  }
+
+  function renderItem(item, listType, tk) {
+    if (!Array.isArray(item.subItems)) item.subItems = [];
+    const li = document.createElement('li');
+    li.className = 'item' + (item.done ? ' done' : '');
+    li.dataset.id = item.id;
+    li.dataset.listType = listType;
+    const draggable = (listType === 'active' || listType === 'backlog' || listType === 'calendar');
+    li.draggable = draggable;
+
+    const row = document.createElement('div');
+    row.className = 'item-row';
+
+    if (draggable) {
+      const handle = document.createElement('span');
+      handle.className = 'handle';
+      handle.textContent = '⠿';
+      row.appendChild(handle);
+    }
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.className = 'check';
+    cb.checked = !!item.done;
+    cb.addEventListener('change', () => {
+      item.done = cb.checked;
+      if (item.done) {
+        item.completedDay = todayKey();
+        item.completedAt = Date.now();
+        item.backlog = false;
+        item.pinned = false; // checked off — no longer needs to stay pinned to the top
+      } else {
+        item.completedDay = null;
+        item.completedAt = null;
+      }
+      recomputeActiveBanding();
+      save();
+      render();
+    });
+    row.appendChild(cb);
+
+    const priority = normalizePriority(item.priority);
+    const meta = PRIORITY_META[priority];
+    const inBacklog = listType === 'backlog';
+    const inCalendar = listType === 'calendar';
+    const isPinned = listType === 'active' && (item.pinned === true || item.calendarDate === tk);
+    const isLeaveItem = (inCalendar || isPinned) && isLeaveText(item.text); // "반차/반반차/연차/일차"가 들어간 달력 일정은 핑크로 — 체크해도 계속 핑크 유지
+    const isDoneCalendar = inCalendar && item.done && !isLeaveItem; // 휴가성 항목이 아닌 달력 일정만 체크하면 회색으로 바뀜
+    const dotWrap = document.createElement('div');
+    dotWrap.className = 'dot-wrap';
+
+    const dot = document.createElement('button');
+    dot.className = 'dot ' + (isDoneCalendar ? 'calendar-done' : inBacklog ? 'backlog' : isLeaveItem ? 'leave' : (inCalendar || isPinned) ? 'calendar' : priority);
+    dotWrap.appendChild(dot);
+
+    const emoji = document.createElement('span');
+    emoji.className = 'p-emoji';
+    emoji.textContent = inBacklog ? '🐲' : (inCalendar || isPinned) ? '📌' : meta.emoji;
+    dotWrap.appendChild(emoji);
+
+    if (inBacklog) {
+      dot.title = 'backlog';
+      emoji.title = 'backlog';
+    } else if (inCalendar) {
+      dot.title = formatShortKR(item.calendarDate) + '에 예정됨';
+      emoji.title = formatShortKR(item.calendarDate) + '에 예정됨';
+    } else if (isPinned) {
+      dot.title = '달력 일정에서 자동으로 오늘 할 일에 등록됨 — 체크하면 완료로 내려가요';
+      emoji.title = dot.title;
+    } else {
+      dot.title = '우선순위: ' + meta.label + ' (클릭해서 변경)';
+      dot.addEventListener('click', () => cyclePriority(item));
+      emoji.title = '우선순위: ' + meta.label + ' (클릭해서 변경)';
+      emoji.addEventListener('click', () => cyclePriority(item));
+    }
+
+    row.appendChild(dotWrap);
+
+    const content = document.createElement('div');
+    content.className = 'content';
+
+    if (listType === 'backlog' && item.day !== tk) {
+      const origin = document.createElement('span');
+      origin.className = 'origin-tag';
+      origin.textContent = formatShortKR(item.day);
+      content.appendChild(origin);
+    }
+
+    const text = document.createElement('div');
+    text.className = 'text';
+    text.contentEditable = 'true';
+    text.textContent = item.text;
+    text.addEventListener('blur', () => {
+      const v = text.textContent.trim();
+      if (v && v !== item.text) { item.text = v; save(); }
+      else if (!v) { text.textContent = item.text; }
+    });
+    text.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); text.blur(); }
+    });
+    content.appendChild(text);
+    row.appendChild(content);
+
+    if (listType === 'active') {
+      const nextDayBtn = document.createElement('button');
+      nextDayBtn.className = 'next-day-btn';
+      nextDayBtn.textContent = '→';
+      nextDayBtn.title = '다음날 할 일로 옮기기';
+      nextDayBtn.addEventListener('click', () => {
+        const d = parseKey(tk);
+        const nextDayKey = todayKey(new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1));
+        deferToDay(item.id, nextDayKey);
+      });
+      row.appendChild(nextDayBtn);
+    }
+
+    const subAddBtn = document.createElement('button');
+    subAddBtn.className = 'sub-add-btn';
+    subAddBtn.textContent = '+';
+    subAddBtn.title = '하위 항목 추가';
+    subAddBtn.addEventListener('click', () => {
+      item.subItems.push({ text: '', done: false });
+      save();
+      render();
+      // focus the newly added (empty) sub-item's text field so the user can type right away
+      const newLi = document.querySelector('li.item[data-id="' + item.id + '"]');
+      const subs = newLi && newLi.querySelectorAll('.sub-text');
+      if (subs && subs.length) subs[subs.length - 1].focus();
+    });
+    row.appendChild(subAddBtn);
+
+    const del = document.createElement('button');
+    del.className = 'del';
+    del.textContent = '×';
+    del.title = '삭제';
+    del.addEventListener('click', () => {
+      items = items.filter(i => i.id !== item.id);
+      recomputeActiveBanding();
+      save();
+      render();
+    });
+    row.appendChild(del);
+
+    li.appendChild(row);
+    if (item.subItems.length) li.appendChild(renderSubList(item));
+
+    if (draggable) attachDrag(li, listType);
+
+    return li;
+  }
+
+  // (1) (2) (3)... tail lines under a task — occasional use, so kept minimal: "+" adds one, Enter adds the next,
+  // clearing the text and clicking away removes it.
+  function renderSubList(item) {
+    const ul = document.createElement('ul');
+    ul.className = 'sub-list';
+
+    item.subItems.forEach((sub, idx) => {
+      const li = document.createElement('li');
+      li.className = 'sub-item' + (sub.done ? ' done' : '');
+
+      const check = document.createElement('input');
+      check.type = 'checkbox';
+      check.className = 'sub-check';
+      check.checked = !!sub.done;
+      check.addEventListener('change', () => {
+        item.subItems[idx].done = check.checked;
+        save();
+        render();
+      });
+      li.appendChild(check);
+
+      const num = document.createElement('span');
+      num.className = 'sub-num';
+      num.textContent = '(' + (idx + 1) + ')';
+      li.appendChild(num);
+
+      const text = document.createElement('div');
+      text.className = 'sub-text';
+      text.contentEditable = 'true';
+      text.textContent = sub.text;
+      text.addEventListener('blur', () => {
+        const v = text.textContent.trim();
+        if (!v) { item.subItems.splice(idx, 1); save(); render(); return; }
+        if (v !== item.subItems[idx].text) { item.subItems[idx].text = v; save(); }
+      });
+      text.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        item.subItems[idx].text = text.textContent.trim();
+        item.subItems.splice(idx + 1, 0, { text: '', done: false });
+        save();
+        render();
+        const li2 = document.querySelector('li.item[data-id="' + item.id + '"]');
+        const subs = li2 && li2.querySelectorAll('.sub-text');
+        if (subs && subs[idx + 1]) subs[idx + 1].focus();
+      });
+      li.appendChild(text);
+
+      const del = document.createElement('button');
+      del.className = 'sub-del';
+      del.textContent = '×';
+      del.title = '삭제';
+      del.addEventListener('click', () => {
+        item.subItems.splice(idx, 1);
+        save();
+        render();
+      });
+      li.appendChild(del);
+
+      ul.appendChild(li);
+    });
+
+    return ul;
+  }
+
+  function cyclePriority(item) {
+    const cur = normalizePriority(item.priority);
+    const idx = PRIORITY_ORDER.indexOf(cur);
+    item.priority = PRIORITY_ORDER[(idx + 1) % PRIORITY_ORDER.length];
+    save();
+    render();
+  }
+
+  // ---------- drag and drop: reorder within a list, or drag between "오늘 할 일" and "backlog" ----------
+  let dragId = null;
+  let dragSourceType = null;
+
+  function attachDrag(li, listType) {
+    li.addEventListener('dragstart', () => {
+      dragId = li.dataset.id;
+      dragSourceType = listType;
+      li.classList.add('dragging');
+    });
+    li.addEventListener('dragend', () => {
+      li.classList.remove('dragging');
+      document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    });
+    li.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      if (li.dataset.id !== dragId) li.classList.add('drag-over');
+    });
+    li.addEventListener('dragleave', () => li.classList.remove('drag-over'));
+    li.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      li.classList.remove('drag-over');
+      const targetId = li.dataset.id;
+      if (!dragId || dragId === targetId) return;
+      if (dragSourceType === listType) {
+        reorderWithin(listType, dragId, targetId);
+      } else {
+        moveAcross(dragId, listType, targetId);
+      }
+      dragId = null;
+      dragSourceType = null;
+    });
+  }
+
+  // attach to the whole card (not just the <ul>) so dropping anywhere in the box works,
+  // including the empty-state placeholder area when the list has no items yet
+  function attachContainerDrop(cardEl, listType) {
+    let dragEnterCount = 0;
+    cardEl.addEventListener('dragenter', (e) => {
+      if (!dragId) return;
+      dragEnterCount++;
+      cardEl.classList.add('drop-target');
+    });
+    cardEl.addEventListener('dragleave', () => {
+      if (!dragId) return;
+      dragEnterCount = Math.max(0, dragEnterCount - 1);
+      if (dragEnterCount === 0) cardEl.classList.remove('drop-target');
+    });
+    cardEl.addEventListener('dragover', (e) => { if (dragId) e.preventDefault(); });
+    cardEl.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dragEnterCount = 0;
+      cardEl.classList.remove('drop-target');
+      if (!dragId) return;
+      if (dragSourceType === listType) {
+        reorderWithin(listType, dragId, null);
+      } else {
+        moveAcross(dragId, listType, null);
+      }
+      dragId = null;
+      dragSourceType = null;
+    });
+  }
+
+  function reorderWithin(listType, sourceId, targetId) {
+    const tk = todayKey();
+    const group = items.filter(i => belongsToList(i, listType, tk));
+    const others = items.filter(i => !belongsToList(i, listType, tk));
+    const ids = group.map(i => i.id);
+    const from = ids.indexOf(sourceId);
+    if (from === -1) return;
+    const [movedId] = ids.splice(from, 1);
+    const to = targetId ? ids.indexOf(targetId) : ids.length;
+    ids.splice(to === -1 ? ids.length : to, 0, movedId);
+
+    const map = new Map(group.map(i => [i.id, i]));
+    map.get(movedId).pinned = false; // manual drag overrides the auto-pin
+    const newGroup = ids.map(id => map.get(id));
+    if (listType === 'active') reassignPositionalPriority(newGroup);
+
+    items = newGroup.concat(others);
+    save();
+    render();
+  }
+
+  function moveAcross(id, targetListType, beforeId) {
+    const tk = todayKey();
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+
+    if (targetListType === 'backlog') {
+      item.backlog = true;
+      item.calendarDate = null; // dragging out of the calendar cancels its schedule
+      item.pinned = false;
+    } else if (targetListType === 'active') {
+      item.backlog = false;
+      item.day = tk;
+      item.calendarDate = null;
+      item.pinned = false; // manual drag overrides the auto-pin
+    } else if (targetListType === 'calendar' && selectedCalendarDate) {
+      // dropped onto an item already sitting in the open day panel — schedule it for that same date
+      item.calendarDate = selectedCalendarDate;
+      item.backlog = false;
+    }
+
+    const remaining = items.filter(i => i.id !== id);
+    const targetGroup = remaining.filter(i => belongsToList(i, targetListType, tk));
+    const others = remaining.filter(i => !belongsToList(i, targetListType, tk));
+    const ids = targetGroup.map(i => i.id);
+    const idx = beforeId ? ids.indexOf(beforeId) : ids.length;
+    ids.splice(idx === -1 ? ids.length : idx, 0, id);
+
+    const map = new Map(targetGroup.map(i => [i.id, i]));
+    map.set(id, item);
+    const newGroup = ids.map(gid => map.get(gid));
+    if (targetListType === 'active') reassignPositionalPriority(newGroup);
+
+    items = newGroup.concat(others);
+    save();
+    render();
+    showToast(targetListType === 'backlog' ? 'backlog로 옮겼어요' : '오늘 할 일로 옮겼어요');
+  }
+
+  function resortByPriority() {
+    const tk = todayKey();
+    const active = items.filter(i => belongsToList(i, 'active', tk));
+    const others = items.filter(i => !belongsToList(i, 'active', tk));
+    reassignPositionalPriority(active); // reset colors to automatic top-3-red / next-3-orange / etc.
+    items = active.concat(others);
+    save();
+    render();
+    showToast('우선순위 색상을 자동으로 다시 설정했어요');
+  }
+
+  // ---------- actions ----------
+  // raw can be one line (from the quick-add input) or several (Enter-separated) — both are parsed the same way
+  function organize(raw) {
+    raw = (raw || '').trim();
+    if (!raw) return;
+
+    // heuristic-only (no askClaude round trip) so Enter reflects in "오늘 할 일" immediately —
+    // final color is decided by position anyway (reassignPositionalPriority below), so a quick
+    // keyword-based guess here is plenty.
+    const parsed = heuristicParse(raw);
+
+    const tk = todayKey();
+    const newItems = parsed.map(p => ({
+      id: uid(),
+      text: p.text,
+      type: 'task',
+      priority: p.priority,
+      done: false,
+      day: tk,
+      backlog: false,
+      calendarDate: null,
+      pinned: false,
+      subItems: [],
+      completedDay: null,
+      completedAt: null
+    }));
+
+    const existingActive = items.filter(i => belongsToList(i, 'active', tk));
+    const others = items.filter(i => !belongsToList(i, 'active', tk));
+    const merged = existingActive.concat(newItems);
+    merged.sort((a, b) => priorityRank(a.priority) - priorityRank(b.priority));
+    reassignPositionalPriority(merged); // final color always reflects position, top 3 = red, etc.
+    items = merged.concat(others);
+
+    save();
+    render();
+    showToast(newItems.length + '개 항목을 추가했어요');
+  }
+
+  // quick-add directly inside "오늘 할 일" — type and press Enter, no separate input box needed
+  document.getElementById('quickAddInput').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const input = e.target;
+    const v = input.value.trim();
+    if (!v) return;
+    input.value = '';
+    organize(v);
+    input.focus();
+  });
+  document.getElementById('resortBtn').addEventListener('click', resortByPriority);
+  document.getElementById('clearDoneBtn').addEventListener('click', () => {
+    const tk = todayKey();
+    items = items.filter(i => !(i.done && i.completedDay === tk));
+    save();
+    render();
+  });
+  document.getElementById('syncNowBtn').addEventListener('click', () => syncFromDrive(true));
+  document.getElementById('calPrevBtn').addEventListener('click', () => {
+    calendarViewDate = new Date(calendarViewDate.getFullYear(), calendarViewDate.getMonth() - 1, 1);
+    renderCalendar(todayKey());
+  });
+  document.getElementById('calNextBtn').addEventListener('click', () => {
+    calendarViewDate = new Date(calendarViewDate.getFullYear(), calendarViewDate.getMonth() + 1, 1);
+    renderCalendar(todayKey());
+  });
+
+  attachContainerDrop(document.getElementById('activeCard'), 'active');
+  attachContainerDrop(document.getElementById('backlogCard'), 'backlog');
+  attachPastDrop(document.getElementById('pastCard'));
+
+  // 주간 목표 — 현재 보고 있는 주(weekViewMonday) 기준으로 저장, 화면 새로 그리기는 하지 않아 타이핑 중 커서가 튀지 않음
+  document.getElementById('weekGoalInput').addEventListener('input', (e) => {
+    const key = todayKey(weekViewMonday || mondayOf(new Date()));
+    const existing = normalizeGoal(weeklyGoals[key]);
+    weeklyGoals[key] = { text: e.target.value, pct: existing.pct };
+    save();
+  });
+
+  // 목표 달성률 막대 — 직접 끌거나 막대를 클릭해서 체감 달성률을 표시 (체크박스 기반 자동 %와는 별개)
+  document.getElementById('weekGoalSlider').addEventListener('input', (e) => {
+    const key = todayKey(weekViewMonday || mondayOf(new Date()));
+    const existing = normalizeGoal(weeklyGoals[key]);
+    const pct = Number(e.target.value);
+    weeklyGoals[key] = { text: existing.text, pct: pct };
+    document.getElementById('weekGoalPctLabel').textContent = pct + '%';
+    save();
+  });
+
+  // 메모장 — backlog처럼 계속 남아있는 자유 메모, 날짜와 무관
+  document.getElementById('memoInput').addEventListener('input', (e) => {
+    memoText = e.target.value;
+    save();
+  });
+
+  // ---------- init ----------
+  loadLocal();
+  render();
+  setSyncStatus(driveAvailable() ? '동기화 확인 중...' : '저장됨 · ' + formatTime(localSavedAt) + ' (이 기기에만)');
+  syncFromDrive(false);
+
+  // catch day rollover even if the page is left open across midnight — snap the week/month views back to "today" too
+  let lastKey = todayKey();
+  setInterval(() => {
+    const nowKey = todayKey();
+    if (nowKey !== lastKey) {
+      lastKey = nowKey;
+      weekViewMonday = mondayOf(new Date());
+      calendarViewDate = new Date();
+      selectedCalendarDate = null;
+      render();
+    }
+  }, 60000);
+})();
+</script>
+</body>
+</html>

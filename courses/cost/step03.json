@@ -1,0 +1,44 @@
+{
+  "step": 3,
+  "title": "브랜드 MSRP 검수",
+  "hours": "Claude in Chrome",
+  "assetDir": "step01",
+  "slides": [
+    {
+      "image": "02_claude_in_chrome_2.png",
+      "summary": [
+        {
+          "label": "역할",
+          "text": "자동으로 웹사이트에서 MSRP 위반 여부를 클로드가 확인"
+        },
+        {
+          "label": "AS-IS",
+          "text": [
+            "채널별 판매가를 영업담당자가 수기 확인하여 전 채널 전수 점검 시 최소 30분 이상 소요",
+            "MSRP 위반을 사후에 인지하는 경우도 많았음"
+          ]
+        },
+        {
+          "label": "TO-BE",
+          "text": "클로드가 웹사이트에서 MSRP를 자동 수집하여 위반 여부를 5분 이내에 확인 가능하게 됨 → MSRP 위반 여부 조기 발견으로 시장 가격 질서 확립 및 브랜드사와의 장기적 신뢰도 제고"
+        },
+        {
+          "label": "결과",
+          "text": "건당 소요시간 30분 → 5분 (소요시간 약 83% 감소)"
+        }
+      ],
+      "action": null,
+      "assetDir": "step01"
+    },
+    {
+      "image": "01_claude_in_chrome.png",
+      "action": {
+        "label": "산출물",
+        "type": "download",
+        "path": "assets/cases/step01/files/BOJ_Relief_Sun_UK_price_check.xlsx",
+        "text": "BOJ Relief Sun UK 가격비교.xlsx"
+      },
+      "assetDir": "step01"
+    }
+  ]
+}

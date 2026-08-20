@@ -1,0 +1,46 @@
+{
+  "step": 1,
+  "title": "거래처DB 관리",
+  "hours": "구글 시트 × 노션 동기화",
+  "assetDir": "step05",
+  "slides": [
+    {
+      "image": "01_cms_list.png",
+      "summary": [
+        {
+          "label": "역할",
+          "text": "구글 거래처 DB를 글로벌팀 노션(영업 관련 자료 아카이브)에 동기화"
+        },
+        {
+          "label": "AS-IS",
+          "text": "거래처 정보 DB는 구글 시트 및 노션, 글로벌팀 영업 자료는 노션으로 나뉘어 데이터가 분산되어 있었음"
+        },
+        {
+          "label": "TO-BE",
+          "text": "구글 시트에 입력한 거래처 DB를 매일 노션에 자동 반영 → 데이터 아카이브 통합"
+        },
+        {
+          "label": "결과",
+          "text": "영업 데이터 통합으로 거래처 및 영업 정보를 빠르게 취합 가능. 이 덕분에 브랜드사 요청에도 효율적으로 대응 가능"
+        }
+      ],
+      "action": null,
+      "assetDir": "step05"
+    },
+    {
+      "image": "01_partner_db.png",
+      "action": null,
+      "assetDir": "step05"
+    },
+    {
+      "image": "02_partner_db.png",
+      "action": null,
+      "assetDir": "step05"
+    },
+    {
+      "image": "04_moev_channel_summary.png",
+      "action": null,
+      "assetDir": "step05"
+    }
+  ]
+}

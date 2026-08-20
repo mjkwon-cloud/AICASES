@@ -1,0 +1,49 @@
+{
+  "step": 4,
+  "title": "브랜드 성분 검수",
+  "hours": "INCI 규제 자동 필터",
+  "assetDir": "step07",
+  "slides": [
+    {
+      "image": "01_ingredient.png",
+      "summary": [
+        {
+          "label": "역할",
+          "text": "EU 규제 성분 검사툴로 전 브랜드/전 제품 규제 저촉 사항 확인"
+        },
+        {
+          "label": "AS-IS",
+          "text": "인적 자원의 한계로 전 브랜드/전 제품에 대한 규제 확인이 어려워 쉽백/리콜 등 이슈 발생 후에야 대응 가능"
+        },
+        {
+          "label": "TO-BE",
+          "text": [
+            "EU 규제 성분 툴로 전 브랜드/전 제품 전수 스크리닝 가능 → 이슈 발생 가능 제품들에 대한 사전 조치 가능",
+            "실투 뿐만 아니라 거래처와 브랜드사의 위험까지 사전 방지"
+          ]
+        },
+        {
+          "label": "결과",
+          "text": "인적 자원 한계로 전 제품 스크리닝은 불가능 → 3주 동안 INCI 보유 전제품을 스크리닝하여 EU 규제 저촉 제품 확인 가능"
+        }
+      ],
+      "action": null,
+      "assetDir": "step07"
+    },
+    {
+      "image": "02_ingredient.png",
+      "action": null,
+      "assetDir": "step07"
+    },
+    {
+      "image": "03_ingredient.png",
+      "action": null,
+      "assetDir": "step07"
+    },
+    {
+      "image": "04_ingredient.png",
+      "action": null,
+      "assetDir": "step07"
+    }
+  ]
+}

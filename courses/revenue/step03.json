@@ -1,0 +1,41 @@
+{
+  "step": 3,
+  "title": "시장 조사",
+  "hours": "채널 조사 자동화",
+  "assetDir": "step08",
+  "slides": [
+    {
+      "image": "01_market_research.png",
+      "summary": [
+        {
+          "label": "역할",
+          "text": "단기간에 대량의 채널 조사를 가능케 하는 자동화 툴"
+        },
+        {
+          "label": "AS-IS",
+          "text": "1개 채널 조사에 최소 1시간 이상 소요되어 아웃바운드 영업을 위한 포괄적인 영업지도 구축 난항"
+        },
+        {
+          "label": "TO-BE",
+          "text": "자동 조사 툴 배포로 채널당 10분 이하로 단축 → 3주간 인당 평균 60개 채널 확보 (동일 퀄리티 유지)"
+        },
+        {
+          "label": "결과",
+          "text": "건당 1시간 이상 소요되던 채널 조사 업무를 10분으로 단축 (소요시간 약 83% 단축), 글로벌팀 사원 6명이 3주간 인당 평균 60개 채널 조사하여 아웃바운드 활용 가능한 DB 구축"
+        }
+      ],
+      "action": null,
+      "assetDir": "step08"
+    },
+    {
+      "image": "02_market_research.png",
+      "action": null,
+      "assetDir": "step08"
+    },
+    {
+      "image": "03_market_research.png",
+      "action": null,
+      "assetDir": "step08"
+    }
+  ]
+}

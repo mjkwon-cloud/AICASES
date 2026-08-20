@@ -1,0 +1,83 @@
+{
+  "step": 4,
+  "title": "매출/채널 대시보드 제작",
+  "hours": "데이터 기반 영업 나침반",
+  "assetDir": "step04",
+  "slides": [
+    {
+      "image": "01_brand_revenue_trend.png",
+      "summary": [
+        {
+          "label": "역할",
+          "text": "팀 전체가 실시간으로 실적을 모니터링하고 인사이트를 도출할 수 있는 '데이터 기반 영업 전략 나침반'"
+        },
+        {
+          "label": "AS-IS",
+          "text": "매번 엑셀 데이터를 다운로드하여 수기로 취합·가공하여 물리적 시간적 리소스 낭비가 큼"
+        },
+        {
+          "label": "TO-BE",
+          "text": "실시간 대시보드 연동으로 가공 비용 대폭 절감 → 팀 전원이 현시점 실적 추이(매출/이익)를 상시 파악하며 데이터 기반의 피드백 및 영업 의사결정 속도 제고"
+        },
+        {
+          "label": "결과",
+          "text": "데이터 취합·가공 리드타임 95% 이상 단축 (건당 최대 4시간 → 5분 이내)"
+        }
+      ],
+      "action": {
+        "label": "산출물",
+        "type": "download",
+        "path": "assets/cases/step04/files/brand_revenue_trend_2026_1_5.xlsx",
+        "text": "2026년 1-5월 법인 브랜드 매출 추이.xlsx"
+      },
+      "assetDir": "step04"
+    },
+    {
+      "image": "01_revenue_1.png",
+      "action": {
+        "label": "산출물",
+        "type": "download",
+        "path": "assets/cases/step04/files/globalteam_tracking_2026.xlsx",
+        "text": "글로벌팀_트래킹(2026).xlsx"
+      },
+      "assetDir": "step04"
+    },
+    {
+      "image": "02_channel_1.png",
+      "action": null,
+      "assetDir": "step04"
+    },
+    {
+      "image": "03_revenue_2.png",
+      "action": {
+        "label": "산출물",
+        "items": [
+          {
+            "desc": "결과",
+            "link": {
+              "href": "https://script.google.com/a/macros/siliconii.net/s/AKfycbwyZc4SeNfZq7ldclpmFmRC-23aQTMlJEgZwlEv-NRdwFWfdVrbCZk31RMdNdUnlhUb3g/exec",
+              "text": "매출 대시보드 열기"
+            }
+          }
+        ]
+      },
+      "assetDir": "step04"
+    },
+    {
+      "image": "04_channel_2.png",
+      "action": {
+        "label": "산출물",
+        "items": [
+          {
+            "desc": "결과",
+            "link": {
+              "href": "https://mjkwon-cloud.github.io/globalmap/",
+              "text": "채널 대시보드 열기"
+            }
+          }
+        ]
+      },
+      "assetDir": "step04"
+    }
+  ]
+}

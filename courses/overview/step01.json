@@ -1,0 +1,10 @@
+{
+  "step": 1,
+  "title": "목차",
+  "slides": [
+    {
+      "html": "<div class=\"toc\"><div class=\"toc-col\"><div class=\"toc-col-head\"><span class=\"toc-tag basic\">OVERVIEW</span><span class=\"toc-col-title\">개요</span></div><ol class=\"toc-list\"><li><span class=\"toc-num\">01</span><span class=\"toc-item\">목차</span></li><li><span class=\"toc-num\">02</span><span class=\"toc-item\">배경</span></li></ol></div><div class=\"toc-col\"><div class=\"toc-col-head\"><span class=\"toc-tag advanced\">COST</span><span class=\"toc-col-title\">비용절감</span></div><ol class=\"toc-list\"><li><span class=\"toc-num\">01</span><span class=\"toc-item\">타임라인 관리</span></li><li><span class=\"toc-num\">02</span><span class=\"toc-item\">슬랙 히스토리 파악</span></li><li><span class=\"toc-num\">03</span><span class=\"toc-item\">브랜드 MSRP 검수</span></li><li><span class=\"toc-num\">04</span><span class=\"toc-item\">브랜드 성분 검수</span></li></ol></div><div class=\"toc-col\"><div class=\"toc-col-head\"><span class=\"toc-tag automation\">REVENUE</span><span class=\"toc-col-title\">매출확대</span></div><ol class=\"toc-list\"><li><span class=\"toc-num\">01</span><span class=\"toc-item\">거래처DB 관리</span></li><li><span class=\"toc-num\">02</span><span class=\"toc-item\">신규오더 관리</span></li><li><span class=\"toc-num\">03</span><span class=\"toc-item\">시장 조사</span></li><li><span class=\"toc-num\">04</span><span class=\"toc-item\">매출/채널 대시보드 제작</span></li><li><span class=\"toc-num\">05</span><span class=\"toc-item\">매출 집중 자료 제작</span></li><li><span class=\"toc-num\">06</span><span class=\"toc-item\">맞춤형 영업자료 제작</span></li><li><span class=\"toc-num\">07</span><span class=\"toc-item\">영업이익 확대를 위한 제안</span></li></ol></div></div>",
+      "action": null
+    }
+  ]
+}

@@ -1,0 +1,449 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #fff; }
+.wrap {
+  width: 780px;
+  margin: 0 auto;
+  background: #fff;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  padding: 0 0 32px;
+}
+.header {
+  background: #0B2C6E;
+  padding: 32px 40px 28px;
+  color: #fff;
+}
+.header-flag {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #8AAFD4;
+  margin-bottom: 8px;
+}
+.header-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.header-sub {
+  font-size: 13px;
+  color: #8AAFD4;
+}
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-bottom: 2px solid #E8ECF2;
+}
+.kpi {
+  padding: 20px 18px 18px;
+  border-right: 1px solid #E8ECF2;
+  background: #F7F9FC;
+}
+.kpi:last-child { border-right: none; }
+.kpi-label {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #7A8BA6;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.kpi-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0B2C6E;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.kpi-change {
+  font-size: 11px;
+  color: #1A9E72;
+  font-weight: 600;
+}
+.kpi-change.rec { color: #E04B4B; }
+.section {
+  padding: 24px 40px 0;
+}
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #0B2C6E;
+}
+.section-source {
+  font-size: 10px;
+  color: #A0AABB;
+}
+.chart-wrap {
+  position: relative;
+  width: 100%;
+}
+.divider {
+  height: 1px;
+  background: #E8ECF2;
+  margin: 24px 40px 0;
+}
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.two-col .section {
+  padding: 24px 24px 0;
+}
+.two-col .section:first-child {
+  padding-left: 40px;
+  padding-right: 20px;
+  border-right: 1px solid #E8ECF2;
+}
+.two-col .section:last-child {
+  padding-left: 20px;
+  padding-right: 40px;
+}
+.legend-row {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #6B7A8D;
+}
+.legend-sq {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.footer {
+  margin: 28px 40px 0;
+  padding-top: 16px;
+  border-top: 1px solid #E8ECF2;
+}
+.footer-text {
+  font-size: 10px;
+  color: #A0AABB;
+  line-height: 1.7;
+}
+.footer-bold {
+  font-weight: 700;
+  color: #7A8BA6;
+}
+.rank-badge {
+  display: inline-block;
+  background: #E8F0FB;
+  color: #0B2C6E;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.highlight-box {
+  background: #F0F5FF;
+  border-left: 3px solid #0B2C6E;
+  padding: 10px 14px;
+  margin-top: 12px;
+  border-radius: 0 4px 4px 0;
+}
+.highlight-box p {
+  font-size: 11px;
+  color: #3A4A6B;
+  line-height: 1.6;
+}
+.highlight-box strong {
+  color: #0B2C6E;
+  font-weight: 700;
+}
+</style>
+
+<div class="wrap">
+
+  <div class="header">
+    <p class="header-flag">🇰🇷 K-Beauty Industry Report · 2020–2025</p>
+    <p class="header-title">South Korea Cosmetics Market:<br>5-Year Growth Overview</p>
+    <p class="header-sub">Data source: Ministry of Food and Drug Safety (MFDS), Republic of Korea · Korea Health Industry Development Institute (KHIDI)</p>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <p class="kpi-label">2025 Export</p>
+      <p class="kpi-value">$11.4B</p>
+      <p class="kpi-change">↑ 12.3% YoY · All-time high</p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">2024 Production</p>
+      <p class="kpi-value">₩17.5T</p>
+      <p class="kpi-change">↑ 20.9% YoY · Record high</p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">2024 Trade Surplus</p>
+      <p class="kpi-value">$8.9B</p>
+      <p class="kpi-change">↑ All-time high surplus</p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">Global Export Rank</p>
+      <p class="kpi-value">#3</p>
+      <p class="kpi-change">↑ From #4 in 2023</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Annual Export Value (USD Billion)</span>
+      <span class="section-source">Source: MFDS Official Statistics</span>
+    </div>
+    <div class="legend-row">
+      <span class="legend-item"><span class="legend-sq" style="background:#1A9E72;"></span>Export (USD B)</span>
+      <span class="legend-item"><span class="legend-sq" style="background:#0B2C6E; opacity:0.25; border:1px solid #0B2C6E;"></span>Trade Surplus (USD B)</span>
+    </div>
+    <div class="chart-wrap" style="height:200px;">
+      <canvas id="cExport" role="img" aria-label="Korea cosmetics annual export value 2020 to 2025. 2020: $7.6B, 2021: $9.2B, 2022: $8.0B, 2023: $8.5B, 2024: $10.2B, 2025: $11.4B.">2020: $7.6B, 2021: $9.2B, 2022: $8.0B, 2023: $8.5B, 2024: $10.2B, 2025: $11.4B</canvas>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="two-col">
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title">Production Value (KRW Trillion)</span>
+        <span class="section-source">MFDS</span>
+      </div>
+      <div class="legend-row">
+        <span class="legend-item"><span class="legend-sq" style="background:#1C5BBE;"></span>Production (₩T)</span>
+      </div>
+      <div class="chart-wrap" style="height:175px;">
+        <canvas id="cProd" role="img" aria-label="Korea cosmetics production 2020-2024. 2020: ₩15.2T, 2021: ₩16.7T, 2022: ₩13.6T, 2023: ₩14.5T, 2024: ₩17.5T">2020: ₩15.2T, 2021: ₩16.7T, 2022: ₩13.6T, 2023: ₩14.5T, 2024: ₩17.5T</canvas>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title">No. of Companies (Units)</span>
+        <span class="section-source">MFDS</span>
+      </div>
+      <div class="legend-row">
+        <span class="legend-item"><span class="legend-sq" style="background:#7159CC;"></span>Distributors</span>
+        <span class="legend-item"><span class="legend-sq" style="background:#E07A1A;"></span>Manufacturers</span>
+      </div>
+      <div class="chart-wrap" style="height:175px;">
+        <canvas id="cCompany" role="img" aria-label="Korea cosmetics companies 2020-2024. Distributors grew from 19,769 to 27,932. Manufacturers grew from 4,071 to 4,439.">Distributors: 2020: 19,769 / 2021: 22,716 / 2022: 28,015 / 2023: 31,524 / 2024: 27,932. Manufacturers: 4,071 to 4,439.</canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="two-col">
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title">2025 Top Export Markets</span>
+        <span class="section-source">MFDS 2025</span>
+      </div>
+      <div style="margin-top: 4px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding: 7px 0; border-bottom: 1px solid #EEF1F6;">
+          <span style="font-size:12px; color:#3A4A6B; font-weight:600;">🇺🇸 United States</span>
+          <span style="font-size:12px; font-weight:700; color:#0B2C6E;">$2.20B <span style="font-size:10px; color:#1A9E72;">↑15.1%</span></span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding: 7px 0; border-bottom: 1px solid #EEF1F6;">
+          <span style="font-size:12px; color:#3A4A6B; font-weight:600;">🇨🇳 China</span>
+          <span style="font-size:12px; font-weight:700; color:#0B2C6E;">$2.00B <span style="font-size:10px; color:#E04B4B;">↓19.2%</span></span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding: 7px 0; border-bottom: 1px solid #EEF1F6;">
+          <span style="font-size:12px; color:#3A4A6B; font-weight:600;">🇯🇵 Japan</span>
+          <span style="font-size:12px; font-weight:700; color:#0B2C6E;">$1.10B <span style="font-size:10px; color:#1A9E72;">↑5.0%</span></span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding: 7px 0; border-bottom: 1px solid #EEF1F6;">
+          <span style="font-size:12px; color:#3A4A6B; font-weight:600;">🇭🇰 Hong Kong</span>
+          <span style="font-size:12px; font-weight:700; color:#0B2C6E;">$0.71B <span style="font-size:10px; color:#1A9E72;">↑21.6%</span></span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding: 7px 0;">
+          <span style="font-size:12px; color:#3A4A6B; font-weight:600;">🌍 Others (198 countries)</span>
+          <span style="font-size:12px; font-weight:700; color:#0B2C6E;">$5.42B</span>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title">2025 Export by Category</span>
+        <span class="section-source">MFDS 2025</span>
+      </div>
+      <div style="margin-top: 4px;">
+        <div style="margin-bottom: 10px;">
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#6B7A8D; margin-bottom:4px;">
+            <span>Skincare</span><span style="font-weight:700; color:#0B2C6E;">$8.54B (74.7%)</span>
+          </div>
+          <div style="background:#E8ECF2; height:6px; border-radius:3px;">
+            <div style="background:#1C5BBE; height:6px; border-radius:3px; width:74.7%;"></div>
+          </div>
+        </div>
+        <div style="margin-bottom: 10px;">
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#6B7A8D; margin-bottom:4px;">
+            <span>Color Cosmetics</span><span style="font-weight:700; color:#0B2C6E;">$1.51B (13.2%)</span>
+          </div>
+          <div style="background:#E8ECF2; height:6px; border-radius:3px;">
+            <div style="background:#7159CC; height:6px; border-radius:3px; width:13.2%;"></div>
+          </div>
+        </div>
+        <div style="margin-bottom: 10px;">
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#6B7A8D; margin-bottom:4px;">
+            <span>Cleansing</span><span style="font-weight:700; color:#0B2C6E;">$0.59B (5.2%)</span>
+          </div>
+          <div style="background:#E8ECF2; height:6px; border-radius:3px;">
+            <div style="background:#1A9E72; height:6px; border-radius:3px; width:5.2%;"></div>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#6B7A8D; margin-bottom:4px;">
+            <span>Fragrance & Others</span><span style="font-weight:700; color:#0B2C6E;">$0.79B (6.9%)</span>
+          </div>
+          <div style="background:#E8ECF2; height:6px; border-radius:3px;">
+            <div style="background:#E07A1A; height:6px; border-radius:3px; width:6.9%;"></div>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top: 12px;">
+          <p>Shipped to <strong>202 countries</strong> in 2025 (up from 172 in 2024). US overtook China as <strong>#1 export destination</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p class="footer-text">
+      <span class="footer-bold">Data Sources:</span> Ministry of Food and Drug Safety (MFDS), Republic of Korea — Official Annual Cosmetics Production, Export & Import Statistics (2020–2025) ·
+      Korea Health Industry Development Institute (KHIDI) 2024 Health Industry Statistics ·
+      Korea Herald (Jan 2026) · Personal Care Magazine (Jan 2026) · Korea.net Official Release (May 2025)<br>
+      <span class="footer-bold">Notes:</span> Production figures in KRW Trillion (₩T); Export/Surplus figures in USD Billion.
+      2022 decline due to reduced China exports &amp; decreased inbound tourism. 2025 export data: MFDS official release (Jan 2026).
+      * 2025 production data not yet officially released as of May 2026.
+    </p>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const years6 = ['2020','2021','2022','2023','2024','2025'];
+const exportData = [7.6, 9.2, 8.0, 8.5, 10.2, 11.4];
+const surplusData = [null, 7.9, 6.6, 7.1, 8.9, null];
+
+new Chart(document.getElementById('cExport'), {
+  type: 'bar',
+  data: {
+    labels: years6,
+    datasets: [
+      {
+        label: 'Export (USD B)',
+        data: exportData,
+        backgroundColor: years6.map((y,i) => i===5 ? '#1A9E72' : (i===4 ? '#2BB88A' : '#9FE1CB')),
+        borderRadius: 4,
+        order: 2,
+      },
+      {
+        label: 'Trade Surplus (USD B)',
+        data: surplusData,
+        type: 'line',
+        borderColor: '#0B2C6E',
+        backgroundColor: 'rgba(11,44,110,0.08)',
+        fill: false,
+        pointBackgroundColor: '#0B2C6E',
+        pointRadius: 5,
+        tension: 0.35,
+        borderWidth: 2,
+        borderDash: [4,3],
+        order: 1,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: { label: ctx => ' $' + ctx.parsed.y.toFixed(1) + 'B' }
+    }},
+    scales: {
+      x: { ticks: { color: '#7A8BA6', font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+      y: { ticks: { color: '#7A8BA6', font: { size: 11 }, callback: v => '$' + v + 'B' }, grid: { color: 'rgba(0,0,0,0.05)' }, min: 5 }
+    }
+  }
+});
+
+const years5 = ['2020','2021','2022','2023','2024'];
+new Chart(document.getElementById('cProd'), {
+  type: 'bar',
+  data: {
+    labels: years5,
+    datasets: [{
+      label: 'Production (₩T)',
+      data: [15.16, 16.65, 13.59, 14.51, 17.54],
+      backgroundColor: years5.map((y,i) => i===4 ? '#1C5BBE' : '#B5D4F4'),
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: { label: ctx => ' ₩' + ctx.parsed.y.toFixed(2) + 'T' }
+    }},
+    scales: {
+      x: { ticks: { color: '#7A8BA6', font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+      y: { ticks: { color: '#7A8BA6', font: { size: 11 }, callback: v => '₩' + v + 'T' }, grid: { color: 'rgba(0,0,0,0.05)' }, min: 10 }
+    }
+  }
+});
+
+new Chart(document.getElementById('cCompany'), {
+  type: 'line',
+  data: {
+    labels: years5,
+    datasets: [
+      {
+        label: 'Distributors',
+        data: [19769, 22716, 28015, 31524, 27932],
+        borderColor: '#7159CC',
+        backgroundColor: 'transparent',
+        pointBackgroundColor: '#7159CC',
+        pointRadius: 4,
+        tension: 0.3,
+        borderWidth: 2,
+      },
+      {
+        label: 'Manufacturers',
+        data: [4071, 4428, 4548, 4567, 4439],
+        borderColor: '#E07A1A',
+        backgroundColor: 'transparent',
+        pointBackgroundColor: '#E07A1A',
+        pointRadius: 4,
+        tension: 0.3,
+        borderWidth: 2,
+        borderDash: [5,4],
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: { label: ctx => ' ' + ctx.parsed.y.toLocaleString() + ' companies' }
+    }},
+    scales: {
+      x: { ticks: { color: '#7A8BA6', font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+      y: { ticks: { color: '#7A8BA6', font: { size: 11 }, callback: v => v.toLocaleString() }, grid: { color: 'rgba(0,0,0,0.05)' } }
+    }
+  }
+});
+</script>

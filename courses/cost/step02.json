@@ -1,0 +1,55 @@
+{
+  "step": 2,
+  "title": "슬랙 히스토리 파악",
+  "hours": "Claude 에이전트 · Slack MCP",
+  "assetDir": "step10",
+  "slides": [
+    {
+      "image": "01_slack_asis.png",
+      "summary": [
+        {
+          "label": "역할",
+          "text": "클로드 에이전트, MCP를 통한 슬랙 검색 효율"
+        },
+        {
+          "label": "AS-IS",
+          "text": "브랜드 관련 정보 산재, 필요 정보 서치에 불필요한 시간 소요 및 미스컴 발생"
+        },
+        {
+          "label": "TO-BE",
+          "text": [
+            "공지 및 업데이트(리뉴얼·CPNP·신규입점 등) 일괄 서치·정리하여 전체 히스토리를 한눈에 파악, 타부서와의 미스컴 방지, 업무 피로도 경감",
+            "→ 영업 추가 활용 가능 (e.g. [Monthly New Brands])"
+          ]
+        },
+        {
+          "label": "결과",
+          "text": "1일 평균 1시간 소요 → 5분 (12배 효율 향상)"
+        }
+      ],
+      "action": null,
+      "assetDir": "step10"
+    },
+    {
+      "image": "02_slack_search_2.png",
+      "action": null,
+      "assetDir": "step10"
+    },
+    {
+      "image": "03_slack_mail_sent.png",
+      "action": {
+        "label": "산출물",
+        "items": [
+          {
+            "desc": "결과",
+            "link": {
+              "href": "assets/cases/step10/files/monthly_new_brands.html",
+              "text": "[Monthly New Brands] 신규 입점 브랜드 열기"
+            }
+          }
+        ]
+      },
+      "assetDir": "step10"
+    }
+  ]
+}

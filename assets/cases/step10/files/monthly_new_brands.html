@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New B2B Brands — August 2026</title>
+<style>
+:root{
+  --bg:#f5f7f8; --surface:#ffffff; --surface-2:#eff2f4;
+  --ink:#101720; --ink-2:#37424e; --muted:#616d7a; --faint:#93a0ad;
+  --line:#e6eaee; --line-2:#d3dae1;
+  --accent:#0e7c66; --accent-ink:#0a5c4b; --accent-soft:#e0f1ec;
+  --new:#2563eb; --new-soft:#e6edfd; --new-ink:#1d4fd7;
+  --amber:#b45309; --amber-soft:#fdf0dd; --amber-ink:#92400e;
+  --shadow:0 1px 2px rgba(16,23,32,.05), 0 10px 30px -18px rgba(16,23,32,.28);
+  --r:14px;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,"Cascadia Mono","Segoe UI Mono","Roboto Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0c1116; --surface:#141b22; --surface-2:#1b232c;
+  --ink:#e9eef3; --ink-2:#c3ccd5; --muted:#8a97a4; --faint:#647180;
+  --line:#232d38; --line-2:#313d4a;
+  --accent:#3ec6a6; --accent-ink:#7fe0c8; --accent-soft:#12302a;
+  --new:#5b8bff; --new-soft:#16233f; --new-ink:#9db8ff;
+  --amber:#f0b357; --amber-soft:#33260f; --amber-ink:#f4c987;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 14px 34px -20px rgba(0,0,0,.7);
+}}
+:root[data-theme="dark"]{ --bg:#0c1116; --surface:#141b22; --surface-2:#1b232c; --ink:#e9eef3; --ink-2:#c3ccd5; --muted:#8a97a4; --faint:#647180; --line:#232d38; --line-2:#313d4a; --accent:#3ec6a6; --accent-ink:#7fe0c8; --accent-soft:#12302a; --new:#5b8bff; --new-soft:#16233f; --new-ink:#9db8ff; --amber:#f0b357; --amber-soft:#33260f; --amber-ink:#f4c987; --shadow:0 1px 2px rgba(0,0,0,.35), 0 14px 34px -20px rgba(0,0,0,.7); }
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); line-height:1.5;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+.wrap{max-width:920px; margin:0 auto; padding:40px 24px 64px}
+
+/* header */
+header.top{margin-bottom:28px}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:12.5px; font-weight:650; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--accent-ink); background:var(--accent-soft);
+  padding:6px 12px; border-radius:999px;
+}
+.eyebrow .dot{width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%, transparent)}
+h1{font-size:30px; line-height:1.15; margin:16px 0 10px; letter-spacing:-.02em; font-weight:750}
+.sub{color:var(--ink-2); font-size:15px; max-width:70ch; margin:0 0 16px}
+.scope{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px}
+.scope .pill{
+  font-size:12.5px; color:var(--ink-2); background:var(--surface); border:1px solid var(--line);
+  padding:5px 11px; border-radius:999px; font-weight:550;
+}
+.asof{
+  font-size:12.5px; color:var(--muted); font-family:var(--mono);
+  background:var(--surface-2); border:1px solid var(--line);
+  border-radius:10px; padding:9px 13px;
+}
+
+/* stats */
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0}
+.stat{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:10px 16px; box-shadow:var(--shadow); position:relative; overflow:hidden;
+}
+.stat::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--line-2)}
+.stat.accent::before{background:var(--accent)}
+.stat.new::before{background:var(--new)}
+.stat .n{font-size:clamp(1.35rem, 2.4vw, 1.7rem); font-weight:770; letter-spacing:-.02em; line-height:1}
+.stat.accent .n{color:var(--accent-ink)}
+.stat.new .n{color:var(--new-ink)}
+.stat .label{margin-top:4px; font-size:.74rem; color:var(--muted); line-height:1.35}
+
+/* sections */
+section{margin-top:34px}
+.sh{display:flex; align-items:baseline; gap:10px; margin-bottom:14px}
+.sh h2{font-size:18px; font-weight:700; letter-spacing:-.01em; margin:0}
+.sh .cnt{font-size:12.5px; color:var(--muted); font-family:var(--mono); background:var(--surface-2); border:1px solid var(--line); padding:2px 8px; border-radius:999px}
+
+/* panel + table */
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden}
+.scroll{overflow-x:auto}
+table{width:100%; border-collapse:collapse; font-size:13.5px; min-width:760px}
+thead th{
+  text-align:left; font-size:11.5px; font-weight:650; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--muted); background:var(--surface-2);
+  padding:12px 14px; border-bottom:1px solid var(--line-2); white-space:nowrap; position:sticky; top:0;
+}
+tbody td{padding:14px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--ink-2)}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--accent-soft)}
+.brand-en{font-weight:680; color:var(--ink); font-size:14px}
+.brand-ko{color:var(--muted); font-size:12.5px; margin-top:1px}
+.brand-note{color:var(--faint); font-size:11.5px; margin-top:4px; font-style:italic}
+.mk{display:block; margin-bottom:2px; line-height:1.5}
+.mk .fl{margin-right:5px}
+.tbd{color:var(--faint); font-style:italic}
+
+/* badges */
+.badge{display:inline-block; font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:999px; line-height:1.4; border:1px solid transparent}
+.badge.amber{color:var(--amber-ink); background:var(--amber-soft); border-color:color-mix(in srgb,var(--amber) 30%, transparent)}
+.badge.muted{color:var(--muted); background:var(--surface-2); border-color:var(--line)}
+.badge.new{color:var(--new-ink); background:var(--new-soft); border-color:color-mix(in srgb,var(--new) 30%, transparent)}
+.cert-note{color:var(--faint); font-size:11px; margin-top:5px}
+
+/* mobile cards */
+.cards{display:none; padding:12px; gap:12px; flex-direction:column}
+.card{background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:14px}
+.card-brand{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:10px}
+.card-brand .en{font-weight:700; color:var(--ink); font-size:15px}
+.card-brand .ko{color:var(--muted); font-size:12.5px}
+.cb-meta{margin:0; display:grid; grid-template-columns:auto 1fr; gap:6px 14px}
+.cb-meta dt{color:var(--faint); font-size:11px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; padding-top:1px}
+.cb-meta dd{margin:0; color:var(--ink-2); font-size:13px}
+
+/* note box */
+.note{
+  background:var(--accent-soft); border:1px solid color-mix(in srgb,var(--accent) 26%, transparent);
+  border-radius:var(--r); padding:18px 20px; margin-top:34px;
+}
+.note h3{margin:0 0 8px; font-size:14px; font-weight:700; color:var(--accent-ink); letter-spacing:.01em}
+.note p{margin:0; font-size:13.5px; color:var(--ink-2)}
+.note ul{margin:8px 0 0; padding-left:18px; font-size:13.5px; color:var(--ink-2)}
+.note li{margin:3px 0}
+.note code{font-family:var(--mono); font-size:12px; background:var(--surface); padding:1px 5px; border-radius:5px; border:1px solid var(--line)}
+
+/* footer */
+footer{margin-top:40px; padding-top:22px; border-top:1px solid var(--line)}
+.srcs{font-size:12.5px; color:var(--muted)}
+.srcs .lbl{font-weight:650; color:var(--ink-2)}
+.srcs ul{margin:8px 0 0; padding-left:18px}
+.srcs li{margin:2px 0}
+.disc{margin-top:16px; font-size:11.5px; color:var(--faint); line-height:1.5}
+
+@media (max-width:720px){
+  .wrap{padding:28px 16px 48px}
+  h1{font-size:24px}
+  .stats{grid-template-columns:1fr; gap:10px}
+  .scroll{display:none}
+  .cards{display:flex}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <span class="eyebrow"><span class="dot"></span>Silicon2 · B2B New Brands</span>
+    <h1>New B2B Brands — August 2026</h1>
+    <p class="sub">New brands available for B2B wholesale, confirmed as of August 19, 2026. For a detailed brand introduction, please contact your account manager.</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat accent">
+      <div class="n">4</div>
+      <div class="label">New B2B brands, August 2026</div>
+    </div>
+    <div class="stat new">
+      <div class="n">2</div>
+      <div class="label">with country exclusivity (UIQ, CELL FUSION C)</div>
+    </div>
+    <div class="stat">
+      <div class="n">19</div>
+      <div class="label">exclusive markets total (13 + 6)</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="sh">
+      <h2>New brands</h2>
+      <span class="cnt">4 brands</span>
+    </div>
+    <div class="panel">
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Brand (EN / KO)</th>
+              <th>Category</th>
+              <th>Hero / Best SKU</th>
+              <th>Exclusive markets</th>
+              <th>Certifications</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="brand-en">LAUNDRYOU</div>
+                <div class="brand-ko">런드리유</div>
+                <div class="brand-note">#1 in cleansing category at Olive Young</div>
+              </td>
+              <td>Clean Beauty · Cleansing &amp; Body</td>
+              <td>
+                Soft Body Red Glove Clean <span style="font-family:var(--mono);font-size:11.5px;color:var(--muted)">(LDUC02-CPBG, 23ml×5ea)</span>
+                <div style="color:var(--muted);margin-top:4px;font-size:12.5px">Jelly Mist · Face Gargle</div>
+              </td>
+              <td><span class="tbd">— none stated</span></td>
+              <td><span class="badge muted">Not stated</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="brand-en">RENOPTI</div>
+                <div class="brand-ko">레놉티</div>
+                <div class="brand-note">Premium selection at The Hyundai · #1-selling HFF brand</div>
+              </td>
+              <td>Health Functional Food · Inner Beauty (Collagen)</td>
+              <td>
+                Synergy Glow <span style="color:var(--muted)">(시너업 글로우)</span>
+                <div style="color:var(--muted);margin-top:4px;font-size:12.5px">3 SKUs — 2 ingestible collagen + 1 collagen gel mask · "eat + apply" routine · French collagen raw material</div>
+              </td>
+              <td><span class="tbd">— none stated</span></td>
+              <td><span class="badge muted">Not stated</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="brand-en">CELL FUSION C</div>
+                <div class="brand-ko">셀퓨전씨</div>
+                <div class="brand-note">by CMS Lab (씨엠에스랩)</div>
+              </td>
+              <td>Derma · Sun Care</td>
+              <td>
+                Sunscreen
+                <div style="color:var(--muted);margin-top:4px;font-size:12.5px">Post Alpha Cooling Pad</div>
+              </td>
+              <td>
+                <span class="badge new">6 markets</span>
+                <div style="margin-top:8px">
+                  <span class="mk"><span class="fl">🇰🇷</span>Korea</span>
+                  <span class="mk"><span class="fl">🇯🇵</span>Japan</span>
+                  <span class="mk"><span class="fl">🇵🇱</span>Poland</span>
+                  <span class="mk"><span class="fl">🇬🇧</span>UK <span style="color:var(--faint);font-size:11px">(releases H2)</span></span>
+                  <span class="mk"><span class="fl">🇨🇳</span>China</span>
+                  <span class="mk"><span class="fl">🇹🇼</span>Taiwan</span>
+                </div>
+              </td>
+              <td><span class="badge muted">Not stated</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="brand-en">UIQ</div>
+                <div class="brand-ko">유이크</div>
+              </td>
+              <td>Skincare (K-Beauty)</td>
+              <td><span class="tbd">TBD — not stated</span></td>
+              <td>
+                <span class="badge new">13 markets</span>
+                <div style="margin-top:8px">
+                  <span class="mk"><span class="fl">🇨🇴</span>Colombia</span>
+                  <span class="mk"><span class="fl">🇨🇷</span>Costa Rica</span>
+                  <span class="mk"><span class="fl">🇮🇩</span>Indonesia</span>
+                  <span class="mk"><span class="fl">🇰🇿</span>Kazakhstan</span>
+                  <span class="mk"><span class="fl">🇰🇬</span>Kyrgyzstan</span>
+                  <span class="mk"><span class="fl">🇺🇿</span>Uzbekistan</span>
+                  <span class="mk"><span class="fl">🇹🇯</span>Tajikistan</span>
+                  <span class="mk"><span class="fl">🇧🇾</span>Belarus</span>
+                  <span class="mk"><span class="fl">🇲🇾</span>Malaysia</span>
+                  <span class="mk"><span class="fl">🇨🇳</span>China</span>
+                  <span class="mk"><span class="fl">🇳🇿</span>New Zealand</span>
+                  <span class="mk"><span class="fl">🇦🇺</span>Australia</span>
+                  <span class="mk"><span class="fl">🇯🇵</span>Japan</span>
+                </div>
+              </td>
+              <td>
+                <span class="badge amber">CPNP pending</span>
+                <span class="badge amber">SCPN pending</span>
+                <span class="badge amber">MoCRA pending</span>
+                <div class="cert-note">EU/UK/US not available yet</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card-brand"><span class="en">LAUNDRYOU</span><span class="ko">런드리유</span></div>
+          <dl class="cb-meta">
+            <dt>Category</dt><dd>Clean Beauty · Cleansing &amp; Body</dd>
+            <dt>Hero SKU</dt><dd>Soft Body Red Glove Clean (LDUC02-CPBG, 23ml×5ea) · Jelly Mist · Face Gargle</dd>
+            <dt>Exclusive</dt><dd><span class="tbd">— none stated</span></dd>
+            <dt>Certs</dt><dd><span class="badge muted">Not stated</span></dd>
+            <dt>Note</dt><dd>#1 in cleansing category at Olive Young</dd>
+            <dt>Announced</dt><dd>Aug 11, 2026</dd>
+          </dl>
+        </div>
+        <div class="card">
+          <div class="card-brand"><span class="en">RENOPTI</span><span class="ko">레놉티</span></div>
+          <dl class="cb-meta">
+            <dt>Category</dt><dd>Health Functional Food · Inner Beauty (Collagen)</dd>
+            <dt>Hero SKU</dt><dd>Synergy Glow (시너업 글로우) · 3 SKUs (2 ingestible collagen + 1 collagen gel mask), "eat + apply" routine · French collagen raw material</dd>
+            <dt>Exclusive</dt><dd><span class="tbd">— none stated</span></dd>
+            <dt>Certs</dt><dd><span class="badge muted">Not stated</span></dd>
+            <dt>Note</dt><dd>Premium selection at The Hyundai · #1-selling HFF brand</dd>
+            <dt>Announced</dt><dd>Aug 13, 2026</dd>
+          </dl>
+        </div>
+        <div class="card">
+          <div class="card-brand"><span class="en">CELL FUSION C</span><span class="ko">셀퓨전씨</span></div>
+          <dl class="cb-meta">
+            <dt>Category</dt><dd>Derma · Sun Care (by CMS Lab / 씨엠에스랩)</dd>
+            <dt>Hero SKU</dt><dd>Sunscreen · Post Alpha Cooling Pad</dd>
+            <dt>Exclusive</dt><dd><span class="badge new">6 markets</span><br>🇰🇷 Korea · 🇯🇵 Japan · 🇵🇱 Poland · 🇬🇧 UK (releases H2) · 🇨🇳 China · 🇹🇼 Taiwan</dd>
+            <dt>Certs</dt><dd><span class="badge muted">Not stated</span></dd>
+            <dt>Announced</dt><dd>Aug 14, 2026</dd>
+          </dl>
+        </div>
+        <div class="card">
+          <div class="card-brand"><span class="en">UIQ</span><span class="ko">유이크</span></div>
+          <dl class="cb-meta">
+            <dt>Category</dt><dd>Skincare (K-Beauty)</dd>
+            <dt>Hero SKU</dt><dd><span class="tbd">TBD — not stated</span></dd>
+            <dt>Exclusive</dt><dd><span class="badge new">13 markets</span><br>🇨🇴 Colombia · 🇨🇷 Costa Rica · 🇮🇩 Indonesia · 🇰🇿 Kazakhstan · 🇰🇬 Kyrgyzstan · 🇺🇿 Uzbekistan · 🇹🇯 Tajikistan · 🇧🇾 Belarus · 🇲🇾 Malaysia · 🇨🇳 China · 🇳🇿 New Zealand · 🇦🇺 Australia · 🇯🇵 Japan</dd>
+            <dt>Certs</dt><dd><span class="badge amber">CPNP pending</span> <span class="badge amber">SCPN pending</span> <span class="badge amber">MoCRA pending</span><div class="cert-note">EU/UK/US not available yet</div></dd>
+            <dt>Announced</dt><dd>Aug 10, 2026</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    <h3>How to read</h3>
+    <ul>
+      <li><strong>Exclusive markets</strong> = countries where Silicon2 holds exclusive B2B rights for the brand. Partners outside these markets should confirm availability before quoting.</li>
+      <li><strong>Certifications</strong> gate market access — each regulatory clearance unlocks a specific region: <code>MoCRA</code> = US · <code>CPNP</code> = EU · <code>SCPN</code> = UK. "Pending" means the clearance is in progress and the market is not yet sellable; "Not stated" means no certification detail was included in the announcement.</li>
+    </ul>
+  </div>
+
+  <footer>
+    <div class="srcs">
+      <span class="lbl">Source:</span> Silicon2 #public-구매-영업 (Slack announcements)
+      <ul>
+        <li>UIQ — Aug 10, 2026</li>
+        <li>LAUNDRYOU — Aug 11, 2026</li>
+        <li>RENOPTI — Aug 13, 2026</li>
+        <li>CELL FUSION C — Aug 14, 2026</li>
+      </ul>
+    </div>
+    <p class="disc">Supply price lists and full brand assets (product imagery, spec sheets, certificates) are available on request. Personally identifiable information and internal pricing are excluded from this document. Figures reflect brand onboarding announcements as of Aug 19, 2026 and are subject to change.</p>
+  </footer>
+
+</div>
+</body>
+</html>

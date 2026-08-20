@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>글로벌팀 업무 자동화 사례</title>
+<title>글로벌팀 업무자동화 성과</title>
 <style>
 /* ============================================================
    1. Design Tokens
@@ -14,8 +14,9 @@
   --accent:#2563eb; --accent-muted:#eff6ff; --accent-border:#bfdbfe;
   --advanced:#7c3aed; --advanced-muted:#faf5ff;
   --automation:#0d9488; --automation-muted:#f0fdfa;
+  --result:#dc2626; --result-muted:#fef2f2; --result-border:#fecaca;
   --radius:.5rem; --radius-full:9999px;
-  --sidebar-width:260px;
+  --sidebar-width:300px;
   --sidebar-transition:.22s ease;
   --slide-transition:.28s cubic-bezier(.4,0,.2,1);
 }
@@ -33,10 +34,11 @@ body{
 /* ============================================================
    3. Course Tabs  (좌상단 기초/심화/자동화 pill)
    ============================================================ */
-.course-tabs{display:flex;gap:.2rem;background:var(--secondary);padding:.2rem;border-radius:var(--radius-full)}
+.course-tabs{display:flex;gap:.2rem;flex-shrink:0;background:var(--secondary);padding:.2rem;border-radius:var(--radius-full)}
 .course-tab{
-  padding:.35rem 1rem;border:none;border-radius:var(--radius-full);background:transparent;
-  font:600 .875rem/1.5 inherit;color:var(--muted-fg);cursor:pointer;white-space:nowrap;
+  padding:.4rem .8rem;border:none;border-radius:var(--radius-full);background:transparent;
+  font-family:inherit;font-weight:600;font-size:.8125rem;line-height:1.5;
+  color:var(--muted-fg);cursor:pointer;white-space:nowrap;
   transition:background .18s,color .18s;
 }
 .course-tab.active{background:var(--primary);color:var(--primary-fg)}
@@ -76,7 +78,9 @@ body{
   color:var(--muted-fg);cursor:pointer;opacity:0;pointer-events:none;
   transition:opacity .2s,background .14s,color .14s;
 }
-.sidebar-reopen.visible{opacity:1;pointer-events:auto}
+.sidebar-reopen.visible{opacity:1;pointer-events:auto;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+/* 접힌 상태: 재열기 버튼 자리를 확보 */
+.slide-area.sidebar-collapsed .slide{padding-left:3.5rem}
 .sidebar-reopen:hover{background:var(--secondary);color:var(--fg)}
 
 .sidebar-course-badge{
@@ -111,7 +115,7 @@ body{
 .nav-info{display:flex;flex-direction:column;gap:.1rem;min-width:0}
 .nav-title{font-size:.875rem;font-weight:600;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nav-item.active .nav-title{color:var(--primary-fg)}
-.nav-hours{font-size:.75rem;color:var(--muted-fg)}
+.nav-hours{font-size:.75rem;color:var(--muted-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nav-item.active .nav-hours{color:rgba(255,255,255,.4)}
 
 /* ============================================================
@@ -139,6 +143,33 @@ body{
 .session-header-left{flex:1;min-width:0}
 .session-meta{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
 .session-title{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;line-height:1.3}
+
+/* AS-IS / TO-BE 요약 (슬라이드 상단) */
+.slide-summary{
+  flex-shrink:0;display:flex;flex-direction:column;gap:.4rem;margin-bottom:.875rem;
+}
+/* 요약이 없는 슬라이드에서는 슬롯 자체를 숨긴다 */
+.slide-summary:empty{display:none;margin-bottom:0}
+.summary-row{display:flex;align-items:flex-start;gap:.5rem;font-size:.8125rem;line-height:1.55}
+.summary-label{
+  flex-shrink:0;width:56px;padding:.12rem 0;border-radius:var(--radius);
+  font-size:10px;font-weight:800;letter-spacing:.06em;text-align:center;
+  background:var(--secondary);color:var(--muted-fg);border:1px solid var(--border);
+}
+.summary-text{min-width:0;color:var(--muted-fg)}
+.summary-line{display:block}
+.summary-line::before{content:"· ";opacity:.6}
+.summary-line + .summary-line{margin-top:.15rem}
+.summary-row.is-goal .summary-label{
+  background:var(--accent-muted);color:var(--accent);border-color:var(--accent-border);
+}
+.summary-row.is-goal .summary-text{color:var(--fg);font-weight:600}
+
+.summary-row.is-result{font-size:.875rem}
+.summary-row.is-result .summary-label{
+  background:var(--result);color:#fff;border-color:var(--result);font-size:10.5px;
+}
+.summary-row.is-result .summary-text{color:var(--result);font-weight:800}
 
 .slide-action-box{
   flex-shrink:0;max-width:520px;display:flex;flex-direction:column;gap:.3rem;
@@ -178,6 +209,9 @@ body{
 .image-slide.is-prev{transform:translateX(-100%)}
 .image-slide.is-active{transform:translateX(0)}
 .image-slide img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+/* 한 슬라이드에 여러 장 나란히 (slide.images 배열) */
+.image-pair{display:flex;align-items:center;justify-content:center;gap:.75rem;width:100%;height:100%;padding:.5rem}
+.image-pair img{flex:0 1 auto;min-width:0;max-width:100%;max-height:100%;object-fit:contain;display:block}
 
 .image-placeholder{
   width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;
@@ -185,6 +219,61 @@ body{
 }
 .image-placeholder-label{font-size:.875rem;font-weight:600;color:var(--muted-fg)}
 .image-placeholder-sub{font-size:.75rem;color:var(--muted-fg);opacity:.7}
+
+/* html 슬라이드 (목차 등) */
+.html-slide{width:100%;height:100%;overflow:auto;padding:clamp(.75rem,2vh,1.5rem) clamp(1.25rem,2.6vw,2rem);display:flex}
+.toc{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;width:100%;align-content:start}
+.toc-col{display:flex;flex-direction:column;gap:clamp(.5rem,1.4vh,.875rem);padding:clamp(.875rem,2vh,1.25rem);border:1px solid var(--border);border-radius:var(--radius);background:var(--bg)}
+.toc-col-head{display:flex;flex-direction:column;gap:.5rem}
+.toc-tag{
+  align-self:flex-start;padding:.2rem .5rem;border-radius:var(--radius-full);
+  font-size:clamp(10px,1.5vh,13px);font-weight:800;letter-spacing:.06em;
+}
+.toc-tag.basic{background:var(--accent-muted);color:var(--accent)}
+.toc-tag.advanced{background:var(--advanced-muted);color:var(--advanced)}
+.toc-tag.automation{background:var(--automation-muted);color:var(--automation)}
+.toc-col-title{font-size:clamp(.875rem,min(2.3vh,1.5vw),1.25rem);font-weight:700;letter-spacing:-.01em}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:.125rem}
+.toc-list li{display:flex;gap:.625rem;align-items:baseline;padding:clamp(.3rem,.8vh,.5rem) .25rem;border-top:1px solid var(--border)}
+.toc-list li:first-child{border-top:0}
+.toc-num{font-size:clamp(.75rem,1.72vh,1rem);font-weight:700;letter-spacing:.04em;color:var(--muted-fg)}
+.toc-item{font-size:clamp(.75rem,min(2vh,1.3vw),1.125rem);font-weight:600;line-height:1.5}
+
+/* 보고형 카드 슬라이드 (배경) — 배지 → 제목 → 부제 → 구분선 → 섹션 → 2단 박스 → 배너 */
+.rep{display:flex;flex-direction:column;gap:clamp(.5rem,2.1vh,1.5rem);width:100%;max-width:1400px;margin:auto}
+.rep-pill{
+  align-self:flex-start;padding:.25rem .6rem;border-radius:var(--radius-full);
+  background:var(--accent);color:#fff;font-size:clamp(10px,1.45vh,13px);font-weight:800;letter-spacing:.06em;
+}
+.rep-title{font-size:clamp(1.25rem,min(3.55vh,2.3vw),2.125rem);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+.rep-sub{font-size:clamp(.75rem,min(2.13vh,1.38vw),1.1875rem);line-height:1.5;color:var(--muted-fg)}
+.rep-div{border:0;border-top:1px solid var(--border);margin:0}
+.rep-label{
+  display:flex;align-items:center;gap:.4rem;
+  font-size:clamp(.6875rem,min(1.6vh,1.05vw),.9375rem);font-weight:700;letter-spacing:.1em;color:var(--muted-fg);
+}
+.rep-label .arrow{font-weight:400;opacity:.7}
+
+/* PDF 원페이지 보고서 구조: AS-IS / To-Be / 비즈니스 임팩트 3카드 */
+.rep-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.75rem,2.2vh,1.5rem);align-items:stretch}
+.rep-card{
+  display:flex;flex-direction:column;gap:clamp(.55rem,1.6vh,1.125rem);
+  padding:clamp(.875rem,2.2vh,1.5rem) clamp(.875rem,1.5vw,1.375rem);
+  background:#f6f7f9;border:1px solid transparent;border-radius:14px;
+}
+.rep-card.is-impact{background:var(--accent-muted);border-color:var(--accent-border)}
+.rep-card-head{
+  font-size:clamp(.9375rem,min(2.1vh,1.35vw),1.1875rem);font-weight:800;letter-spacing:-.01em;
+  line-height:1.3;margin-bottom:clamp(.1rem,.5vh,.35rem);
+}
+.rep-card.is-impact .rep-card-head{color:var(--accent)}
+.rep-item{display:flex;flex-direction:column;gap:.15rem}
+.rep-item-main{font-size:clamp(.8125rem,min(1.8vh,1.16vw),1rem);font-weight:600;line-height:1.45}
+.rep-item-main b{font-weight:800}
+.rep-item-sub{font-size:clamp(.75rem,min(1.55vh,1vw),.9375rem);line-height:1.5;color:var(--muted-fg)}
+.rep-item-key{font-size:clamp(.8125rem,min(1.8vh,1.16vw),1rem);font-weight:700;color:var(--accent);line-height:1.45}
+.rep-item-line{font-size:clamp(.75rem,min(1.6vh,1.04vw),.9375rem);line-height:1.5}
+.rep-num{font-weight:800;color:var(--accent)}
 
 .image-expand-btn{
   position:absolute;bottom:.5rem;right:.5rem;z-index:10;width:28px;height:28px;
@@ -208,7 +297,8 @@ body{
 .slide-btn{
   display:flex;align-items:center;gap:.375rem;padding:.35rem .875rem;
   border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);
-  font:600 .875rem/1.5 inherit;color:var(--fg);cursor:pointer;white-space:nowrap;
+  font-family:inherit;font-weight:600;font-size:.875rem;line-height:1.5;
+  color:var(--fg);cursor:pointer;white-space:nowrap;
   transition:background .13s,border-color .13s,opacity .13s;
 }
 .slide-btn:hover:not(:disabled){background:var(--secondary);border-color:#d4d4d4}
@@ -241,6 +331,8 @@ body{
 .fs-overlay[hidden]{display:none}
 .fs-image-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .fs-image-wrap img{width:100%;height:100%;object-fit:contain;display:block}
+.fs-html{width:100%;height:100%;overflow:auto;background:var(--bg);color:var(--fg)}
+.fs-html[hidden]{display:none}
 .fs-nav{
   position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:44px;height:44px;
   display:flex;align-items:center;justify-content:center;
@@ -257,6 +349,16 @@ body{
   border:none;border-radius:6px;background:rgba(255,255,255,.12);color:#fff;cursor:pointer;transition:background .15s;
 }
 .fs-close:hover{background:rgba(255,255,255,.25)}
+
+/* 낮거나 좁은 창: 여백을 줄여 스크롤 없이 한 화면에 담는다 */
+@media (max-height:830px),(max-width:1380px){
+  .html-slide{padding:.625rem 1.25rem}
+  .rep{gap:.55rem}
+  .rep-cards{gap:.75rem}
+  .rep-card{padding:.75rem .875rem;gap:.5rem}
+  .toc-col{padding:.75rem;gap:.5rem}
+  .toc-list li{padding:.25rem .25rem}
+}
 
 /* ============================================================
    12. Mobile (<=768px) — 사이드바를 오버레이로, 슬라이드는 페이드로
@@ -279,11 +381,18 @@ body{
   .session-header{flex-direction:column;gap:.75rem}
   .slide-action-box{width:100%;max-width:100%}
   .session-title{font-size:1.25rem}
+  .summary-label{width:50px}
   .session-body{height:auto;overflow:visible}
   .body-image{overflow:visible}
   .image-slider{position:relative;height:0;padding-bottom:56.25%;overflow:hidden}
   .image-slide{position:absolute;inset:0;opacity:0;transform:none!important;transition:opacity .22s}
   .image-slide.is-active{opacity:1}
+  .image-slider:has(.html-slide){height:auto;padding-bottom:0}
+  .image-slider:has(.html-slide) .image-slide{position:relative}
+  .html-slide{padding:1rem}
+  .toc{grid-template-columns:1fr}
+  .rep-cards{grid-template-columns:1fr}
+  .rep-title{font-size:1.25rem}
   .slide-nav{padding:.5rem 1rem}
   .slide-dots{flex-wrap:wrap;max-width:60vw}
 }
@@ -299,7 +408,7 @@ body{
       <div class="sidebar-header">
         <div class="sidebar-top">
           <div class="course-tabs" id="course-tabs"></div>
-          <button class="sidebar-toggle" id="sidebar-toggle" title="사이드바 접기">
+          <button class="sidebar-toggle" id="sidebar-toggle" title="사이드바 접기 (B)">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M9 2L3 7l6 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -314,7 +423,7 @@ body{
 
   <!-- Slide Area -->
   <div class="slide-area">
-    <button class="sidebar-reopen" id="sidebar-reopen" title="사이드바 열기">
+    <button class="sidebar-reopen" id="sidebar-reopen" title="사이드바 열기 (B)">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
         <rect x=".5" y="2" width="13" height="1.5" rx=".75" fill="currentColor"/>
         <rect x=".5" y="6.25" width="13" height="1.5" rx=".75" fill="currentColor"/>
@@ -352,7 +461,7 @@ body{
       <path d="M11 4L6 9l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </button>
-  <div class="fs-image-wrap"><img id="fs-img" src="" alt=""></div>
+  <div class="fs-image-wrap"><img id="fs-img" src="" alt=""><div class="fs-html" id="fs-html" hidden></div></div>
   <button class="fs-nav next" id="fs-next">
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
       <path d="M7 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -461,8 +570,12 @@ function updateSidebarActive(){
 /* ============================================================
    Render — Slides
    ============================================================ */
-function imagePath(course, step, filename){
-  return `assets/${course}/step${pad(step)}/${filename}`;
+function imagePath(course, session, slide){
+  // 에셋 폴더는 slide.assetDir → session.assetDir → step{NN} 순으로 결정.
+  // 회차 번호를 바꿔도 이미지 폴더는 그대로 둘 수 있다.
+  const dir = slide.assetDir || session.assetDir || `step${pad(session.step)}`;
+  const root = COURSES[course].assetRoot || course;
+  return `assets/${root}/${dir}/${slide.image}`;
 }
 
 function placeholderHtml(label, sub){
@@ -477,16 +590,47 @@ function placeholderHtml(label, sub){
   </div>`;
 }
 
+function summaryRowsHtml(rows){
+  if (!Array.isArray(rows) || !rows.length) return '';
+  return rows.map(it => {
+    const goal = String(it.label || '').toUpperCase().replace(/[^A-Z]/g, '') === 'TOBE';
+    const result = String(it.label || '').trim() === '결과';
+    return `<div class="summary-row${goal ? ' is-goal' : ''}${result ? ' is-result' : ''}">`
+      + (it.label ? `<span class="summary-label">${esc(it.label)}</span>` : '')
+      + `<span class="summary-text">${Array.isArray(it.text)
+          ? it.text.map(line => `<span class="summary-line">${esc(line)}</span>`).join('')
+          : esc(it.text || '')}</span></div>`;
+  }).join('');
+}
+
 function renderSlides(){
   const data = COURSES[currentCourse];
   document.getElementById('slides-container').innerHTML = data.sessions.map((s,i) => {
     const imagesHtml = (s.slides?.length ? s.slides : [null]).map((sl,j) => {
+      if (sl && sl.html){
+        return `<div class="image-slide${j===0?' is-active':''}" data-img-index="${j}">
+          <div class="html-slide">${sl.html}</div>
+        </div>`;
+      }
+      if (sl && Array.isArray(sl.images) && sl.images.length){
+        const eager = (i===currentSession && j===0);
+        // 항목은 "파일명" 또는 {image, assetDir} — 에셋 폴더가 다른 이미지도 한 슬라이드에 묶을 수 있다
+        const imgs = sl.images.map((it,k) => {
+          const e = (typeof it === 'string') ? {image:it} : it;
+          const src = imagePath(currentCourse, s, {...sl, ...e});
+          return `<img ${eager ? `src="${esc(src)}"` : `data-src="${esc(src)}"`}
+            alt="${esc(s.title)} - ${j+1}-${k+1}" onerror="this.style.display='none'">`;
+        }).join('');
+        return `<div class="image-slide${j===0?' is-active':''}" data-img-index="${j}">
+          <div class="image-pair">${imgs}</div>
+        </div>`;
+      }
       if (!sl || !sl.image){
         return `<div class="image-slide${j===0?' is-active':''}" data-img-index="${j}">
           ${placeholderHtml('이미지 준비 중', `${s.title} · 슬라이드 ${j+1}`)}
         </div>`;
       }
-      const src = imagePath(currentCourse, s.step, sl.image);
+      const src = imagePath(currentCourse, s, sl);
       // 현재 회차의 첫 장만 즉시 로드, 나머지는 data-src 로 lazy
       const attr = (i===currentSession && j===0) ? `src="${esc(src)}"` : `data-src="${esc(src)}"`;
       return `<div class="image-slide${j===0?' is-active':''}" data-img-index="${j}">
@@ -509,6 +653,7 @@ function renderSlides(){
           </div>
           <div class="slide-action-box"></div>
         </div>
+        <div class="slide-summary"></div>
         <div class="session-body">
           <div class="body-image">
             <div class="image-slider">${imagesHtml}</div>
@@ -544,8 +689,9 @@ function applyImageSlidePositions(){
         else if (j === currentSlide) el.classList.add('is-active');
         // 현재 + 다음 장 lazy load
         if (j === currentSlide || j === currentSlide+1){
-          const img = el.querySelector('img[data-src]');
-          if (img){ img.src = img.dataset.src; delete img.dataset.src; }
+          el.querySelectorAll('img[data-src]').forEach(img => {
+            img.src = img.dataset.src; delete img.dataset.src;
+          });
         }
       } else if (j === 0){
         el.classList.add('is-active');
@@ -557,6 +703,13 @@ function applyImageSlidePositions(){
 /* ============================================================
    Action Box — 슬라이드별 파일/링크/복사 렌더
    ============================================================ */
+function updateSummaryBox(){
+  const box = document.querySelector('.slide.is-active .slide-summary');
+  if (!box) return;
+  // 슬라이드 단위 summary 우선, 없으면 회차 단위 summary
+  box.innerHTML = summaryRowsHtml(curSlideObj().summary || curSession().summary);
+}
+
 function updateActionBox(){
   const box = document.querySelector('.slide.is-active .slide-action-box');
   if (!box) return;
@@ -626,7 +779,7 @@ function renderDots(){
   dots.querySelectorAll('.slide-dot').forEach(dot => {
     dot.addEventListener('click', () => {
       currentSlide = parseInt(dot.dataset.index);
-      applyImageSlidePositions(); updateIndicator(); updateActionBox(); pushHash();
+      applyImageSlidePositions(); updateIndicator(); updateActionBox(); updateSummaryBox(); pushHash();
     });
   });
 }
@@ -656,7 +809,7 @@ function goToSlide(delta){
     if (currentSession < total-1) goToSession(currentSession+1, 0);
   } else {
     currentSlide = next;
-    applyImageSlidePositions(); updateIndicator(); updateActionBox(); pushHash();
+    applyImageSlidePositions(); updateIndicator(); updateActionBox(); updateSummaryBox(); pushHash();
   }
 }
 
@@ -666,7 +819,7 @@ function goToSession(index, slideIndex = 0){
   currentSession = index;
   currentSlide   = slideIndex;
   applySlidePositions(); applyImageSlidePositions();
-  renderDots(); updateIndicator(); updateSidebarActive(); updateActionBox(); pushHash();
+  renderDots(); updateIndicator(); updateSidebarActive(); updateActionBox(); updateSummaryBox(); pushHash();
 }
 
 function switchCourse(key){
@@ -674,7 +827,7 @@ function switchCourse(key){
   currentCourse = key; currentSession = 0; currentSlide = 0;
   document.querySelectorAll('.course-tab').forEach(t => t.classList.toggle('active', t.dataset.course===key));
   renderSlides(); applySlidePositions(); applyImageSlidePositions();
-  renderSidebar(); renderDots(); updateIndicator(); updateActionBox(); pushHash();
+  renderSidebar(); renderDots(); updateIndicator(); updateActionBox(); updateSummaryBox(); pushHash();
 }
 
 /* ============================================================
@@ -682,7 +835,21 @@ function switchCourse(key){
    ============================================================ */
 function fsUpdate(){
   const s = curSession(), sl = curSlideObj(), img = document.getElementById('fs-img');
-  img.src = sl.image ? imagePath(currentCourse, s.step, sl.image) : '';
+  const htmlBox = document.getElementById('fs-html');
+  if (sl.html || (Array.isArray(sl.images) && sl.images.length)){
+    img.hidden = true; img.src = '';
+    htmlBox.hidden = false;
+    htmlBox.innerHTML = sl.html
+      ? `<div class="html-slide">${sl.html}</div>`
+      : `<div class="image-pair">${sl.images.map(it => {
+          const e = (typeof it === 'string') ? {image:it} : it;
+          return `<img src="${esc(imagePath(currentCourse, s, {...sl, ...e}))}" alt="${esc(s.title)}">`;
+        }).join('')}</div>`;
+  } else {
+    htmlBox.hidden = true; htmlBox.innerHTML = '';
+    img.hidden = false;
+    img.src = sl.image ? imagePath(currentCourse, s, sl) : '';
+  }
   img.alt = s.title;
   const n = slideCount(s);
   document.getElementById('fs-counter').textContent = `${pad(currentSlide+1)} / ${pad(n)}`;
@@ -696,14 +863,17 @@ const fsClose = () => document.getElementById('fs-overlay').setAttribute('hidden
 /* ============================================================
    Events + Init
    ============================================================ */
-document.getElementById('sidebar-toggle').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.add('collapsed');
-  document.getElementById('sidebar-reopen').classList.add('visible');
-});
-document.getElementById('sidebar-reopen').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.remove('collapsed');
-  document.getElementById('sidebar-reopen').classList.remove('visible');
-});
+/* 사이드바 열기/닫기 — 헤더 “‹” 버튼, 접힌 뒤 나타나는 버튼, 키보드 B 모두 같은 함수 */
+function setSidebar(open){
+  document.getElementById('sidebar').classList.toggle('collapsed', !open);
+  document.getElementById('sidebar-reopen').classList.toggle('visible', !open);
+  document.querySelector('.slide-area').classList.toggle('sidebar-collapsed', !open);
+}
+const toggleSidebar = () =>
+  setSidebar(document.getElementById('sidebar').classList.contains('collapsed'));
+
+document.getElementById('sidebar-toggle').addEventListener('click', () => setSidebar(false));
+document.getElementById('sidebar-reopen').addEventListener('click', () => setSidebar(true));
 document.getElementById('btn-prev').addEventListener('click', () => goToSlide(-1));
 document.getElementById('btn-next').addEventListener('click', () => goToSlide(1));
 
@@ -720,6 +890,7 @@ document.getElementById('fs-next').addEventListener('click', () => { goToSlide(1
 document.addEventListener('keydown', e => {
   const fs = !document.getElementById('fs-overlay').hidden;
   if (e.key === 'Escape' && fs) fsClose();
+  if (!fs && (e.key === 'b' || e.key === 'B')) toggleSidebar();
   if (e.key === 'ArrowLeft')  { goToSlide(-1); if (fs) fsUpdate(); }
   if (e.key === 'ArrowRight') { goToSlide(1);  if (fs) fsUpdate(); }
 });
@@ -728,7 +899,7 @@ document.addEventListener('DOMContentLoaded', () => {
   readHash();
   renderTabs(); renderSlides();
   applySlidePositions(); applyImageSlidePositions();
-  renderSidebar(); renderDots(); updateIndicator(); updateActionBox(); pushHash();
+  renderSidebar(); renderDots(); updateIndicator(); updateActionBox(); updateSummaryBox(); pushHash();
 });
 </script>
 </body>

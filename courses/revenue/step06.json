@@ -1,0 +1,89 @@
+{
+  "step": 6,
+  "title": "맞춤형 영업자료 제작",
+  "hours": "Claude · 영업자료 다각화",
+  "assetDir": "step12",
+  "slides": [
+    {
+      "image": "01_hair_promotion.png",
+      "summary": [
+        {
+          "label": "역할",
+          "text": "Claude를 활용한 영업 자료 다각화"
+        },
+        {
+          "label": "AS-IS",
+          "text": "개개인의 메일 소통으로 추가 영업 및 오더 메이드"
+        },
+        {
+          "label": "TO-BE",
+          "text": [
+            "다각화한 영업 자료로 보수적 바이어 탭핑, 추가 브랜드 및 매출 창출, buyer-account manager 간 소통 활성화",
+            "바이어향 자료(Selling Guide)로 정성적 케어 증대"
+          ]
+        },
+        {
+          "label": "결과",
+          "text": "더마 매출 (+160.5%), 헤어 매출 (+129.4%), 네이처리퍼블릭 매출 (+320%), 출고 수량 (+770%)"
+        }
+      ],
+      "action": {
+        "label": "산출물",
+        "type": "download",
+        "path": "assets/cases/step12/files/hair_promotion_guide.pptx",
+        "text": "Hair Promotion Guide (헤어프로모션).pptx"
+      },
+      "assetDir": "step12"
+    },
+    {
+      "image": "02_derma_promotion.png",
+      "action": {
+        "label": "산출물",
+        "items": [
+          {
+            "desc": "벌크메일",
+            "link": {
+              "href": "assets/cases/step12/files/derma_promotion_bulk_mail.html",
+              "text": "더마프로모션 벌크메일 열기"
+            }
+          }
+        ],
+        "type": "download",
+        "path": "assets/cases/step12/files/k_derma_selling_guide.pptx",
+        "text": "K-Derma Brands Selling Guide (더마프로모션).pptx"
+      },
+      "assetDir": "step12"
+    },
+    {
+      "images": [
+        {
+          "image": "03_prompt.png",
+          "assetDir": "step02"
+        },
+        {
+          "image": "01_prompt.png",
+          "assetDir": "step03"
+        }
+      ],
+      "action": {
+        "label": "산출물",
+        "items": [
+          {
+            "desc": "산출물",
+            "link": {
+              "href": "assets/cases/step02/files/nature_republic_output.html",
+              "text": "Nature Republic 산출물 열기"
+            }
+          },
+          {
+            "desc": "랜딩",
+            "link": {
+              "href": "assets/cases/step03/files/nature_republic_landing.html",
+              "text": "Nature Republic 랜딩페이지 열기"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
