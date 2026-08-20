@@ -5,7 +5,7 @@
   "assetDir": "step12",
   "slides": [
     {
-      "image": "01_hair_promotion.png",
+      "image": "02_derma_promotion.png",
       "summary": [
         {
           "label": "역할",
@@ -24,7 +24,7 @@
         },
         {
           "label": "결과",
-          "text": "더마 매출 (+160.5%), 헤어 매출 (+129.4%), 네이처리퍼블릭 매출 (+320%), 출고 수량 (+770%)"
+          "text": "더마 매출 (+160.5%), 헤어 매출 (+129.4%), 네이처리퍼블릭 매출 (+320%)"
         }
       ],
       "action": {
@@ -36,7 +36,7 @@
       "assetDir": "step12"
     },
     {
-      "image": "02_derma_promotion.png",
+      "image": "01_hair_promotion.png",
       "action": {
         "label": "산출물",
         "items": [

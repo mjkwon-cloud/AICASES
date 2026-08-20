@@ -5,7 +5,7 @@
   "assetDir": "step06",
   "slides": [
     {
-      "image": "01_cr_inquiry_stats.png",
+      "image": "01_new_order.png",
       "summary": [
         {
           "label": "역할",
@@ -24,11 +24,6 @@
           "text": "오더 누락 가능성 원천 차단으로 거래처와의 신뢰관계 제고 및 매출 증대 기여"
         }
       ],
-      "action": null,
-      "assetDir": "step06"
-    },
-    {
-      "image": "01_new_order.png",
       "action": null,
       "assetDir": "step06"
     },
