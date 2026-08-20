@@ -9,32 +9,6 @@
       "summary": [
         {
           "label": "역할",
-          "text": "오더 누락 원천 차단 알람"
-        },
-        {
-          "label": "AS-IS",
-          "text": "CR 확인 지연으로 오더 프로세스 정체 및 재고 확보 실패"
-        },
-        {
-          "label": "TO-BE",
-          "text": "글로벌팀 거래처 DB – CMS CR 자동 대조 및 글로벌팀 슬랙 알람 → 오더 누락 가능성 원천 차단"
-        },
-        {
-          "label": "결과",
-          "text": "오더 누락 가능성 원천 차단으로 거래처와의 신뢰관계 제고 및 매출 증대 기여"
-        }
-      ],
-      "action": null,
-      "assetDir": "step06"
-    },
-    {
-      "images": [
-        "01_claude_in_chrome.png",
-        "02_claude_in_chrome_2.png"
-      ],
-      "summary": [
-        {
-          "label": "역할",
           "text": "자동으로 웹사이트에서 MSRP 위반 여부를 클로드가 확인"
         },
         {
@@ -52,6 +26,14 @@
           "label": "결과",
           "text": "건당 소요시간 30분 → 5분 (소요시간 약 83% 감소)"
         }
+      ],
+      "action": null,
+      "assetDir": "step06"
+    },
+    {
+      "images": [
+        "01_claude_in_chrome.png",
+        "02_claude_in_chrome_2.png"
       ],
       "action": null,
       "assetDir": "step01"
